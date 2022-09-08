@@ -1,5 +1,8 @@
 let currentColor = 'black'
-
+const socket = io.connect();
+socket.on("draw-new-line",({mouseX, mouseY, pmouseX, pmouseY})=>{
+  line(mouseX, mouseY, pmouseX, pmouseY);
+})
 function setup() {
   const myCanvas = createCanvas(1100, 640);
   myCanvas.parent(document.querySelector("#drawing-board"))
@@ -23,6 +26,7 @@ function draw() {
   if (mouseIsPressed == true) {
     stroke(currentColor);
     line(mouseX, mouseY, pmouseX, pmouseY);
+    socket.emit("new-line",{mouseX, mouseY, pmouseX, pmouseY})
     console.log("mouseXY", mouseX, mouseY)
 
     console.log("pmouse", pmouseX, pmouseY)
@@ -68,4 +72,3 @@ function keyPressed() {
 }
 
 
-const socket = io.connect();

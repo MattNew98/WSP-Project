@@ -1,8 +1,14 @@
 import express from 'express'
+import expressSession from 'express-session'
+import { Client } from 'pg'
+// import fs from 'fs'
 import http from 'http'
 import { Server as SocketIO } from 'socket.io'
-import expressSession from 'express-session'
+// import { userRoutes } from './routes/userRoute'
+import dotenv from 'dotenv'
 
+
+dotenv.config()
 declare module 'express-session' {
     interface SessionData {
         name?: string
@@ -10,12 +16,29 @@ declare module 'express-session' {
     }
 }
 
-export const app = express()
-const server = new http.Server(app)
-export const io = new SocketIO(server)
+const app = express()
+
+const server = new http.Server(app);
+const io = new SocketIO(server);
+
+io.on('connection', function (socket) {
+    console.log(socket.id);
+});
+
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+export const client = new Client({
+	database: process.env.DB_NAME,
+	user: process.env.DB_USERNAME,
+	password: process.env.DB_PASSWORD
+})
+client.connect()
+
+
+
 
 app.use(
     expressSession({
@@ -35,7 +58,11 @@ declare module 'express-session' {
 }
 
 
-
+app.post('/users',(req,res)=>{
+    // Business logic here
+	io.emit("new-user","Congratulations! New User Created!");
+    res.json({updated:1});
+});
 
 
 
@@ -47,8 +74,7 @@ app.use((req, res) => {
 })
 
 
-app.listen(8080, () => {
-    console.log('Listening on port 8080')
-})
-
-// test
+const PORT = 8080;
+server.listen(PORT, () => {
+    console.log(`Listening at http://localhost:${PORT}/`);
+});

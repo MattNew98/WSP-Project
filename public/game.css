@@ -1,0 +1,67 @@
+body {
+    background-color: #0A5EFB;
+    margin: 0;
+    height: 100%
+}
+
+.header-container {
+    background-color: #000000;
+    height: 50px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.user-icon {
+    color: white;
+    font-size: 18px;
+
+}
+
+.game-lobby-text {
+    color: black;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.main-container {
+    background-color: white;
+    height: 650px;
+    width: 1200px;
+    margin: auto;
+    display: flex;
+}
+
+.left-container {
+    background-color: rgb(160, 137, 197);
+    width: 280px;
+    height: 630px;
+    padding: 10px;
+}
+
+.player-info-container {
+    background-color: rgb(64, 114, 200);
+    height: 60px;
+    margin: 13px;
+    padding: 8px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    display: block;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    display: block;
+  }
+  

@@ -1,0 +1,46 @@
+body{
+    background-color: #0A5EFB;
+    margin: 0;
+    height: 100%
+}
+
+.header-container {
+    background-color: #000000;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header-text {
+    color: white;
+    font-size: 28px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.user-icon {
+    color: white;
+    font-size: 18px;
+    
+}
+.game-lobby-text {
+    color: black;
+    font-size: 60px;
+    display: flex;
+    justify-content: center;
+}
+.room-container {
+    background-color: #118fe3;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+.room {
+    background-color: #ffffff;
+    width:400px;
+    height: 100px;
+    margin: 10px
+}

@@ -1,0 +1,19 @@
+body{
+    background-color: #0A5EFB;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
+
+.login-container{
+    background-color: white;
+    height: 500px;
+	width: 800px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#login-form{
+    display: flex;
+}

@@ -9,27 +9,41 @@
 
 
 
-    <link rel="stylesheet" href="./login.css"/>
+    <link rel="stylesheet" href="./login.css" />
 </head>
 
 <body>
     <div class="container">
+
         <div class="login-container">
+
+
+            <h1 class="login-header">
+                This is Header
+            </h1>
+
+            <div class="login-icon">
+                <img src="test2.jpeg">
+                
+            </div>
+
             <form id="login-form">
-                <label>
+                <label class="username">
                     username:
-                    <input type="text" value="gordon" name="username" />
+                    <input type="text" name="username" placeholder="username" id="login-username" />
                 </label>
-                <label>
+
+
+                <label class="password">
                     password:
-                    <input type="password" value="tecky" name="password" />
+                    <input type="password" name="password" placeholder="password" id="login-password" />
                 </label>
                 <input type="submit" value="Login" />
             </form>
 
-            <div class="right-login">
-
-                fdsfs
+            <div class="google-login">
+          
+                <a href="/connect/google" class="btn btn-success">Sign in With Google</a>
             </div>
 
 

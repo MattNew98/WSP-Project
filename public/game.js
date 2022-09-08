@@ -1,8 +1,8 @@
 let currentColor = 'black'
 
   function setup() {
-    const myCanvas = createCanvas(900, 440);
-    myCanvas.parent(document.querySelector("#right-top-container"))
+    const myCanvas = createCanvas(1100, 640);
+    myCanvas.parent(document.querySelector("#drawing-board"))
     strokeWeight(1)
   }
 

@@ -27,8 +27,8 @@ body {
 
 .main-container {
     background-color: white;
-    height: 650px;
-    width: 1200px;
+    height: 900px;
+    width: 1700px;
     margin: auto;
     display: flex;
 }
@@ -36,7 +36,7 @@ body {
 .left-container {
     background-color: rgb(160, 137, 197);
     width: 280px;
-    height: 630px;
+    height: auto;
     padding: 10px;
 }
 
@@ -57,11 +57,27 @@ canvas {
     display: block;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
-  }
-  canvas {
+}
+
+canvas {
     display: block;
-  }
-  
+}
+
+.chatroom-container {
+    height: 260px;
+    width: 1400px;
+    background-color:grey;
+}
+
+.color-panel-container {
+    height: 640px;
+    width: 300px;
+    background-color: rgb(60, 150, 105);
+}
+.gameboard-and-color-panel-container {
+    display: flex;
+}

@@ -49,12 +49,12 @@ body {
 
 .room-background {
     background-color: #75b6e5;
-    height:90%;
-    padding: 20px;
+    height: 50%;
+    padding: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 15px;
 }
-
-
-
 
 
 
@@ -65,8 +65,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-margin: 50px;
-border-radius: 15px;
+    margin: 50px;
+    border-radius: 15px;
 }
 
 
@@ -74,8 +74,12 @@ border-radius: 15px;
 
 .room {
     background-color: #ffffff;
-    width: 400px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     margin: 10px;
     border-radius: 15px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

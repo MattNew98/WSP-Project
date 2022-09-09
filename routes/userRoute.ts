@@ -83,10 +83,13 @@ userRoutes.post('/login', async (req, res) => {
 		...sessionUser
 	} = dbUser
 	req.session['user'] = sessionUser
-
-	res.status(200).json({
-		message: 'Success login'
-	})
+	req.session.isloggedin = true
+	console.log(123123)
+	res.redirect('/lobby.html')
+	// .status(200).json({
+	// 	message: 'Success login'
+	// })
+	// .redirect('/lobby.html')
 })
 
 userRoutes.get('/logout', (req, res) => {
@@ -111,11 +114,8 @@ userRoutes.get('/login/google', loginGoogle);
 
 async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
-<<<<<<< HEAD
 	console.log({ accessToken })
-=======
 
->>>>>>> 754a16461ce906fe2a416f4417ea07df5ccb21ee
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {

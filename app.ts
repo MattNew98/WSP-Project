@@ -17,6 +17,15 @@ declare module 'express-session' {
     }
 }
 
+const isloggedin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.session.isloggedin) {
+      next()
+      return
+    }
+    res.status(401).send("Please login first")
+    return
+  }
+
 const app = express()
 
 const server = new http.Server(app);
@@ -74,15 +83,6 @@ app.use('/user', userRoutes)
 
 
 
-declare module 'express-session' {
-    interface SessionData {
-        username?: string
-        isLoggedIn?: boolean
-        age?: number
-
-    }
-}
-
 
 app.post('/users',(req,res)=>{
     // Business logic here
@@ -90,9 +90,8 @@ app.post('/users',(req,res)=>{
     res.json({updated:1});
 });
 
-
-
 app.use(express.static('public'))
+app.use(isloggedin ,express.static('private'))
 
 
 app.use((req, res) => {

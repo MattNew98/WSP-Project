@@ -70,7 +70,7 @@ canvas {
 .chatroom-container {
     height: 215px;
     width: 1400px;
-    background-color:grey;
+    background-color: grey;
 }
 
 .topic-container {
@@ -78,6 +78,58 @@ canvas {
     width: 1400px;
     background-color: rgb(60, 150, 105);
 }
+
 .topic-container {
     display: flex;
+}
+
+.controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+
+.clear-button {
+    margin: 5px;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 10%;
+}
+
+.clear-button:hover {
+    cursor: pointer;
+}
+
+.color-button {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 10%;
+}
+
+.color-button:hover {
+    cursor: pointer;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.black {
+    background-color: black;
 }

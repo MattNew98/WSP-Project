@@ -39,10 +39,12 @@ userRoutes.post('/login', async (req, res) => {
 	console.log('userRoutes - [/login]')
 	const username = req.body.username
 	const password = req.body.password
-
+	console.log(req.body)
+	console.log(password)
+	
 	if (!username || !password) {
 		res.status(400).json({
-			message: 'Invalid username or password'
+			message: 'Invalid username or password (no text typed)'
 		})
 		return
 	}
@@ -55,18 +57,20 @@ userRoutes.post('/login', async (req, res) => {
 
 	if (!dbUser) {
 		res.status(400).json({
-			message: 'Invalid username or password'
+			message: 'Invalid username or password (no such user)'
 		})
 		return
 	}
 
 	// compare password
 
+
+
 	let isMatched = await checkPassword(password, dbUser.password)
 
 	if (!isMatched) {
 		res.status(400).json({
-			message: 'Invalid username or password'
+			message: 'Invalid username or password (wrong pw)'
 		})
 		return
 	}
@@ -107,7 +111,7 @@ userRoutes.get('/login/google', loginGoogle);
 
 async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
-	console.log({accessToken})
+	console.log({ accessToken })
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {
@@ -121,7 +125,7 @@ async function loginGoogle(req: express.Request, res: express.Response) {
 	let user = users[0];
 
 
-	
+
 	if (!user) {
 		// Create the user when the user does not exist
 		const randomString = crypto.randomBytes(32).toString('hex');

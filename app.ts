@@ -22,8 +22,11 @@ const server = new http.Server(app);
 const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
-    socket.on("new-line",({mouseX, mouseY, pmouseX, pmouseY})=>{
-        socket.broadcast.emit("draw-new-line",{mouseX, mouseY, pmouseX, pmouseY})
+    socket.on("new-line",({mouseX, mouseY, pmouseX, pmouseY, selectedColor})=>{
+        socket.broadcast.emit("draw-new-line",{mouseX, mouseY, pmouseX, pmouseY, selectedColor})
+    })
+    socket.on("new-color",({selectedColor})=>{
+        socket.broadcast.emit("draw-new-color",{selectedColor})
     })
     console.log(socket.id);
 });

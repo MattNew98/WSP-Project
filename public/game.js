@@ -1,5 +1,5 @@
-let currentColor = 'black'
-const socket = io.connect();
+let currentColor = 'black' // define the default color
+const socket = io.connect(); // connect to socketIO
 socket.on("draw-new-line",({mouseX, mouseY, pmouseX, pmouseY})=>{
   line(mouseX, mouseY, pmouseX, pmouseY);
 })

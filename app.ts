@@ -32,12 +32,18 @@ const server = new http.Server(app);
 const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
-    socket.on("new-line",({mouseX, mouseY, pmouseX, pmouseY, selectedColor})=>{
-        socket.broadcast.emit("draw-new-line",{mouseX, mouseY, pmouseX, pmouseY, selectedColor})
+    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor }) => {
+        socket.broadcast.emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor })
     })
-    socket.on("new-color",({selectedColor})=>{
-        socket.broadcast.emit("draw-new-color",{selectedColor})
-    })
+
+    socket.on("clear-board", () => {
+        socket.broadcast.emit("clear", (255))
+    }
+    )
+    // socket.on("new-color", ({ selectedColor }) => {
+    //     socket.broadcast.emit("draw-new-color", { selectedColor })
+    //     // console.log("selectedColor: " + selectedColor)
+    // })
     console.log(socket.id);
 });
 
@@ -47,32 +53,32 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 export const client = new Client({
-	database: process.env.DB_NAME,
-	user: process.env.DB_USERNAME,
-	password: process.env.DB_PASSWORD
+    database: process.env.DB_NAME,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD
 })
 
 
 client.connect()
 let sessionMiddleware = expressSession({
-	secret: 'Tecky Academy teaches typescript',
-	resave: true,
-	saveUninitialized: true
+    secret: 'Tecky Academy teaches typescript',
+    resave: true,
+    saveUninitialized: true
 })
 
 app.use(sessionMiddleware)
 
 
 const grantExpress = grant.express({
-    "defaults":{
+    "defaults": {
         "origin": "http://localhost:8080",
         "transport": "session",
         "state": true,
     },
-    "google":{
+    "google": {
         "key": process.env.GOOGLE_CLIENT_ID || "",
         "secret": process.env.GOOGLE_CLIENT_SECRET || "",
-        "scope": ["profile","email"],
+        "scope": ["profile", "email"],
         "callback": "/user/login/google"
     }
 });
@@ -84,10 +90,10 @@ app.use('/user', userRoutes)
 
 
 
-app.post('/users',(req,res)=>{
+app.post('/users', (req, res) => {
     // Business logic here
-	io.emit("new-user","Congratulations! New User Created!");
-    res.json({updated:1});
+    io.emit("new-user", "Congratulations! New User Created!");
+    res.json({ updated: 1 });
 });
 
 app.use(express.static('public'))

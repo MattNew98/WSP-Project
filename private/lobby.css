@@ -1,46 +1,81 @@
-body{
+body {
     background-color: #0A5EFB;
     margin: 0;
     height: 100%
 }
 
+
+
 .header-container {
-    background-color: #000000;
-    height: 50px;
+
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: space-around;
+}
+
+
+.header-title {
+    font-size: 100px;
+
+}
+
+.user-container {
+    display: flex;
+    align-items: center;
+
+}
+
+.user-name {
+    font-size: 30px;
+}
+
+
+.user-icon img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
     align-items: center;
 }
-.header-text {
-    color: white;
-    font-size: 28px;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-.user-icon {
-    color: white;
-    font-size: 18px;
-    
-}
+
+
 .game-lobby-text {
     color: black;
     font-size: 60px;
     display: flex;
     justify-content: center;
 }
+
+
+.room-background {
+    background-color: #75b6e5;
+    height:90%;
+    padding: 20px;
+}
+
+
+
+
+
+
 .room-container {
-    background-color: #118fe3;
+    background-color: #ffffff;
     height: 100%;
     padding: 40px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
+margin: 50px;
+border-radius: 15px;
 }
+
+
+
+
 .room {
     background-color: #ffffff;
-    width:400px;
+    width: 400px;
     height: 100px;
-    margin: 10px
+    margin: 10px;
+    border-radius: 15px;
 }

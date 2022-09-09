@@ -23,10 +23,10 @@ userRoutes.post('/register', async (req, res) => {
 			return
 		}
 
-		let hashedPasword = await hashPassword(password)
+		let hashedPassword = await hashPassword(password)
 		await client.query(
 			`insert into users (username, password) values ($1, $2)`,
-			[username, hashedPasword]
+			[username, hashedPassword]
 		)
 		res.json({ message: 'User created' })
 	} catch (error) {
@@ -101,52 +101,38 @@ userRoutes.get('/me', (req, res) => {
 	})
 })
 
-userRoutes.get('/login/google', loginGoogle)
+
+userRoutes.get('/login/google', loginGoogle);
+
 
 async function loginGoogle(req: express.Request, res: express.Response) {
-	// 如果google in 成功，就會拎到 一個 access token
-	// access token 係用黎換番google 既 user profile
-	const accessToken = req.session?.['grant'].response.access_token
-
-	// fetch google API, 拎 user profile
-	const fetchRes = await fetch(
-		'https://www.googleapis.com/oauth2/v2/userinfo',
-		{
-			method: 'get',
-			headers: {
-				Authorization: `Bearer ${accessToken}`
-			}
+	const accessToken = req.session?.['grant'].response.access_token;
+	console.log({accessToken})
+	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+		method: "get",
+		headers: {
+			"Authorization": `Bearer ${accessToken}`
 		}
-	)
-	const googleProfile = await fetchRes.json()
+	});
+	const googleProfile = await fetchRes.json();
+	const users = (await client.query(`SELECT * FROM users WHERE users.username = $1`, [
+		googleProfile.email])).rows;
 
-	// check 下 db有無呢個user存在
-	const users = (
-		await client.query(`SELECT * FROM users WHERE username = $1`, [
-			googleProfile.email
-		])
-	).rows
-	let user = users[0]
+	let user = users[0];
 
-	// 如果 user 不存在，馬上 create 一個
+
+	
 	if (!user) {
-		//get a random 32 bit string
-		const randomString = crypto.randomBytes(32).toString('hex')
-		let hashedPassword = await hashPassword(randomString)
 		// Create the user when the user does not exist
-		user = (
-			await client.query(
-				`INSERT INTO users (username,password)
-	            VALUES ($1,$2) RETURNING *`,
-				[googleProfile.email, hashedPassword]
-			)
-		).rows[0]
+		const randomString = crypto.randomBytes(32).toString('hex');
+		let hashedPassword = await hashPassword(randomString)
+		user = (await client.query(`INSERT INTO users (username,password) 
+                VALUES ($1,$2) RETURNING *`,
+			[googleProfile.email, hashedPassword])).rows[0]
 	}
-
-	// 最後當佢 login 成功處理
-	// set google profile 入去 req session
 	if (req.session) {
 		req.session['user'] = googleProfile
 	}
-	res.redirect('/')
+	return res.redirect('/lobby.html')
 }
+

@@ -4,7 +4,8 @@ import { Client } from 'pg'
 // import fs from 'fs'
 import http from 'http'
 import { Server as SocketIO } from 'socket.io'
-// import { userRoutes } from './routes/userRoute'
+import { userRoutes } from './routes/userRoute'
+import grant from 'grant'
 import dotenv from 'dotenv'
 
 
@@ -38,18 +39,37 @@ export const client = new Client({
 	user: process.env.DB_USERNAME,
 	password: process.env.DB_PASSWORD
 })
+
+
 client.connect()
+let sessionMiddleware = expressSession({
+	secret: 'Tecky Academy teaches typescript',
+	resave: true,
+	saveUninitialized: true
+})
+
+app.use(sessionMiddleware)
 
 
+const grantExpress = grant.express({
+    "defaults":{
+        "origin": "http://localhost:8080",
+        "transport": "session",
+        "state": true,
+    },
+    "google":{
+        "key": process.env.GOOGLE_CLIENT_ID || "",
+        "secret": process.env.GOOGLE_CLIENT_SECRET || "",
+        "scope": ["profile","email"],
+        "callback": "/user/login/google"
+    }
+});
+
+app.use(grantExpress as express.RequestHandler);
+
+app.use('/user', userRoutes)
 
 
-app.use(
-    expressSession({
-        secret: 'drawSomethingSecret',
-        resave: true,
-        saveUninitialized: true,
-    }),
-)
 
 declare module 'express-session' {
     interface SessionData {

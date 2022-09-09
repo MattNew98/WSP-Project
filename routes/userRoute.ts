@@ -41,7 +41,7 @@ userRoutes.post('/login', async (req, res) => {
 	const password = req.body.password
 	console.log(req.body)
 	console.log(password)
-	
+
 	if (!username || !password) {
 		res.status(400).json({
 			message: 'Invalid username or password (no text typed)'
@@ -83,10 +83,13 @@ userRoutes.post('/login', async (req, res) => {
 		...sessionUser
 	} = dbUser
 	req.session['user'] = sessionUser
-
-	res.status(200).json({
-		message: 'Success login'
-	})
+	req.session.isloggedin = true
+	console.log(123123)
+	res.redirect('/lobby.html')
+	// .status(200).json({
+	// 	message: 'Success login'
+	// })
+	// .redirect('/lobby.html')
 })
 
 userRoutes.get('/logout', (req, res) => {
@@ -113,6 +116,11 @@ async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
 	console.log({ accessToken })
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 175a86451a9fc69a0fe5a34949d07b2aeced1b0d
+>>>>>>> 30fc9d1d0ad0cd4fbf252e5e8b98b4a9168ff4e6
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {

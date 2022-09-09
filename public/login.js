@@ -19,6 +19,7 @@ async function login() {
             }
         })
         if (res.ok) {
+            window.location = 'lobby.html'
             console.log("Login successful")
         }
     })

@@ -32,25 +32,22 @@ const server = new http.Server(app);
 const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
-    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor }) => {
-        drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor });
-        socket.broadcast.emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor })
+    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) => {
+        drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
+        socket.broadcast.emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight })
         // console.log(emits)
 
 
     })
 
     socket.on("clear-board", () => {
-        socket.broadcast.emit("clear", (255))
+        socket.broadcast.emit("clear", (255)) // ask sockets to clear the board
         drawBoardArray = []
-        console.log(drawBoardArray)
     }
     )
 
     socket.on("get-board", () => {
-        console.log('ding')
-        socket.emit("show-board", ({ drawBoardArray }))
-
+        socket.emit("show-board", ({ drawBoardArray })) //send drawBoardArray to js//
     })
     // socket.on("new-color", ({ selectedColor }) => {
     //     socket.broadcast.emit("draw-new-color", { selectedColor })

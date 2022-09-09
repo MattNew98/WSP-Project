@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>DrawSomething</title>
 
 
 
@@ -47,12 +47,18 @@
             <div class="topic-container">Topic bar</div>
             <div class="controls-container">
                 <div class="clear-button" onclick="clearBoard()">Clear</div>
+                <div>Color:</div>
                 <div class="red color-button" onclick="changeColor('red')"></div>
                 <div class="green color-button" onclick="changeColor('green')"></div>
                 <div class="blue color-button" onclick="changeColor('blue')"></div>
                 <div class="yellow color-button" onclick="changeColor('yellow')"></div>
                 <div class="black color-button" onclick="changeColor('black')"></div>
                 <div class="eraser color-button" onclick="changeColor('white')"></div>
+                <div>Stroke:</div>
+                <div class="small stroke-button" onclick="changeStroke(10)"></div>
+                <div class="medium stroke-button" onclick="changeStroke(15)"></div>
+                <div class="large stroke-button" onclick="changeStroke(20)"></div>
+                <div class="fill-button" onclick="">Fill</div>
             </div>
 
 

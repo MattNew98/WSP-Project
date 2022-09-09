@@ -1,37 +1,32 @@
 let selectedColor = 'black' // define the user selected color
+let selectedStrokeWeight = 10
 const socket = io.connect(); // connect to socketIO
 
 function changeColor(color) {
-
   selectedColor = color;
-  console.log("selectedColor: " + selectedColor)
+  // console.log("selectedColor: " + selectedColor)
   // socket.emit("new-color", { selectedColor }) // 傳送selectedColor給server
 }
-
+function changeStroke(number) {
+  selectedStrokeWeight = number
+}
 function clearBoard() {
   background(255)
-  socket.emit("clear-board")
+  socket.emit("clear-board") //tell server to clear drawing board
 }
 
-socket.on("clear", data => {
-
+socket.on("clear", data => { //clear drawing board as per sever
   background(255)
-
 })
 
 //接收server送來的座標
-socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor }) => {
-
+socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) => {
   // noStroke()
   // fill(selectedColor)
   // ellipse(mouseX, mouseY, 5)
-
-  // console.log({ mouseX, mouseY, pmouseX, pmouseY, selectedColor })
-
+  strokeWeight(selectedStrokeWeight)
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
-
-
 })
 function setup() {
   const myCanvas = createCanvas(1400, 640); // 遊戲版 Width x Height
@@ -39,18 +34,18 @@ function setup() {
   strokeWeight(3) // 線條粗幼度
   noLoop()
   socket.emit("get-board")
-  socket.on("show-board", (drawBoardObject) => {
-    let boardArray = drawBoardObject.drawBoardArray;
-    // console.log(boardArray)
+  socket.on("show-board", (drawBoardObj) => { //display drawing from before joining the game to the board
+    let boardArray = drawBoardObj.drawBoardArray;
     for (let emit of boardArray) {
-
       stroke(emit.selectedColor)
+      strokeWeight(selectedStrokeWeight)
       line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
 
     }
   })
 }
 
+//can delete??
 function draw() {
   // console.log('drawing')
 
@@ -105,7 +100,9 @@ function draw() {
 
 
 }
+
 function mousePressed() {
+  //update pmouse x and y for every new mouse press
   pmouseX = mouseX
   pmouseY = mouseY
   // console.log('pressed')
@@ -148,14 +145,11 @@ function mousePressed() {
 }
 function mouseDragged() {
   // console.log('dragged')
-
-
   stroke(selectedColor)
+  strokeWeight(selectedStrokeWeight)
   line(mouseX, mouseY, pmouseX, pmouseY)
-
-
-  socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor }) // 傳送座標給server
-  pmouseX = mouseX
+  socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) // 傳送座標給server
+  pmouseX = mouseX //update pmouseX Y manually
   pmouseY = mouseY
 }
 

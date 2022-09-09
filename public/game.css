@@ -68,16 +68,16 @@ canvas {
 }
 
 .chatroom-container {
-    height: 260px;
+    height: 215px;
     width: 1400px;
     background-color:grey;
 }
 
-.color-panel-container {
-    height: 640px;
-    width: 300px;
+.topic-container {
+    height: 45px;
+    width: 1400px;
     background-color: rgb(60, 150, 105);
 }
-.gameboard-and-color-panel-container {
+.topic-container {
     display: flex;
 }

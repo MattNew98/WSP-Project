@@ -1,32 +1,42 @@
-let currentColor = 'black' // define the default color
+let selectedColor = 'black' // define the user selected color
 const socket = io.connect(); // connect to socketIO
-socket.on("draw-new-line",({mouseX, mouseY, pmouseX, pmouseY})=>{
+
+//接收server送來的座標
+socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY }) => {
+  stroke('black')
   line(mouseX, mouseY, pmouseX, pmouseY);
 })
 function setup() {
-  const myCanvas = createCanvas(1100, 640);
+  const myCanvas = createCanvas(1400, 640); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
-  strokeWeight(1)
+  strokeWeight(3) // 線條粗幼度
 }
 
 function draw() {
 
-  //print('x:' + mouseX + 'y:' + mouseY);
-  //the button
-  fill(255, 0, 0);
-  rect(100, 100, 50, 50)
-  fill(0, 255, 0);
-  rect(300, 100, 50, 50)
-  fill(0, 0, 255);
-  rect(500, 100, 50, 50)
-  fill(255)
-  rect(30, 30, 50, 20)
+  // Color button
+  stroke('black');
+  fill(255, 0, 0); // red // 變色按鈕顏色
+  rect(120, 590, 40, 40) // 變色按鈕座標和圖案
+  stroke('black')
+  fill(0, 255, 0); // green
+  rect(160, 590, 40, 40)
+  stroke('black')
+  fill(0, 0, 255); // blue
+  rect(200, 590, 40, 40)
+  stroke('black')
+  fill(255, 204, 0); // yellow
+  rect(240, 590, 40, 40)
+  stroke('black')
+  fill(0); // black
+  rect(280, 590, 40, 40)
+
 
   //make the button can switch the color
   if (mouseIsPressed == true) {
-    stroke(currentColor);
+    stroke(selectedColor);
     line(mouseX, mouseY, pmouseX, pmouseY);
-    socket.emit("new-line",{mouseX, mouseY, pmouseX, pmouseY})
+    socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY }) // 傳送座標給server
     console.log("mouseXY", mouseX, mouseY)
 
     console.log("pmouse", pmouseX, pmouseY)
@@ -37,30 +47,31 @@ function draw() {
   }
 
   if (mouseIsPressed) {
-    if (mouseX > 100 && mouseX < 150 && mouseY > 100 && mouseY < 150) {
+    if (mouseX > 120 && mouseX < 160 && mouseY > 590 && mouseY < 630) {
       print('switching to color red');
-      currentColor = 'red';
-    } else if (mouseX > 300 && mouseX < 350 && mouseY > 100 && mouseY < 150) {
+      selectedColor = 'red';
+    } else if (mouseX > 160 && mouseX < 200 && mouseY > 590 && mouseY < 630) {
       print('switching to color green');
-      currentColor = 'green';
-    } else if (mouseX > 500 && mouseX < 550 && mouseY > 100 && mouseY < 150) {
+      selectedColor = 'green';
+    } else if (mouseX > 200 && mouseX < 240 && mouseY > 590 && mouseY < 630) {
       print('switching to blue');
-      currentColor = 'blue';
-    } else if (mouseX > 32 && mouseX < 80 && mouseY > 33 && mouseY < 50) {
+      selectedColor = 'blue';
+    } else if (mouseX > 240 && mouseX < 280 && mouseY > 590 && mouseY < 630) {
+      print('switching to orange');
+      selectedColor = 'orange';
+    } else if (mouseX > 280 && mouseX < 320 && mouseY > 590 && mouseY < 630) {
+      print('switching to black');
+      selectedColor = 'black';
+    } else if (mouseX > 0 && mouseX < 80 && mouseY > 605 && mouseY < 640) {
       print('clearing the bg');
       background(255);
-      currentColor = 'black';
+      selectedColor = 'black';
 
     }
   }
-
-  //name the button
-  textSize(20);
-  text('Red', 108, 132);
-  textSize(15);
-  text('Green', 302, 132);
-  textSize(20);
-  text('blue', 508, 132);
+  textSize(25);
+  stroke('white')
+  text('Clear', 8, 630)
 
 
 }
@@ -70,5 +81,3 @@ function keyPressed() {
     saveCanvas('myart.png');
   }
 }
-
-

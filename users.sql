@@ -13,7 +13,7 @@ INSERT INTO users (username,password) VALUES
 /////////////////////
 
 
-CREATE DATABASE topics;
+
 
 CREATE TABLE topics (
     id SERIAL primary key,

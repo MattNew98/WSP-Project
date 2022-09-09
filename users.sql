@@ -21,7 +21,7 @@ tecky 1234
 /////////////////////
 
 
-CREATE DATABASE topics;
+
 
 CREATE TABLE topics (
     id SERIAL primary key,

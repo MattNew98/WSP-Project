@@ -41,7 +41,7 @@ userRoutes.post('/login', async (req, res) => {
 	const password = req.body.password
 	console.log(req.body)
 	console.log(password)
-	
+
 	if (!username || !password) {
 		res.status(400).json({
 			message: 'Invalid username or password (no text typed)'
@@ -111,11 +111,6 @@ userRoutes.get('/login/google', loginGoogle);
 
 async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
-<<<<<<< HEAD
-	console.log({ accessToken })
-=======
-
->>>>>>> 754a16461ce906fe2a416f4417ea07df5ccb21ee
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {

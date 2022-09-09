@@ -7,7 +7,7 @@ import { Server as SocketIO } from 'socket.io'
 import { userRoutes } from './routes/userRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
-
+let drawBoardArray: any = []
 
 dotenv.config()
 declare module 'express-session' {
@@ -19,12 +19,12 @@ declare module 'express-session' {
 
 const isloggedin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.session.isloggedin) {
-      next()
-      return
+        next()
+        return
     }
     res.status(401).send("Please login first")
     return
-  }
+}
 
 const app = express()
 
@@ -33,13 +33,25 @@ const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
     socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor }) => {
+        drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor });
         socket.broadcast.emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor })
+        // console.log(emits)
+
+
     })
 
     socket.on("clear-board", () => {
         socket.broadcast.emit("clear", (255))
+        drawBoardArray = []
+        console.log(drawBoardArray)
     }
     )
+
+    socket.on("get-board", () => {
+        console.log('ding')
+        socket.emit("show-board", ({ drawBoardArray }))
+
+    })
     // socket.on("new-color", ({ selectedColor }) => {
     //     socket.broadcast.emit("draw-new-color", { selectedColor })
     //     // console.log("selectedColor: " + selectedColor)
@@ -97,7 +109,7 @@ app.post('/users', (req, res) => {
 });
 
 app.use(express.static('public'))
-app.use(isloggedin ,express.static('private'))
+app.use(isloggedin, express.static('private'))
 
 
 app.use((req, res) => {

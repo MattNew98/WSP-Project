@@ -114,11 +114,7 @@ userRoutes.get('/login/google', loginGoogle);
 
 async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
-<<<<<<< HEAD
-	console.log({ accessToken })
 
-=======
->>>>>>> 175a86451a9fc69a0fe5a34949d07b2aeced1b0d
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {

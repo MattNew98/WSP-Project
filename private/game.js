@@ -14,7 +14,7 @@ function clearBoard() {
 }
 
 socket.on("clear", data => {
-  console.log('hi')
+
   background(255)
 
 })
@@ -27,7 +27,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor })
   // ellipse(mouseX, mouseY, 5)
 
   // console.log({ mouseX, mouseY, pmouseX, pmouseY, selectedColor })
-  console.log('on')
+
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
 
@@ -38,6 +38,17 @@ function setup() {
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()
+  socket.emit("get-board")
+  socket.on("show-board", (drawBoardObject) => {
+    let boardArray = drawBoardObject.drawBoardArray;
+    // console.log(boardArray)
+    for (let emit of boardArray) {
+
+      stroke(emit.selectedColor)
+      line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
+
+    }
+  })
 }
 
 function draw() {
@@ -142,7 +153,7 @@ function mouseDragged() {
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
 
-  console.log('emit')
+
   socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor }) // 傳送座標給server
   pmouseX = mouseX
   pmouseY = mouseY

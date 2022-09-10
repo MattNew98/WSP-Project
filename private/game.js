@@ -24,6 +24,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   // noStroke()
   // fill(selectedColor)
   // ellipse(mouseX, mouseY, 5)
+  console.log('cp01', selectedStrokeWeight)
   strokeWeight(selectedStrokeWeight)
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)

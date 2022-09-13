@@ -1,7 +1,9 @@
 login()
 async function login() {
+    
     const loginForm = document.querySelector('#login-form')
     console.log(loginForm)
+
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault()
         const form  = e.target

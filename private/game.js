@@ -5,6 +5,25 @@ const socket = io.connect(); // connect to socketIO
 let ctx //get context of the canvas
 let canvas
 let fillBucket = false
+
+////// get user icon
+async function getProfile() {
+  const res = await fetch('/user/me')
+  const result = await res.json()
+  console.log(result.data.user)
+  if (result.data.user.name) {
+      document.querySelector('.user-name').innerHTML = `${result.data.user.name}`
+      document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
+  } else {
+      document.querySelector('.user-name').innerHTML = `Welcome !!!`
+  }
+}
+getProfile()
+//////
+
+
+
+
 function changeColor(color) {
   if (color === 'red') {
     selectedColor = '#ff0000';
@@ -53,7 +72,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   line(mouseX, mouseY, pmouseX, pmouseY)
 })
 function setup() {
-  const myCanvas = createCanvas(1400, 640); // 遊戲版 Width x Height
+  const myCanvas = createCanvas(1100, 795); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()

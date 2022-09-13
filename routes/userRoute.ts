@@ -36,11 +36,9 @@ userRoutes.post('/register', async (req, res) => {
 })
 
 userRoutes.post('/login', async (req, res) => {
-	console.log('userRoutes - [/login]')
 	const username = req.body.username
 	const password = req.body.password
 	console.log(req.body)
-	console.log(password)
 
 	if (!username || !password) {
 		res.status(400).json({
@@ -77,26 +75,19 @@ userRoutes.post('/login', async (req, res) => {
 
 	let {
 		password: dbUserPassword,
-		id,
 		created_at,
 		updated_at,
 		...sessionUser
 	} = dbUser
+	console.log(username + ' is logged in')
 	req.session['user'] = sessionUser
-	req.session.isloggedin = true
-	console.log(123123)
 	res.redirect('/lobby.html')
-	// .status(200).json({
-	// 	message: 'Success login'
-	// })
-	// .redirect('/lobby.html')
 })
 
 userRoutes.get('/logout', (req, res) => {
-	req.session.destroy(() => {
-		console.log('user logged out')
-	})
-	res.redirect('/')
+	console.log(req.session.username + ' is logged out')
+	req.session.destroy(() => {})
+	res.redirect('/login.html')
 })
 
 userRoutes.get('/me', (req, res) => {
@@ -127,7 +118,7 @@ async function loginGoogle(req: express.Request, res: express.Response) {
 
 	let user = users[0];
 
-
+	console.log(googleProfile);
 
 	if (!user) {
 		// Create the user when the user does not exist
@@ -137,8 +128,10 @@ async function loginGoogle(req: express.Request, res: express.Response) {
                 VALUES ($1,$2) RETURNING *`,
 			[googleProfile.email, hashedPassword])).rows[0]
 	}
+	console.log(googleProfile.email + ' is logged in')
 	if (req.session) {
 		req.session['user'] = googleProfile
+		req.session.username = googleProfile.email
 	}
 	return res.redirect('/lobby.html')
 }

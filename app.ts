@@ -34,7 +34,9 @@ io.on('connection', function (socket) {
 
 
     })
-
+    socket.on('new-fill', ({ mouseX, mouseY, selectedColor }) => {
+        socket.broadcast.emit('draw-new-fill', { mouseX, mouseY, selectedColor })
+    })
     socket.on("clear-board", () => {
         socket.broadcast.emit("clear", (255)) // ask sockets to clear the board
         drawBoardArray = []
@@ -50,9 +52,9 @@ io.on('connection', function (socket) {
     // })
     console.log(socket.id);
 
-    socket.on("chat", ({content, userName}) => {
+    socket.on("chat", ({ content, userName }) => {
         console.log(`${userName}: ${content}`)
-        io.emit("chat", ({content, userName}))
+        io.emit("chat", ({ content, userName }))
     })
 });
 

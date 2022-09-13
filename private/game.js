@@ -14,10 +14,10 @@ async function getProfile() {
   console.log(result.data.user)
   userName = result.data.user.name
   if (result.data.user.name) {
-      document.querySelector('.user-name').innerHTML = `${result.data.user.name}`
-      document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
+    document.querySelector('.user-name').innerHTML = `${result.data.user.name}`
+    document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
   } else {
-      document.querySelector('.user-name').innerHTML = `Welcome !!!`
+    document.querySelector('.user-name').innerHTML = `Welcome !!!`
   }
 }
 getProfile()
@@ -25,17 +25,17 @@ getProfile()
 
 ////// comment box
 async function createChats() {
-	const chatsFormElement = document.querySelector('#message-form')
-	chatsFormElement.addEventListener('submit', async (e) => {
-		e.preventDefault()
-		const form = e.target
-		const content = form.chat.value
-    socket.emit('chat', ({content, userName}))
+  const chatsFormElement = document.querySelector('#message-form')
+  chatsFormElement.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const content = form.chat.value
+    socket.emit('chat', ({ content, userName }))
     form.reset()
-	})
+  })
 }
 createChats()
-socket.on('chat', ({content, userName}) => {
+socket.on('chat', ({ content, userName }) => {
   const html = document.querySelector('.chatroom-container')
   html.innerHTML += `<div>${userName}: ${content}</div>`
   console.log(`${userName}: ${content}`)
@@ -77,6 +77,10 @@ function fillBucketOn() {
 
 socket.on("clear", data => { //clear drawing board as per sever
   background(255)
+})
+
+socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor }) => {
+  flood_fill(mouseX, mouseY, color_to_rgba(selectedColor))
 })
 
 //接收server送來的座標
@@ -170,11 +174,19 @@ function mousePressed() {
   pmouseX = mouseX
   pmouseY = mouseY
 
+  //check if mouse is within canvas
+  if (mouseX < 0 || mouseX > canvas.width || mouseY < 0 || mouseY > canvas.height) {
+    return
+  }
   if (fillBucket === false) {
     mouseDragged()
+
   } else {
-    flood_fill(mouseX, mouseY, color_to_rgba(selectedColor))
+    flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
+    socket.emit("new-fill", { mouseX, mouseY, selectedColor })
+
   }
+
   // console.log('pressed')
   // if (mouseX > 120 && mouseX < 160 && mouseY > 590 && mouseY < 630) {
   //   selectedColor = 'red';
@@ -215,6 +227,8 @@ function mousePressed() {
 }
 function mouseDragged() {
   // console.log('dragged')
+  if (fillBucket == true) { return }
+
   stroke(selectedColor)
   strokeWeight(selectedStrokeWeight)
   line(mouseX, mouseY, pmouseX, pmouseY)
@@ -243,7 +257,7 @@ function flood_fill(original_x, original_y, color) {
   x = original_x;
   y = original_y;
   boundary_pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+  console.log(canvas.width, canvas.height)
   // first we go up until we find a boundary
   linear_cords = (y * canvas.width + x) * 4;
   var done = false;
@@ -435,3 +449,4 @@ function color_to_rgba(color) {
     };
   }
 }
+

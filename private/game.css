@@ -20,9 +20,8 @@ body {
 
 .game-lobby-text {
     color: #000000;
-    font-size: 40px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .main-container {
@@ -167,4 +166,29 @@ canvas {
 
 .fill-button:hover {
     cursor: pointer;
+}
+
+.user-icon img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    align-items: center;
+    padding-left: 10px;
+}
+.user-name-and-photo-container {
+    display: flex;
+    font-size: 30px;
+    align-items: center;
+}
+.buttonsInGame {
+    background-color:#75b6e5;
+    text-decoration: none;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.user-name {
+    padding-left: 10px;
 }

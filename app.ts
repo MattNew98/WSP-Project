@@ -7,24 +7,18 @@ import { Server as SocketIO } from 'socket.io'
 import { userRoutes } from './routes/userRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
+import { isloggedin } from './guard'
 let drawBoardArray: any = []
 
 dotenv.config()
 declare module 'express-session' {
     interface SessionData {
-        name?: string
+        username?: string
         isloggedin?: boolean
     }
 }
 
-const isloggedin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (req.session.isloggedin) {
-        next()
-        return
-    }
-    res.status(401).send("Please login first")
-    return
-}
+
 
 const app = express()
 

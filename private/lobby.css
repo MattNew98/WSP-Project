@@ -83,3 +83,16 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.logout-button {
+    background-color: #75b6e5;
+    margin-left: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    text-decoration:none;
+}
+
+.logout-button:hover {
+    background-color: #ffffff;
+    text-decoration:none;
+}

@@ -36,11 +36,10 @@ userRoutes.post('/register', async (req, res) => {
 })
 
 userRoutes.post('/login', async (req, res) => {
-	console.log('userRoutes - [/login]')
 	const username = req.body.username
 	const password = req.body.password
 	console.log(req.body)
-	console.log(password)
+	console.log(username + ' is logged in')
 
 	if (!username || !password) {
 		res.status(400).json({
@@ -82,21 +81,15 @@ userRoutes.post('/login', async (req, res) => {
 		updated_at,
 		...sessionUser
 	} = dbUser
-	req.session['user'] = sessionUser
+	req.session.username = sessionUser['username']
 	req.session.isloggedin = true
-	console.log(123123)
 	res.redirect('/lobby.html')
-	// .status(200).json({
-	// 	message: 'Success login'
-	// })
-	// .redirect('/lobby.html')
 })
 
 userRoutes.get('/logout', (req, res) => {
-	req.session.destroy(() => {
-		console.log('user logged out')
-	})
-	res.redirect('/')
+	console.log(req.session.username + ' is logged out')
+	req.session.destroy(() => {})
+	res.redirect('/login.html')
 })
 
 userRoutes.get('/me', (req, res) => {

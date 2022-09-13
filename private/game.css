@@ -171,9 +171,8 @@ canvas {
 .user-icon img {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
+    border-radius: 50px;
     align-items: center;
-    padding-left: 10px;
 }
 .user-name-and-photo-container {
     display: flex;
@@ -202,4 +201,8 @@ canvas {
     background-color: #ffffff;
     width: 100%;
     height: 7%;
+}
+.form-control {
+    width: 97%;
+    height: 56px;
 }

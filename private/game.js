@@ -5,12 +5,14 @@ const socket = io.connect(); // connect to socketIO
 let ctx
 let canvas
 let fillBucket = false
+let userName
 
 ////// get user icon
 async function getProfile() {
   const res = await fetch('/user/me')
   const result = await res.json()
   console.log(result.data.user)
+  userName = result.data.user.name
   if (result.data.user.name) {
       document.querySelector('.user-name').innerHTML = `${result.data.user.name}`
       document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
@@ -19,9 +21,25 @@ async function getProfile() {
   }
 }
 getProfile()
-//////
 
 
+////// comment box
+async function createChats() {
+	const chatsFormElement = document.querySelector('#message-form')
+	chatsFormElement.addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const form = e.target
+		const content = form.chat.value
+    socket.emit('chat', ({content, userName}))
+    form.reset()
+	})
+}
+createChats()
+socket.on('chat', ({content, userName}) => {
+  const html = document.querySelector('.chatroom-container')
+  html.innerHTML += `<div>${userName}: ${content}</div>`
+  console.log(`${userName}: ${content}`)
+})
 
 
 function changeColor(color) {
@@ -208,7 +226,7 @@ function mouseDragged() {
 
 
 function keyPressed() {
-  if (key == 's') {
+  if (key == '`') {
     saveCanvas('myart.png');
   }
 }

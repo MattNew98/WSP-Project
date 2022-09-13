@@ -49,6 +49,11 @@ io.on('connection', function (socket) {
     //     // console.log("selectedColor: " + selectedColor)
     // })
     console.log(socket.id);
+
+    socket.on("chat", ({content, userName}) => {
+        console.log(`${userName}: ${content}`)
+        io.emit("chat", ({content, userName}))
+    })
 });
 
 
@@ -103,6 +108,9 @@ app.post('/users', (req, res) => {
 app.use(express.static('public'))
 app.use(isloggedin, express.static('private'))
 
+app.post('/chats', (req, res) => {
+    console.log(123123)
+})
 
 app.use((req, res) => {
     res.redirect('/404.html')

@@ -39,7 +39,6 @@ userRoutes.post('/login', async (req, res) => {
 	const username = req.body.username
 	const password = req.body.password
 	console.log(req.body)
-	console.log(username + ' is logged in')
 
 	if (!username || !password) {
 		res.status(400).json({
@@ -76,13 +75,12 @@ userRoutes.post('/login', async (req, res) => {
 
 	let {
 		password: dbUserPassword,
-		id,
 		created_at,
 		updated_at,
 		...sessionUser
 	} = dbUser
-	req.session.username = sessionUser['username']
-	req.session.isloggedin = true
+	console.log(username + ' is logged in')
+	req.session['user'] = sessionUser
 	res.redirect('/lobby.html')
 })
 
@@ -120,7 +118,7 @@ async function loginGoogle(req: express.Request, res: express.Response) {
 
 	let user = users[0];
 
-
+	console.log(googleProfile);
 
 	if (!user) {
 		// Create the user when the user does not exist

@@ -19,7 +19,7 @@ async function getProfile() {
   }
 }
 getProfile()
-
+//////
 
 
 
@@ -72,7 +72,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   line(mouseX, mouseY, pmouseX, pmouseY)
 })
 function setup() {
-  const myCanvas = createCanvas(1400, 640); // 遊戲版 Width x Height
+  const myCanvas = createCanvas(1100, 795); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()

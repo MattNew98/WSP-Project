@@ -130,8 +130,10 @@ async function loginGoogle(req: express.Request, res: express.Response) {
                 VALUES ($1,$2) RETURNING *`,
 			[googleProfile.email, hashedPassword])).rows[0]
 	}
+	console.log(googleProfile.email + ' is logged in')
 	if (req.session) {
 		req.session['user'] = googleProfile
+		req.session.username = googleProfile.email
 	}
 	return res.redirect('/lobby.html')
 }

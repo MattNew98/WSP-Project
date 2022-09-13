@@ -2,7 +2,7 @@ let selectedColor = '#000000' // define the user selected color
 console.log(selectedColor)
 let selectedStrokeWeight = 10
 const socket = io.connect(); // connect to socketIO
-let ctx
+let ctx //get context of the canvas
 let canvas
 let fillBucket = false
 let userName
@@ -64,7 +64,7 @@ function changeColor(color) {
 }
 function changeStroke(number) {
   selectedStrokeWeight = number
-  fillBucket = false
+  fillBucket = false //turn off fillBucket when choosing stroke 
 }
 function clearBoard() {
   background(255)

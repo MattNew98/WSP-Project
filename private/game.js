@@ -1,5 +1,4 @@
 let selectedColor = '#000000' // define the user selected color
-console.log(selectedColor)
 let selectedStrokeWeight = 10
 const socket = io.connect(); // connect to socketIO
 let ctx //get context of the canvas
@@ -45,12 +44,12 @@ socket.on('chat', ({ content, userName }) => {
 })
 
 // progress bar
-function move() {
+function move(width) {
   let i = 100;
   if (i == 100) {
     let elem = document.getElementById("myBar");
-    let width = 100;
-    let id = setInterval(frame, 10); // change time here //
+
+    let id = setInterval(frame, 100); // change time here //
     function frame() {
       if (width <= 0) {
         i = 100;
@@ -62,13 +61,20 @@ function move() {
 
         elem.style.width = width + "%";
       }
+      socket.emit('send-bar-status', ({ width }))
     }
+
   }
+
 }
-socket.on('barStart', (message) => {
-  console.log(message);
-  move()
+socket.on('bar-Start', (message) => {
+  move(100)
 })
+
+socket.on('show-bar-status', (width) => {
+  move(width)
+})
+
 
 
 
@@ -137,8 +143,10 @@ function setup() {
       line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
 
     }
-    socket.emit('barStart', "game started")
+
   })
+  // socket.emit('barStart', "game started")
+  // socket.emit('get-bar-status')
 
 
   canvas = document.getElementById("defaultCanvas0")
@@ -164,43 +172,6 @@ function mousePressed() {
 
   }
 
-  // console.log('pressed')
-  // if (mouseX > 120 && mouseX < 160 && mouseY > 590 && mouseY < 630) {
-  //   selectedColor = 'red';
-  // } else if (mouseX > 160 && mouseX < 200 && mouseY > 590 && mouseY < 630) {
-  //   selectedColor = 'green';
-  // } else if (mouseX > 200 && mouseX < 240 && mouseY > 590 && mouseY < 630) {
-  //   selectedColor = 'blue';
-  // } else if (mouseX > 240 && mouseX < 280 && mouseY > 590 && mouseY < 630) {
-  //   selectedColor = 'orange';
-  // } else if (mouseX > 280 && mouseX < 320 && mouseY > 590 && mouseY < 630) {
-  //   selectedColor = 'black';
-  // } else if (mouseX > 0 && mouseX < 80 && mouseY > 605 && mouseY < 640) {
-  //   background(255);
-  //   selectedColor = 'black';
-  //   console.log("selectedColor: " + selectedColor)
-  //   socket.emit("new-color", { selectedColor }) // 傳送selectedColor給server
-
-  //   stroke('black');
-  //   fill(255, 0, 0); // red // 變色按鈕顏色
-  //   rect(120, 590, 40, 40) // 變色按鈕座標和圖案
-  //   stroke('black')
-  //   fill(0, 255, 0); // green
-  //   rect(160, 590, 40, 40)
-  //   stroke('black')
-  //   fill(0, 0, 255); // blue
-  //   rect(200, 590, 40, 40)
-  //   stroke('black')
-  //   fill(255, 204, 0); // yellow
-  //   rect(240, 590, 40, 40)
-  //   stroke('black')
-  //   fill(0); // black
-  //   rect(280, 590, 40, 40)
-  //   textSize(25);
-  //   stroke('white')
-  //   text('Clear', 8, 630)
-
-  // }
 }
 function mouseDragged() {
   // console.log('dragged')
@@ -377,19 +348,6 @@ function draw_quadratic_curve(path, ctx, color, thickness, fill_color) {
   }
 }
 
-
-
-
-
-
-function generate_random_color() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
 
 // adapted from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function color_to_rgba(color) {

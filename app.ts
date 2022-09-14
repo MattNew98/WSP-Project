@@ -7,9 +7,10 @@ import { Server as SocketIO } from 'socket.io'
 import { userRoutes } from './routes/userRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
-import { isloggedin } from './guard'
+// import { isloggedin } from './guard'
 let drawBoardArray: any = []
-
+// let barStatus: number
+let counter = 0
 dotenv.config()
 declare module 'express-session' {
     interface SessionData {
@@ -46,23 +47,34 @@ io.on('connection', function (socket) {
     socket.on("get-board", () => {
         socket.emit("show-board", ({ drawBoardArray })) //send drawBoardArray to js//
     })
-    // socket.on("new-color", ({ selectedColor }) => {
-    //     socket.broadcast.emit("draw-new-color", { selectedColor })
-    //     // console.log("selectedColor: " + selectedColor)
-    // })
+
     console.log(socket.id);
 
     socket.on("chat", ({ content, userName }) => {
         console.log(`${userName}: ${content}`)
         io.emit("chat", ({ content, userName }))
     })
-    socket.on("barStart", ({ width }) => {
-        io.emit("barStart", ({ width }))
+    socket.on("barStart", () => {
+
+        if (counter > 1) {
+            return
+        }
+        counter
+        io.emit("bar-Start")
+
     })
 
-});
+    // socket.on("send-bar-status", ({ width }) => {
+    //     barStatus = width
+    // })
 
+    // socket.on("get-bar-status", () => {
+    //     if (counter < 1) {
+    //         socket.emit("show-bar-Status", ({ barStatus }))
+    //     }
+    // });
 
+})
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -112,8 +124,8 @@ app.post('/users', (req, res) => {
 });
 
 app.use(express.static('public'))
-app.use(isloggedin, express.static('private'))
-
+// app.use(isloggedin, express.static('private'))
+app.use(express.static('private'))
 app.post('/chats', (req, res) => {
     console.log(123123)
 })

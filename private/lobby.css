@@ -49,7 +49,7 @@ body {
 
 
 .room-background {
-    background-color: #75b6e5;
+    background-color: #436985;
     height: 50%;
     padding: 3px;
     display: flex;
@@ -88,9 +88,9 @@ body {
 
 .logout-button {
     background-color: #75b6e5;
-    margin-left: 5px;
-    padding: 5px;
-    border-radius: 10px;
+    margin-left: 8px;
+    padding: 8px;
+    border-radius: 5px;
     text-decoration: none;
 }
 
@@ -98,3 +98,4 @@ body {
     background-color: #ffffff;
     text-decoration: none;
 }
+

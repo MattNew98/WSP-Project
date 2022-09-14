@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ac1eb794af.js" crossorigin="anonymous"></script>
     <title>Login</title>
 
 
@@ -47,18 +48,41 @@
                     password:
                     <input type="password" name="password" placeholder="password" id="login-password" />
                 </label>
-                <input type="submit" value="Login" />
+                <!-- <input type="submit" value="Login" /> -->
+
+
+                <!-- <div class="google-login">
+
+                    <a href="/connect/google" class="btn btn-success">
+                        <i class="fa-brands fa-google"></i>
+                    </a>
+                </div> -->
+                <div class="submit-btn">
+                    Submit
+                    <input type="submit" value="Submit" id="register-btn">
+                </div>
             </form>
 
-            <div class="google-login">
+            <form id="login-form">
+                <label class="username">
+                    username:
+                    <input type="text" name="username" placeholder="username" id="login-username" />
+                </label>
 
-                <a href="/connect/google" class="btn btn-success">Sign in With Google</a>
-            </div>
-            <div class="submit-btn">
-                Submit
-                <input type="submit" value="Register" id="register-btn">
-            </div>
 
+                <label class="password">
+                    password:
+                    <input type="password" name="password" placeholder="password" id="login-password" />
+                </label>
+                <!-- <input type="submit" value="Login" /> -->
+
+
+               
+                <div class="submit-btn">
+                    Submit
+                    <input type="submit" value="Submit" id="register-btn">
+                </div>
+            </form>
         </div>
 
 

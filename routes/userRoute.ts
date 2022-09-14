@@ -13,20 +13,21 @@ userRoutes.get('/', async (req, res) => {
 
 userRoutes.post('/register', async (req, res) => {
 	try {
-		const username = req.body.username
-		const password = req.body.password
+		const registerUsername = req.body.registerUsername
+		const registerPassword = req.body.registerPassword
+		console.log(registerUsername, registerPassword)
 
-		if (!username || !password) {
+		if (!registerUsername || !registerPassword) {
 			res.status(400).json({
 				message: 'Invalid username or password'
 			})
 			return
 		}
 
-		let hashedPassword = await hashPassword(password)
+		let hashedPassword = await hashPassword(registerPassword)
 		await client.query(
 			`insert into users (username, password) values ($1, $2)`,
-			[username, hashedPassword]
+			[registerUsername, hashedPassword]
 		)
 		res.json({ message: 'User created' })
 	} catch (error) {
@@ -84,9 +85,10 @@ userRoutes.post('/login', async (req, res) => {
 	res.redirect('/lobby.html')
 })
 
+
 userRoutes.get('/logout', (req, res) => {
 	console.log(req.session.username + ' is logged out')
-	req.session.destroy(() => {})
+	req.session.destroy(() => { })
 	res.redirect('/login.html')
 })
 
@@ -105,7 +107,7 @@ userRoutes.get('/login/google', loginGoogle);
 
 async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
-
+	console.log(accessToken)
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {

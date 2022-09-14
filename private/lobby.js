@@ -11,13 +11,12 @@ async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
     console.log(result.data.user)
-    username = result.data.user.username
-    if (username) {
-        document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
-        document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
-    } else {
-        document.querySelector('.user-name').innerHTML = `Welcome !!!`
-    }
+    username = result.data.user
+    console.log(username)
+
+    document.querySelector('.user-name').innerHTML = `Welcome ${result.data.user} !!!`
+    document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
+
 
 }
 getProfile()

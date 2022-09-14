@@ -115,9 +115,7 @@ io.on('connection', function (socket) {
 
         }
 
-        // if (index > -1) {
-        //     array.splice(index, 1);
-        // }
+
     })
 })
 

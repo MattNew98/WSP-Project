@@ -11,10 +11,10 @@ async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
     console.log(result.data.user)
-    username = result.data.user
+    username = result.data.user.username
     console.log(username)
 
-    document.querySelector('.user-name').innerHTML = `Welcome ${result.data.user} !!!`
+    document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
     document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
 
 

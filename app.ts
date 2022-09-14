@@ -56,6 +56,10 @@ io.on('connection', function (socket) {
         console.log(`${userName}: ${content}`)
         io.emit("chat", ({ content, userName }))
     })
+    socket.on("barStart", ({ width }) => {
+        io.emit("barStart", ({ width }))
+    })
+
 });
 
 

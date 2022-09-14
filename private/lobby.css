@@ -1,5 +1,6 @@
 body {
-    background-color: #0A5EFB;
+    /* background-color: #0A5EFB; */
+    background-image: url(./img/background.jpeg);
     margin: 0;
     height: 100%
 }
@@ -90,10 +91,10 @@ body {
     margin-left: 5px;
     padding: 5px;
     border-radius: 10px;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .logout-button:hover {
     background-color: #ffffff;
-    text-decoration:none;
+    text-decoration: none;
 }

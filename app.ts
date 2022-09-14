@@ -11,6 +11,7 @@ import dotenv from 'dotenv'
 let drawBoardArray: any = []
 // let barStatus: number
 let counter = 0
+let rooms: [{ room: number, participant: number }]
 dotenv.config()
 declare module 'express-session' {
     interface SessionData {

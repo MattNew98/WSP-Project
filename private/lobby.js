@@ -1,8 +1,14 @@
 const socket = io.connect();
+const createButton = document.querySelector(".create-room-btn")
+const roomContainer = document.querySelector('.room-container')
+let result
+let username
+let socketID
 async function getProfile() {
     const res = await fetch('/user/me')
-    const result = await res.json()
+    result = await res.json()
     console.log(result.data.user)
+    username = result.data.user.name
     if (result.data.user.name) {
         document.querySelector('.user-name').innerHTML = `Welcome ${result.data.user.name} !!!`
         document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
@@ -10,8 +16,10 @@ async function getProfile() {
         document.querySelector('.user-name').innerHTML = `Welcome !!!`
     }
 }
-
 getProfile()
+
+window.onload = () => { socket.emit('fetch-room') }
+
 
 //// Create a new room
 
@@ -36,8 +44,57 @@ getProfile()
 
 //     }
 // }
-const createBtn = document.querySelector(".create-room-btn").addEventListener('click', (e) => {
-    socket.emit('fetch-room-list')
+
+
+function displayRoom(id, roomName, players) {
+
+    roomContainer.innerHTML += `<div class="room">
+    <p>${roomName}</p>
+  <div>
+   <i class="fa-solid fa-person-dress"></i>:${players.length}
+   </div>
+   <button class="join-button value="Join" onclick="joinGame(${id})">
+   <button class="start-button value="Start" onclick="startGame(${id})">
+   </button>`
+}
+
+function joinGame(id) {
+    console.log('test')
+    socket.emit('join-room', ({ id, username }))
+    socketID = id
+
+}
+
+function startGame(id) {
+    socket.emit('start-game', (id))
+}
+
+
+createButton.addEventListener('click', (e) => {
+
+    socket.emit('create-room', ({ username }))
+
+})
+socket.on('launch-game', (id) => {
+
+    location.assign(`http://localhost:8080/game.html?id=${id}`)
+})
+
+
+socket.on('new-room', (data) => {
+    console.log(data.id)
+    socket.emit('fetch-room')
+
+
+})
+
+socket.on('update-room', ({ roomList }) => {
+    roomContainer.innerHTML = ' '
+    for (let room of roomList) {
+
+        displayRoom(room.id, room.roomName, room.players)
+    }
+
 
 })
 // createBtn.addEventListener('click', async (e) => {

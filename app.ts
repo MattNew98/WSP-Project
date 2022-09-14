@@ -10,6 +10,9 @@ import grant from 'grant'
 import dotenv from 'dotenv'
 import { isloggedin } from './guard'
 let drawBoardArray: any = []
+let roomList: any = []
+let id = 0
+// [{ roomName: string, players: [player: string] }]
 // let barStatus: number
 let counter = 0
 dotenv.config()
@@ -65,16 +68,39 @@ io.on('connection', function (socket) {
 
     })
 
-    // socket.on("send-bar-status", ({ width }) => {
-    //     barStatus = width
-    // })
+    socket.on('create-room', ({ username }) => {
 
-    // socket.on("get-bar-status", () => {
-    //     if (counter < 1) {
-    //         socket.emit("show-bar-Status", ({ barStatus }))
-    //     }
-    // });
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username] })
+        io.emit('new-room', { id });
+        socket.join(`${id}`)
+        id++
 
+    })
+
+    socket.on('fetch-room', () => {
+        io.emit('update-room', ({ roomList }));
+    })
+
+    socket.on('join-room', (data) => {
+        const i = data.id
+        roomList[i].players.push(data.username)
+        console.log(roomList[i])
+        io.emit('update-room', ({ roomList }));
+        socket.join(`${i}`)
+        console.log('join room:', i)
+
+    })
+
+    socket.on('start-game', (id) => {
+
+        console.log('start-game', id)
+        io.to(`${id}`).emit('launch-game', (id))
+
+    })
+
+    socket.on('fetch-room-data', (id) => {
+        socket.emit('show-room-data', (roomList[id]))
+    })
 })
 
 app.use(express.json())
@@ -124,6 +150,14 @@ app.post('/users', (req, res) => {
     res.json({ updated: 1 });
 });
 
+
+
+
+
+
+
+
+
 app.use(express.static('public'))
 app.use(isloggedin, express.static('private'))
 // app.use(express.static('private'))
@@ -139,4 +173,4 @@ app.use((req, res) => {
 const PORT = 8080;
 server.listen(PORT, () => {
     console.log(`Listening at http://localhost:${PORT}/`);
-});
+})

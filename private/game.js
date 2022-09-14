@@ -5,7 +5,16 @@ let ctx //get context of the canvas
 let canvas
 let fillBucket = false
 let userName
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const id = urlParams.get('id')
+console.log(id);
 
+socket.emit('fetch-room-data', (id))
+
+socket.on('show-room-data', (roomData) => {
+  console.log(roomData);
+})
 ////// get user icon
 async function getProfile() {
   const res = await fetch('/user/me')

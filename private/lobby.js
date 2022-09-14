@@ -1,20 +1,24 @@
+
 const socket = io.connect();
 const createButton = document.querySelector(".create-room-btn")
 const roomContainer = document.querySelector('.room-container')
+const roomButtons = document.querySelector('.room-buttons')
 let result
 let username
 let socketID
+
 async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
     console.log(result.data.user)
-    username = result.data.user.name
-    if (result.data.user.name) {
-        document.querySelector('.user-name').innerHTML = `Welcome ${result.data.user.name} !!!`
+    username = result.data.user.username
+    if (username) {
+        document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
         document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
     } else {
         document.querySelector('.user-name').innerHTML = `Welcome !!!`
     }
+
 }
 getProfile()
 
@@ -47,16 +51,49 @@ window.onload = () => { socket.emit('fetch-room') }
 
 
 function displayRoom(id, roomName, players) {
+    if (players[0]) {
+        p1 = players[0]
+    } else { p1 = '-' }
+    if (players[1]) {
+        p2 = players[1]
+    } else { p2 = '-' }
+    if (players[2]) {
+        p3 = players[2]
+    } else { p3 = '-' }
+    if (players[3]) {
+        p4 = players[3]
+    } else { p4 = '-' }
 
-    roomContainer.innerHTML += `<div class="room">
-    <p>${roomName}</p>
-  <div>
-   <i class="fa-solid fa-person-dress"></i>:${players.length}
-   </div>
-   <button class="join-button value="Join" onclick="joinGame(${id})">
-   <button class="start-button value="Start" onclick="startGame(${id})">
-   </button>`
+    if (players[0] == username) {
+        roomContainer.innerHTML += `
+    <div class="room">
+    <div>${roomName}<div>
+    <div>
+    <i class="fa-solid fa-person-dress"></i>:${p1}
+    <i class="fa-solid fa-person-dress"></i>:${p2}
+    <i class="fa-solid fa-person-dress"></i>:${p3}
+    <i class="fa-solid fa-person-dress"></i>:${p4}
+    </div>
+    <button class="start-button value="Start" onclick="startGame(${id})">Start</button>
+    </div>
+    `
+    } else {
+        roomContainer.innerHTML += `
+    <div class="room">
+    <div>${roomName}<div>
+    <div>
+    <i class="fa-solid fa-person-dress"></i>:${p1}
+    <i class="fa-solid fa-person-dress"></i>:${p2}
+    <i class="fa-solid fa-person-dress"></i>:${p3}
+    <i class="fa-solid fa-person-dress"></i>:${p4}
+    </div>
+    <button class="join-button value="Join" onclick="joinGame(${id})">Join</button>
+    </div>
+    `
+    }
 }
+
+
 
 function joinGame(id) {
     console.log('test')
@@ -70,11 +107,23 @@ function startGame(id) {
 }
 
 
-createButton.addEventListener('click', (e) => {
+function createRoom() {
 
     socket.emit('create-room', ({ username }))
+    roomButtons.innerHTML = `
+    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
+    `
 
-})
+}
+
+function removeRoom(username) {
+    console.log(username)
+    socket.emit('remove-room', (username))
+    roomButtons.innerHTML = `
+    <input class="create-room-btn" type="button" value="Create Room" onclick="createRoom()"/>
+    `
+}
+
 socket.on('launch-game', (id) => {
 
     location.assign(`http://localhost:8080/game.html?id=${id}`)
@@ -83,6 +132,7 @@ socket.on('launch-game', (id) => {
 
 socket.on('new-room', (data) => {
     console.log(data.id)
+    socketID = data.id
     socket.emit('fetch-room')
 
 

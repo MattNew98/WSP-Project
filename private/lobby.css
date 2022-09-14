@@ -75,7 +75,7 @@ body {
 
 .room {
     background-color: #ffffff;
-    width: 200px;
+    width: 600px;
     height: 200px;
     margin: 10px;
     border-radius: 15px;
@@ -98,4 +98,3 @@ body {
     background-color: #ffffff;
     text-decoration: none;
 }
-

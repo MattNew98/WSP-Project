@@ -100,6 +100,25 @@ io.on('connection', function (socket) {
         socket.join(`${id}`)
         socket.emit('show-room-data', (roomList[id]))
     })
+
+    socket.on('remove-room', (username) => {
+        console.log(username)
+
+        let index = 0
+        for (let room of roomList) {
+
+            if (room.players[0] == username) {
+                roomList.splice(index, 1)
+                io.emit('update-room', ({ roomList }))
+                return
+            } else { index++ }
+
+        }
+
+        // if (index > -1) {
+        //     array.splice(index, 1);
+        // }
+    })
 })
 
 app.use(express.json())

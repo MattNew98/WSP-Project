@@ -81,6 +81,7 @@ userRoutes.post('/login', async (req, res) => {
 	} = dbUser
 	console.log(username + ' is logged in')
 	req.session['user'] = sessionUser
+	req.session.username = username
 	res.redirect('/lobby.html')
 })
 

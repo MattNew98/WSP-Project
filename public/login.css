@@ -1,12 +1,12 @@
 body{
-    background-color: #0A5EFB;
-    display: flex;
+    display: flex; 
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: center;
-    margin-bottom: auto;
-    height: 90vh;
-
+    background-image: url(background.jpeg);
+   
+    height: 100%;
+    margin: 100px;
+    
 
 }
 
@@ -20,23 +20,27 @@ body{
     flex-wrap: wrap;
     align-items: center;
     border-radius: 5%;
+
+
 }
 
 #login-form #login-username,
 #login-form #login-password {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    
     width: 15rem;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
     text-decoration: none;
     padding-left: 1rem;
+    margin: 10px;
+    
 }
-/* #login-username{
-    background-color: #043173;
-} */
-
-
-
 
 
 .login-icon img{

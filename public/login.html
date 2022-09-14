@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ac1eb794af.js" crossorigin="anonymous"></script>
     <title>Login</title>
 
 
@@ -18,15 +19,15 @@
         <div class="login-container">
 
 
+            <div class="header-container">
+                
             <h1 class="login-header">
                 This is Header
             </h1>
-
             <div class="login-icon">
                 <img src="test2.jpeg">
 
             </div>
-
             <div>
                 <div>
                     <label for="file" title="profile picture">Profile Picture</label>
@@ -34,7 +35,7 @@
                 <input type="file" name="image" placeholder="file" id="reg-img" class="reg-info">
             </div>
 
-
+        </div>
 
             <form id="login-form">
                 <label class="username">
@@ -47,18 +48,42 @@
                     password:
                     <input type="password" name="password" placeholder="password" id="login-password" />
                 </label>
-                <input type="submit" value="Login" />
+                <!-- <input type="submit" value="Login" /> -->
+
+
+                <!-- <div class="google-login">
+
+                    <a href="/connect/google" class="btn btn-success">
+                        <i class="fa-brands fa-google"></i>
+                    </a>
+                </div> -->
+                <div class="submit-btn">
+                    Submit
+                    <input type="submit" value="Submit" id="register-btn">
+                </div>
             </form>
 
-            <div class="google-login">
+            <form id="register-form">
+                Register a new account:
+                <label class="username">
+                    username:
+                    <input type="text" name="register-username" placeholder="username"/>
+                </label>
 
-                <a href="/connect/google" class="btn btn-success">Sign in With Google</a>
-            </div>
-            <div class="submit-btn">
-                Submit
-                <input type="submit" value="Register" id="register-btn">
-            </div>
 
+                <label class="password">
+                    password:
+                    <input type="password" name="register-password" placeholder="password"/>
+                </label>
+                <!-- <input type="submit" value="Login" /> -->
+
+
+               
+                <div class="submit-btn">
+                    Submit
+                    <input type="submit" value="Submit" id="register-btn">
+                </div>
+            </form>
         </div>
 
 

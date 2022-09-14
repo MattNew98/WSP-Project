@@ -88,7 +88,7 @@ userRoutes.post('/login', async (req, res) => {
 
 userRoutes.get('/logout', (req, res) => {
 	console.log(req.session.username + ' is logged out')
-	req.session.destroy(() => {})
+	req.session.destroy(() => { })
 	res.redirect('/login.html')
 })
 
@@ -107,7 +107,7 @@ userRoutes.get('/login/google', loginGoogle);
 
 async function loginGoogle(req: express.Request, res: express.Response) {
 	const accessToken = req.session?.['grant'].response.access_token;
-
+	console.log(accessToken)
 	const fetchRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
 		method: "get",
 		headers: {

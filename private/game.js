@@ -20,9 +20,9 @@ async function getProfile() {
   const res = await fetch('/user/me')
   const result = await res.json()
   // console.log(result.data.user)
-  userName = result.data.user.name
-  if (result.data.user.name) {
-    document.querySelector('.user-name').innerHTML = `${result.data.user.name}`
+  username = result.data.user.username
+  if (username) {
+    document.querySelector('.user-name').innerHTML = `${username}`
     document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
   } else {
     document.querySelector('.user-name').innerHTML = `Welcome !!!`
@@ -38,14 +38,14 @@ async function createChats() {
     e.preventDefault()
     const form = e.target
     const content = form.chat.value
-    socket.emit('chat', ({ content, userName }))
+    socket.emit('chat', ({ content, username, socketID }))
     form.reset()
   })
 }
 createChats()
-socket.on('chat', ({ content, userName }) => {
+socket.on('chat', ({ content, username }) => {
   const html = document.querySelector('.chatroom-container')
-  html.innerHTML += `<div>${userName}: ${content}</div>`
+  html.innerHTML += `<div>${username}: ${content}</div>`
   console.log(`${userName}: ${content}`)
   // always scroll to bottom
   let messageBody = document.querySelector('#scroll');
@@ -122,7 +122,6 @@ function fillBucketOn() {
 
 socket.on("clear", () => { //clear drawing board as per sever
   background(255)
-  console.log('it works')
 })
 
 socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor }) => {

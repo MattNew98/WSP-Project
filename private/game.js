@@ -44,6 +44,32 @@ socket.on('chat', ({ content, userName }) => {
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 })
 
+// progress bar
+function move() {
+  let i = 100;
+  if (i == 100) {
+    let elem = document.getElementById("myBar");
+    let width = 100;
+    let id = setInterval(frame, 10); // change time here //
+    function frame() {
+      if (width <= 0) {
+        i = 100;
+        width = 100;
+      } else {
+        width--;
+        /////
+        // socket.emit('bar', ({ width }))
+
+        elem.style.width = width + "%";
+      }
+    }
+  }
+}
+socket.on('barStart', (message) => {
+  console.log(message);
+  move()
+})
+
 
 
 function changeColor(color) {
@@ -98,7 +124,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   line(mouseX, mouseY, pmouseX, pmouseY)
 })
 function setup() {
-  const myCanvas = createCanvas(1100, 795); // 遊戲版 Width x Height
+  const myCanvas = createCanvas(1100, 785); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()
@@ -111,7 +137,9 @@ function setup() {
       line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
 
     }
+    socket.emit('barStart', "game started")
   })
+
 
   canvas = document.getElementById("defaultCanvas0")
   ctx = canvas.getContext("2d")

@@ -8,11 +8,10 @@ import { userRoutes } from './routes/userRoute'
 import { lobbyRoutes } from './routes/lobbyRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
-// import { isloggedin } from './guard'
+import { isloggedin } from './guard'
 let drawBoardArray: any = []
 // let barStatus: number
 let counter = 0
-let rooms: [{ room: number, participant: number }]
 dotenv.config()
 declare module 'express-session' {
     interface SessionData {
@@ -27,7 +26,7 @@ declare module 'express-session' {
 const app = express()
 
 const server = new http.Server(app);
-const io = new SocketIO(server);
+export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
     socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) => {
@@ -126,8 +125,8 @@ app.post('/users', (req, res) => {
 });
 
 app.use(express.static('public'))
-// app.use(isloggedin, express.static('private'))
-app.use(express.static('private'))
+app.use(isloggedin, express.static('private'))
+// app.use(express.static('private'))
 app.post('/chats', (req, res) => {
     console.log(123123)
 })

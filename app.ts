@@ -102,7 +102,7 @@ io.on('connection', function (socket) {
     })
 
     socket.on('remove-room', (username) => {
-        console.log(username)
+
 
         let index = 0
         for (let room of roomList) {

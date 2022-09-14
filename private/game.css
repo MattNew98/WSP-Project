@@ -1,5 +1,5 @@
 body {
-    background-color: #0A5EFB;
+    background-image: url(./img/background.jpeg);
     margin: 0;
     height: 100%
 }
@@ -216,4 +216,15 @@ canvas {
     overflow-y: scroll;
     scroll-behavior: smooth;
     height: 90%;
+}
+
+#myProgress {
+    width: 100%;
+    background-color: grey;
+}
+
+#myBar {
+    width: 100%;
+    height: 10px;
+    background-color: green;
 }

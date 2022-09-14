@@ -39,7 +39,11 @@ socket.on('chat', ({ content, userName }) => {
   const html = document.querySelector('.chatroom-container')
   html.innerHTML += `<div>${userName}: ${content}</div>`
   console.log(`${userName}: ${content}`)
+  // always scroll to bottom
+  let messageBody = document.querySelector('#scroll');
+  messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 })
+
 
 
 function changeColor(color) {

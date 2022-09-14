@@ -29,7 +29,9 @@ userRoutes.post('/register', async (req, res) => {
 			`insert into users (username, password) values ($1, $2)`,
 			[registerUsername, hashedPassword]
 		)
-		res.json({ message: 'User created' })
+		console.log(registerUsername + ' is logged in')
+		req.session['user'] = registerUsername
+		res.redirect('/lobby.html')
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({ message: 'Internal server error' })

@@ -5,6 +5,7 @@ import { Client } from 'pg'
 import http from 'http'
 import { Server as SocketIO } from 'socket.io'
 import { userRoutes } from './routes/userRoute'
+import { lobbyRoutes } from './routes/lobbyRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
 import { isloggedin } from './guard'
@@ -97,7 +98,7 @@ const grantExpress = grant.express({
 app.use(grantExpress as express.RequestHandler);
 
 app.use('/user', userRoutes)
-
+app.use('/lobby', lobbyRoutes)
 
 
 

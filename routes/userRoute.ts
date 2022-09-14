@@ -13,20 +13,21 @@ userRoutes.get('/', async (req, res) => {
 
 userRoutes.post('/register', async (req, res) => {
 	try {
-		const username = req.body.username
-		const password = req.body.password
+		const registerUsername = req.body.registerUsername
+		const registerPassword = req.body.registerPassword
+		console.log(registerUsername, registerPassword)
 
-		if (!username || !password) {
+		if (!registerUsername || !registerPassword) {
 			res.status(400).json({
 				message: 'Invalid username or password'
 			})
 			return
 		}
 
-		let hashedPassword = await hashPassword(password)
+		let hashedPassword = await hashPassword(registerPassword)
 		await client.query(
 			`insert into users (username, password) values ($1, $2)`,
-			[username, hashedPassword]
+			[registerUsername, hashedPassword]
 		)
 		res.json({ message: 'User created' })
 	} catch (error) {
@@ -83,6 +84,7 @@ userRoutes.post('/login', async (req, res) => {
 	req.session['user'] = sessionUser
 	res.redirect('/lobby.html')
 })
+
 
 userRoutes.get('/logout', (req, res) => {
 	console.log(req.session.username + ' is logged out')

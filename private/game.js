@@ -5,12 +5,12 @@ let ctx //get context of the canvas
 let canvas
 let fillBucket = false
 let userName
+let socketID
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
-console.log(id);
-
-socket.emit('fetch-room-data', (id))
+socketID = id
+socket.emit('fetch-room-data', (socketID))
 
 socket.on('show-room-data', (roomData) => {
   console.log(roomData);
@@ -19,7 +19,7 @@ socket.on('show-room-data', (roomData) => {
 async function getProfile() {
   const res = await fetch('/user/me')
   const result = await res.json()
-  console.log(result.data.user)
+  // console.log(result.data.user)
   userName = result.data.user.name
   if (result.data.user.name) {
     document.querySelector('.user-name').innerHTML = `${result.data.user.name}`
@@ -113,15 +113,16 @@ function changeStroke(number) {
 }
 function clearBoard() {
   background(255)
-  socket.emit("clear-board") //tell server to clear drawing board
+  socket.emit("clear-board", { socketID }) //tell server to clear drawing board
 }
 
 function fillBucketOn() {
   fillBucket = true
 }
 
-socket.on("clear", data => { //clear drawing board as per sever
+socket.on("clear", () => { //clear drawing board as per sever
   background(255)
+  console.log('it works')
 })
 
 socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor }) => {
@@ -143,9 +144,9 @@ function setup() {
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()
-  socket.emit("get-board")
-  socket.on("show-board", (drawBoardObj) => { //display drawing from before joining the game to the board
-    let boardArray = drawBoardObj.drawBoardArray;
+  socket.emit("get-board", (socketID))
+  socket.on("show-board", (drawBoardArray) => { //display drawing from before joining the game to the board
+    let boardArray = drawBoardArray;
     for (let emit of boardArray) {
       stroke(emit.selectedColor)
       strokeWeight(selectedStrokeWeight)
@@ -177,7 +178,7 @@ function mousePressed() {
 
   } else {
     flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
-    socket.emit("new-fill", { mouseX, mouseY, selectedColor })
+    socket.emit("new-fill", { mouseX, mouseY, selectedColor, socketID })
 
   }
 
@@ -189,7 +190,7 @@ function mouseDragged() {
   stroke(selectedColor)
   strokeWeight(selectedStrokeWeight)
   line(mouseX, mouseY, pmouseX, pmouseY)
-  socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) // 傳送座標給server
+  socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID }) // 傳送座標給server
   pmouseX = mouseX //update pmouseX Y manually
   pmouseY = mouseY
 }

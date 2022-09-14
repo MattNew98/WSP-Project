@@ -9,7 +9,7 @@ import { lobbyRoutes } from './routes/lobbyRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
 import { isloggedin } from './guard'
-let drawBoardArray: any = []
+import console from 'console'
 let roomList: any = []
 let id = 0
 // [{ roomName: string, players: [player: string] }]
@@ -32,27 +32,29 @@ const server = new http.Server(app);
 export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
-    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) => {
-        drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
-        socket.broadcast.emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight })
+    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID }) => {
+        roomList[socketID].drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
+        io.to(`${socketID}`).emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight })
         // console.log(emits)
 
 
     })
-    socket.on('new-fill', ({ mouseX, mouseY, selectedColor }) => {
-        socket.broadcast.emit('draw-new-fill', { mouseX, mouseY, selectedColor })
+    socket.on('new-fill', ({ mouseX, mouseY, selectedColor, socketID }) => {
+        io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor })
     })
-    socket.on("clear-board", () => {
-        socket.broadcast.emit("clear", (255)) // ask sockets to clear the board
-        drawBoardArray = []
+    socket.on("clear-board", ({ socketID }) => {
+        console.log(socketID)
+        io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+
+        roomList[socketID].drawBoardArray = []
     }
     )
 
-    socket.on("get-board", () => {
-        socket.emit("show-board", ({ drawBoardArray })) //send drawBoardArray to js//
+    socket.on("get-board", (socketID) => {
+        io.to(`${socketID}`).emit("show-board", (roomList[socketID].drawBoardArray)) //send drawBoardArray to js//
     })
 
-    console.log(socket.id);
+
 
     socket.on("chat", ({ content, userName }) => {
         console.log(`${userName}: ${content}`)
@@ -70,7 +72,7 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username] })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [] })
         io.emit('new-room', { id });
         socket.join(`${id}`)
         id++
@@ -84,21 +86,18 @@ io.on('connection', function (socket) {
     socket.on('join-room', (data) => {
         const i = data.id
         roomList[i].players.push(data.username)
-        console.log(roomList[i])
         io.emit('update-room', ({ roomList }));
         socket.join(`${i}`)
-        console.log('join room:', i)
 
     })
 
     socket.on('start-game', (id) => {
-
-        console.log('start-game', id)
         io.to(`${id}`).emit('launch-game', (id))
 
     })
 
     socket.on('fetch-room-data', (id) => {
+        socket.join(`${id}`)
         socket.emit('show-room-data', (roomList[id]))
     })
 })
@@ -125,6 +124,7 @@ app.use(sessionMiddleware)
 
 const grantExpress = grant.express({
     "defaults": {
+        // "origin": "http://192.168.59.242:8080",
         "origin": "http://localhost:8080",
         "transport": "session",
         "state": true,

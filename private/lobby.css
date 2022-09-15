@@ -37,7 +37,7 @@ body {
 .user-icon img {
     width: 80px;
     height: 80px;
-    border-radius: 50%;
+    border-radius: 25%;
     align-items: center;
 }
 

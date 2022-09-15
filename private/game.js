@@ -1,5 +1,5 @@
-
-const SERVER_IP = "192.168.59.61:8080"
+// CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
+let SERVER_IP = "localhost:8080"
 let selectedColor = '#000000' // default selected color
 let selectedStrokeWeight = 10 //default selected stroke weight
 const socket = io.connect(SERVER_IP); // connect to socketIO

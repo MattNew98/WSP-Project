@@ -21,6 +21,7 @@ declare module 'express-session' {
         username?: string
         isloggedin?: boolean
         user?: any
+        image?: any
     }
 }
 

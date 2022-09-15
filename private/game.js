@@ -7,6 +7,8 @@ let fillBucket = false //toggle fillBucket on/off
 let username
 let socketID
 let userIcon
+let playerScore = []
+
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -16,8 +18,13 @@ socketID = id
 socket.emit('fetch-room-data', (socketID))
 
 socket.on('show-room-data', (roomData) => {
-  console.log(roomData);
+  players = roomData.players
+  for (let player of players) {
+    playerScore.push({ player: player, score: 0 })
+  }
+  createScoreboard()
 })
+
 ////// get user data
 async function getProfile() {
   const res = await fetch('/user/me')
@@ -386,3 +393,18 @@ function color_to_rgba(color) {
   }
 }
 
+// create Scoreboard element
+function createScoreboard() {
+  console.log(playerScore)
+  html = ''
+  for (let i = 0; i < playerScore.length; i++) {
+    console.log(playerScore[i])
+    html += `<div class="player-info">${playerScore[i].player}: ${playerScore[i].score}</div>`
+  }
+  
+  
+  
+  
+  
+  document.querySelector("#player-info-container").innerHTML = html
+}

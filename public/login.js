@@ -24,6 +24,9 @@ async function login() {
             window.location = 'lobby.html'
             console.log("Login successful")
         }
+        if (res.status == 400) {
+            alert("Invalid username or password! Please try again.")
+        }
     })
     
 }
@@ -39,20 +42,23 @@ async function register() {
         const form  = e.target
         const registerUsername = form.registerUsername.value
         const registerPassword = form.registerPassword.value
-        console.log(registerUsername, registerPassword)
+        const registerImage = form.userImage.files[0]
+
+        const formData = new FormData()
+        formData.append('registerUsername', registerUsername)
+        formData.append('registerPassword', registerPassword)
+        formData.append('image', registerImage)
+
+ 
         const res = await fetch('/user/register', {
             method: "POST",
-            body: JSON.stringify({
-                registerUsername,
-                registerPassword
-            }),
-            headers: {
-                'Content-Type': 'application/json',   
-            }
+            body: formData
         })
-        if (res.ok) {
-            window.location = 'lobby.html'
-            console.log("Login successful")
+        if (res.status == 400) {
+            alert("Invalid username/password or username already registered")
+        }
+        if (res.status == 200) {
+            alert("Registered successful")
         }
     })
     

@@ -3,6 +3,7 @@ import { client } from '../app'
 import { checkPassword, hashPassword } from '../hash'
 import fetch from 'cross-fetch'
 import crypto from 'crypto'
+import { formParse } from '../utils/upload'
 
 export const userRoutes = express.Router()
 
@@ -13,25 +14,41 @@ userRoutes.get('/', async (req, res) => {
 
 userRoutes.post('/register', async (req, res) => {
 	try {
-		const registerUsername = req.body.registerUsername
-		const registerPassword = req.body.registerPassword
-		console.log(registerUsername, registerPassword)
+		const data = await formParse(req)
+		const newUsername = data.fields.registerUsername
+		const newPassword = data.fields.registerPassword
+		const newImage = data.filename
+		console.log(newUsername, newPassword, newImage)
 
-		if (!registerUsername || !registerPassword) {
+
+		if (!newUsername || !newPassword) {
 			res.status(400).json({
 				message: 'Invalid username or password'
 			})
 			return
 		}
-
-		let hashedPassword = await hashPassword(registerPassword)
-		await client.query(
-			`insert into users (username, password) values ($1, $2)`,
-			[registerUsername, hashedPassword]
+		let userResult = await client.query(
+			`select * from users where username = $1`,
+			[newUsername]
 		)
-		console.log(registerUsername + ' is logged in')
-		req.session['user'] = registerUsername
-		res.redirect('/lobby.html')
+		let dbUser = userResult.rows[0]
+		if (dbUser) {
+			res.status(400).json({
+				message: 'user already exists'
+			})
+			return
+		}
+
+		let hashedPassword = await hashPassword(newPassword)
+		await client.query(
+			`insert into users (username, password, image) values ($1, $2, $3)`,
+			[newUsername, hashedPassword, newImage]
+		)
+		console.log(newUsername + ' is registered')
+		req.session['user'] = newUsername
+		res.status(200).json({
+			message: 'registered successfully'
+		})
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({ message: 'Internal server error' })
@@ -41,7 +58,7 @@ userRoutes.post('/register', async (req, res) => {
 userRoutes.post('/login', async (req, res) => {
 	const username = req.body.username
 	const password = req.body.password
-	console.log(req.body)
+	// console.log(req.body)
 
 	if (!username || !password) {
 		res.status(400).json({

@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [] })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false })
         io.emit('new-room', { id });
         socket.join(`${id}`)
         id++
@@ -93,8 +93,12 @@ io.on('connection', function (socket) {
     })
 
     socket.on('start-game', (id) => {
-        io.to(`${id}`).emit('launch-game', (id))
 
+        console.log(id)
+        io.to(`${id}`).emit('launch-game', (id))
+        roomList[id].start = true
+        console.log(roomList[id])
+        io.emit('update-room', ({ roomList }));
     })
 
     socket.on('fetch-room-data', (id) => {

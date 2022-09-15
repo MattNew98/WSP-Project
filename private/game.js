@@ -118,22 +118,30 @@ function move(width) {
 //SOCKETS
 //接收server送來的command
 // controls:
-socket.on("clear", () => { //clear drawing board as per sever
+socket.on("clear", (emitter) => { //clear drawing board as per sever
+  if (emitter === username) {
+    return;
+  }
   background(255)
+  console.log('cleared')
 })
 
-socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor }) => {
+socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor, emitter }) => {
+  if (emitter === username) {
+    return;
+  }
   flood_fill(mouseX, mouseY, color_to_rgba(selectedColor))
+  console.log(`${emitter} is drawing`)
 })
 
-socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) => {
-  // noStroke()
-  // fill(selectedColor)
-  // ellipse(mouseX, mouseY, 5)
-  // console.log('cp01', selectedStrokeWeight)
+socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter }) => {
+  if (emitter === username) {
+    return;
+  }
   strokeWeight(selectedStrokeWeight)
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
+  console.log(`${emitter} is drawing`)
 })
 
 // UI:
@@ -165,8 +173,9 @@ function changeStroke(number) {
   fillBucket = false //turn off fillBucket when choosing stroke 
 }
 function clearBoard() {
+  let emitter = username
   background(255)
-  socket.emit("clear-board", { socketID }) //tell server to clear drawing board
+  socket.emit("clear-board", { socketID, emitter }) //tell server to clear drawing board
 }
 function fillBucketOn() {
   fillBucket = true
@@ -185,7 +194,8 @@ function mousePressed() {
 
   } else { //fillBucket mode
     flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
-    socket.emit("new-fill", { mouseX, mouseY, selectedColor, socketID })
+    let emitter = username
+    socket.emit("new-fill", { mouseX, mouseY, selectedColor, socketID, emitter })
   }
 
 }
@@ -194,7 +204,8 @@ function mouseDragged() {
   stroke(selectedColor)
   strokeWeight(selectedStrokeWeight)
   line(mouseX, mouseY, pmouseX, pmouseY)
-  socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID }) // 傳送座標給server
+  let emitter = username
+  socket.emit("new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID, emitter }) // 傳送座標給server
   pmouseX = mouseX //update pmouseX Y manually
   pmouseY = mouseY
 }
@@ -258,7 +269,7 @@ function flood_fill(original_x, original_y, color) {
         orientation = 3;
         //console.log( "->" ) ;
       } else {
-        //console.log( "we shouldn't be here" ) ;
+        console.log("we shouldn't be here");
       }
     }
 

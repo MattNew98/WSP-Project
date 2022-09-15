@@ -35,19 +35,19 @@ const server = new http.Server(app);
 export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
-    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID }) => {
+    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID, emitter }) => {
         roomList[socketID].drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
-        io.to(`${socketID}`).emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight })
+        io.to(`${socketID}`).emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter })
         // console.log(emits)
 
 
     })
-    socket.on('new-fill', ({ mouseX, mouseY, selectedColor, socketID }) => {
-        io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor })
+    socket.on('new-fill', ({ mouseX, mouseY, selectedColor, socketID, emitter }) => {
+        io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor, emitter })
     })
-    socket.on("clear-board", ({ socketID }) => {
+    socket.on("clear-board", ({ socketID, emitter }) => {
         console.log(socketID)
-        io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+        io.to(`${socketID}`).emit("clear", (emitter)) // ask sockets to clear the board
 
         roomList[socketID].drawBoardArray = []
     }

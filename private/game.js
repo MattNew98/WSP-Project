@@ -1,6 +1,8 @@
+
+const SERVER_IP = "192.168.59.61:8080"
 let selectedColor = '#000000' // default selected color
 let selectedStrokeWeight = 10 //default selected stroke weight
-const socket = io.connect(); // connect to socketIO
+const socket = io.connect(SERVER_IP); // connect to socketIO
 let ctx //get context of the canvas
 let canvas
 let fillBucket = false //toggle fillBucket on/off
@@ -70,13 +72,14 @@ async function createChats() {
     const content = form.chat.value
     socket.emit('chat', ({ content, username, socketID }))
     form.reset()
+    console.log(socketID)
   })
 }
 createChats()
 socket.on('chat', ({ content, username }) => {
   const html = document.querySelector('.chatroom-container')
   html.innerHTML += `<div>${username}: ${content}</div>`
-  console.log(`${userName}: ${content}`)
+  console.log(`${username}: ${content}`)
   // always scroll to bottom
   let messageBody = document.querySelector('#scroll');
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;

@@ -5,6 +5,6 @@ export const isloggedin = (req: express.Request, res: express.Response, next: ex
         next()
         return
     }
-    res.status(401).send("Please login first")
+    res.status(401).redirect("/login.html")
     return
 }

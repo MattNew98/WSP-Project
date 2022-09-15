@@ -238,3 +238,8 @@ canvas {
     justify-content: center;
     font-size: 18px;
 }
+#scrollScore {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 90%;
+}

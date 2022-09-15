@@ -404,10 +404,5 @@ function createScoreboard() {
     console.log(playerScore[i])
     html += `<div class="player-info">${playerScore[i].player}: ${playerScore[i].score}</div>`
   }
-  
-  
-  
-  
-  
-  document.querySelector("#player-info-container").innerHTML = html
+  document.querySelector("#scrollScore").innerHTML = html
 }

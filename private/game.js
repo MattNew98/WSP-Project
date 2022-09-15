@@ -55,7 +55,7 @@ function setup() {
     let boardArray = drawBoardArray;
     for (let emit of boardArray) {
       stroke(emit.selectedColor)
-      strokeWeight(selectedStrokeWeight)
+      strokeWeight(emit.selectedStrokeWeight)
       line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
     }
   })
@@ -228,8 +228,8 @@ function flood_fill(original_x, original_y, color) {
 
   x = original_x;
   y = original_y;
-  boundary_pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  console.log(canvas.width, canvas.height)
+  boundary_pixels = ctx.getImageData(0, 0, 1100, 785);
+  // console.log(canvas.width, canvas.height)
   // first we go up until we find a boundary
   linear_cords = (y * canvas.width + x) * 4;
   var done = false;

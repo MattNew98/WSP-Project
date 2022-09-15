@@ -228,7 +228,7 @@ function flood_fill(original_x, original_y, color) {
 
   x = original_x;
   y = original_y;
-  boundary_pixels = ctx.getImageData(0, 0, 1100, 785);
+  boundary_pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
   // console.log(canvas.width, canvas.height)
   // first we go up until we find a boundary
   linear_cords = (y * canvas.width + x) * 4;

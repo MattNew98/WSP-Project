@@ -48,29 +48,15 @@ window.onload = () => { socket.emit('fetch-room') }
 // }
 
 
-function displayRoom(id, roomName, players, start) {
-    if (players[0]) {
-        p1 = players[0]
-    } else { p1 = '-' }
-    if (players[1]) {
-        p2 = players[1]
-    } else { p2 = '-' }
-    if (players[2]) {
-        p3 = players[2]
-    } else { p3 = '-' }
-    if (players[3]) {
-        p4 = players[3]
-    } else { p4 = '-' }
+async function displayRoom(id, roomName, players, start) {
+
 
     if (players[0] == username) {
-        roomContainer.innerHTML += `
-    <div class="room${id}" >
+        roomContainer.innerHTML += await `
+    <div class="room${id}">
     <div>${roomName}</div>
-    <div>
-    <i class="fa-solid fa-person-dress"></i>:${p1}
-    <i class="fa-solid fa-person-dress"></i>:${p2}
-    <i class="fa-solid fa-person-dress"></i>:${p3}
-    <i class="fa-solid fa-person-dress"></i>:${p4}
+    <div class="room-${id}-players">
+
     </div>
     <div class="room-${id}-buttons">
     <button class="start-button" value="Start" onclick="startGame(${id})">Start</button>
@@ -79,27 +65,22 @@ function displayRoom(id, roomName, players, start) {
     `
     } else if (start === true) {
 
-        roomContainer.innerHTML += `
-    <div class="room${id}" >
+
+        roomContainer.innerHTML += await `
+    <div class="room${id}">
     <div>${roomName}</div>
-    <div>
-    <i class="fa-solid fa-person-dress"></i>:${p1}
-    <i class="fa-solid fa-person-dress"></i>:${p2}
-    <i class="fa-solid fa-person-dress"></i>:${p3}
-    <i class="fa-solid fa-person-dress"></i>:${p4}
+    <div class="room-${id}-players">
+
     </div>
     <div>Game In Progress</div>
     </div>
     `
     } else if (players[1] == username || players[2] == username || players[3] == username) {
-        roomContainer.innerHTML += `
-        <div class="room${id}" >
+        roomContainer.innerHTML += await `
+        <div class="room${id}">
         <div>${roomName}</div>
-        <div> 
-        <i class="fa-solid fa-person-dress"></i>:${p1}
-        <i class="fa-solid fa-person-dress"></i>:${p2}
-        <i class="fa-solid fa-person-dress"></i>:${p3}
-        <i class="fa-solid fa-person-dress"></i>:${p4}
+        <div class="room-${id}-players">
+    
         </div>
         <div class="room-${id}-buttons">
         <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
@@ -108,14 +89,11 @@ function displayRoom(id, roomName, players, start) {
         `
     }
     else {
-        roomContainer.innerHTML += `
+        roomContainer.innerHTML += await `
     <div class="room${id}" >
     <div>${roomName}</div>
-    <div> 
-    <i class="fa-solid fa-person-dress"></i>:${p1}
-    <i class="fa-solid fa-person-dress"></i>:${p2}
-    <i class="fa-solid fa-person-dress"></i>:${p3}
-    <i class="fa-solid fa-person-dress"></i>:${p4}
+    <div class="room-${id}-players">
+ 
     </div>
     <div class="room-${id}-buttons">
     <button class="join-button" value="Join" onclick="joinGame(${id})">Join</button>
@@ -123,6 +101,16 @@ function displayRoom(id, roomName, players, start) {
     </div>
     `
     }
+
+    let p = 1
+    for (let player of players) {
+        let playerContainer = await document.querySelector(`.room-${id}-players`)
+        playerContainer.innerHTML += `
+        <div>P${p}:${player}</div>
+        `
+        p++
+    }
+
 }
 
 

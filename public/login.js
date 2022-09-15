@@ -39,6 +39,7 @@ async function register() {
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault()
+        console.log("test")
         const form  = e.target
         const registerUsername = form.registerUsername.value
         const registerPassword = form.registerPassword.value

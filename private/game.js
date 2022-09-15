@@ -1,26 +1,27 @@
-let selectedColor = '#000000' // define the user selected color
-let selectedStrokeWeight = 10
+let selectedColor = '#000000' // default selected color
+let selectedStrokeWeight = 10 //default selected stroke weight
 const socket = io.connect(); // connect to socketIO
 let ctx //get context of the canvas
 let canvas
-let fillBucket = false
+let fillBucket = false //toggle fillBucket on/off
 let username
 let socketID
 let userIcon
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 socketID = id
+
 socket.emit('fetch-room-data', (socketID))
 
 socket.on('show-room-data', (roomData) => {
   console.log(roomData);
 })
-////// get user icon
+////// get user data
 async function getProfile() {
   const res = await fetch('/user/me')
   const result = await res.json()
-  // console.log(result.data.user)
   username = result[0].username
   userIcon = result[0].image
   if (username) {
@@ -32,13 +33,16 @@ async function getProfile() {
 }
 getProfile()
 
+// setup canvas
 function setup() {
   const myCanvas = createCanvas(1100, 785); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()
+
+  //ask server for drawing board and display drawing for players who refresh their page or join the game after it starts
   socket.emit("get-board", (socketID))
-  socket.on("show-board", (drawBoardArray) => { //display drawing from before joining the game to the board
+  socket.on("show-board", (drawBoardArray) => {
     let boardArray = drawBoardArray;
     for (let emit of boardArray) {
       stroke(emit.selectedColor)
@@ -46,11 +50,11 @@ function setup() {
       line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
     }
   })
-  canvas = document.getElementById("defaultCanvas0")
-  ctx = canvas.getContext("2d")
+  canvas = document.getElementById("defaultCanvas0")//get canvas element
+  ctx = canvas.getContext("2d")//get canvas context
 }
 
-////// comment box
+////// create comment box
 async function createChats() {
   const chatsFormElement = document.querySelector('#message-form')
   chatsFormElement.addEventListener('submit', async (e) => {
@@ -95,50 +99,15 @@ function move(width) {
   }
 
 }
-socket.on('bar-Start', (message) => {
-  move(100)
-})
-
-socket.on('show-bar-status', (width) => {
-  move(width)
-})
 
 
 
 
-function changeColor(color) {
-  if (color === 'red') {
-    selectedColor = '#ff0000';
 
-  } else if (color === 'green') {
-    selectedColor = '#008000';
 
-  } else if (color === 'blue') {
-    selectedColor = '#0000ff';
-
-  } else if (color === 'yellow') {
-    selectedColor = '#ffff00'
-  } else if (color === 'black') {
-    selectedColor = '#000000'
-  } else if (color === 'white') {
-    selectedColor = '#ffffff'
-  }
-  // console.log("selectedColor: " + selectedColor)
-  // socket.emit("new-color", { selectedColor }) // 傳送selectedColor給server
-}
-function changeStroke(number) {
-  selectedStrokeWeight = number
-  fillBucket = false //turn off fillBucket when choosing stroke 
-}
-function clearBoard() {
-  background(255)
-  socket.emit("clear-board", { socketID }) //tell server to clear drawing board
-}
-
-function fillBucketOn() {
-  fillBucket = true
-}
-
+//SOCKETS
+//接收server送來的command
+// controls:
 socket.on("clear", () => { //clear drawing board as per sever
   background(255)
 })
@@ -147,7 +116,6 @@ socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor }) => {
   flood_fill(mouseX, mouseY, color_to_rgba(selectedColor))
 })
 
-//接收server送來的座標
 socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight }) => {
   // noStroke()
   // fill(selectedColor)
@@ -158,8 +126,41 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   line(mouseX, mouseY, pmouseX, pmouseY)
 })
 
+// UI:
+socket.on('bar-Start', (message) => {
+  move(100)
+})
+socket.on('show-bar-status', (width) => {
+  move(width)
+})
 
-
+// GAME CONTROLS
+function changeColor(color) {
+  if (color === 'red') {
+    selectedColor = '#ff0000';
+  } else if (color === 'green') {
+    selectedColor = '#008000';
+  } else if (color === 'blue') {
+    selectedColor = '#0000ff';
+  } else if (color === 'yellow') {
+    selectedColor = '#ffff00'
+  } else if (color === 'black') {
+    selectedColor = '#000000'
+  } else if (color === 'white') {
+    selectedColor = '#ffffff'
+  }
+}
+function changeStroke(number) {
+  selectedStrokeWeight = number
+  fillBucket = false //turn off fillBucket when choosing stroke 
+}
+function clearBoard() {
+  background(255)
+  socket.emit("clear-board", { socketID }) //tell server to clear drawing board
+}
+function fillBucketOn() {
+  fillBucket = true
+}
 function mousePressed() {
   //update pmouse x and y for every new mouse press
   pmouseX = mouseX
@@ -169,20 +170,17 @@ function mousePressed() {
   if (mouseX < 0 || mouseX > canvas.width || mouseY < 0 || mouseY > canvas.height) {
     return
   }
-  if (fillBucket === false) {
-    mouseDragged()
+  if (fillBucket === false) {//check if fillBucket is pressed
+    mouseDragged()//if not, standard drawing mode
 
-  } else {
+  } else { //fillBucket mode
     flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
     socket.emit("new-fill", { mouseX, mouseY, selectedColor, socketID })
-
   }
 
 }
 function mouseDragged() {
-  // console.log('dragged')
-  if (fillBucket == true) { return }
-
+  if (fillBucket == true) { return }//prevent drawing mode when fillBucket is on
   stroke(selectedColor)
   strokeWeight(selectedStrokeWeight)
   line(mouseX, mouseY, pmouseX, pmouseY)
@@ -190,15 +188,14 @@ function mouseDragged() {
   pmouseX = mouseX //update pmouseX Y manually
   pmouseY = mouseY
 }
-
-
-
-function keyPressed() {
+function keyPressed() {//save canvas as png
   if (key == '`') {
     saveCanvas('myart.png');
   }
 }
 
+
+// Function for fillBucket
 function flood_fill(original_x, original_y, color) {
   original_color = ctx.getImageData(original_x, original_y, 1, 1).data;
   original_color = {
@@ -354,8 +351,6 @@ function draw_quadratic_curve(path, ctx, color, thickness, fill_color) {
   }
 }
 
-
-// adapted from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function color_to_rgba(color) {
   if (color[0] == "#") { // hex notation
     color = color.replace("#", "");

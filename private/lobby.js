@@ -10,12 +10,13 @@ let socketID
 async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
-    console.log(result.data.user)
-    username = result.data.user.username
+    userIcon = result[0].image
+    username = result[0].username
+    console.log(userIcon)
     console.log(username)
 
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
-    document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
+    document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}">`
 
 
 }

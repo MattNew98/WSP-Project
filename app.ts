@@ -175,6 +175,7 @@ app.post('/users', (req, res) => {
 
 
 
+app.use(express.static('uploads'))
 
 app.use(express.static('public'))
 app.use(isloggedin, express.static('private'))
@@ -186,7 +187,6 @@ app.post('/chats', (req, res) => {
 app.use((req, res) => {
     res.redirect('/404.html')
 })
-
 
 const PORT = 8080;
 server.listen(PORT, () => {

@@ -112,13 +112,19 @@ userRoutes.get('/logout', (req, res) => {
 	res.redirect('/login.html')
 })
 
-userRoutes.get('/me', (req, res) => {
-	res.json({
-		message: 'Success retrieve user',
-		data: {
-			user: req.session['user'] ? req.session['user'] : null
-		}
-	})
+userRoutes.get('/me', async (req, res) => {
+	let userResult = await client.query(
+		`select * from users where username = $1`,
+		[req.session.username]
+	)
+	let dbUser = userResult.rows
+	res.json(dbUser)
+	// res.json({
+	// 	message: 'Success retrieve user',
+	// 	data: {
+	// 		user: req.session['user'] ? req.session['user'] : null
+	// 	}
+	// })
 })
 
 

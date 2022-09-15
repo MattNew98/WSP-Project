@@ -9,13 +9,14 @@ import { lobbyRoutes } from './routes/lobbyRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
 import { isloggedin } from './guard'
-import console from 'console'
+// import cors from 'cors'
 let roomList: any = []
 let id = 0
 // [{ roomName: string, players: [player: string] }]
 // let barStatus: number
 let counter = 0
 dotenv.config()
+
 declare module 'express-session' {
     interface SessionData {
         username?: string
@@ -28,6 +29,7 @@ declare module 'express-session' {
 
 
 const app = express()
+// app.use(cors())
 
 const server = new http.Server(app);
 export const io = new SocketIO(server);
@@ -58,6 +60,7 @@ io.on('connection', function (socket) {
 
 
     socket.on("chat", ({ content, username, socketID }) => {
+        console.log(socketID)
         console.log(`${username}: ${content}`)
         io.to(`${socketID}`).emit("chat", ({ content, username }))
     })

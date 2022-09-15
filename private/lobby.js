@@ -1,5 +1,6 @@
-
-const socket = io.connect();
+// CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
+let SERVER_IP = "localhost:8080"
+const socket = io.connect(SERVER_IP);
 const createButton = document.querySelector(".create-room-btn")
 const roomContainer = document.querySelector('.room-container')
 const roomButtons = document.querySelector('.room-buttons')
@@ -153,7 +154,7 @@ function removeRoom(username) {
 }
 
 socket.on('launch-game', (id) => {
-    location.assign(`http://localhost:8080/game.html?id=${id}`)
+    location.assign(`http://${SERVER_IP}/game.html?id=${id}`)
 })
 socket.on('room-started', (id) => {
 

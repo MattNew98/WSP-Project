@@ -228,3 +228,13 @@ canvas {
     height: 10px;
     background-color: green;
 }
+.player-info {
+    background-color: aquamarine;
+    width: auto;
+    height: 60px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}

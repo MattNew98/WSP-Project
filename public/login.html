@@ -26,7 +26,7 @@
 
             <form id="register-form">
                 <div>Register new account:</div>
-                
+
                 <label class="username">
                     Username:
                     <input type="text" name="registerUsername" placeholder="username" / id="register-username">
@@ -39,11 +39,11 @@
                 </label>
                 <div>
                     <div>
-                        <label for="file" title="profile picture">Profile Picture</label>
+                        <label for="file" title="profile picture">Profile Picture:</label>
                     </div>
                     <input type="file" name="userImage" placeholder="file" class="button">
                 </div>
-                <input type="submit" value="Register" />
+                <input type="submit" value="Register" class="button" />
             </form>
 
         </div>
@@ -61,15 +61,13 @@
             </label>
             <!-- <input type="submit" value="Login" /> -->
 
-
-            <!-- <div class="google-login">
-
-                    <a href="/connect/google" class="btn btn-success">
-                        <i class="fa-brands fa-google"></i>
-                    </a>
-                </div> -->
-            <div class="submit-btn">
-                <input type="submit" value="login" class="button">
+            <div class="loginBtn-container">
+                <div>
+                    <a href="/connect/google" class="btn btn-success"><i class="fa-brands fa-google"></i></a>
+                </div>
+                <div>
+                    <input type="submit" value="login" class="button">
+                </div>
             </div>
         </form>
 

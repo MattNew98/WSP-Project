@@ -4,8 +4,9 @@ const socket = io.connect(); // connect to socketIO
 let ctx //get context of the canvas
 let canvas
 let fillBucket = false
-let userName
+let username
 let socketID
+let userIcon
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
@@ -20,16 +21,34 @@ async function getProfile() {
   const res = await fetch('/user/me')
   const result = await res.json()
   // console.log(result.data.user)
-  username = result.data.user.username
+  username = result[0].username
+  userIcon = result[0].image
   if (username) {
     document.querySelector('.user-name').innerHTML = `${username}`
-    document.querySelector('.user-icon').innerHTML = `<img src="${result.data.user.picture}">`
+    document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}">`
   } else {
     document.querySelector('.user-name').innerHTML = `Welcome !!!`
   }
 }
 getProfile()
 
+function setup() {
+  const myCanvas = createCanvas(1100, 785); // 遊戲版 Width x Height
+  myCanvas.parent(document.querySelector("#drawing-board"))
+  strokeWeight(3) // 線條粗幼度
+  noLoop()
+  socket.emit("get-board", (socketID))
+  socket.on("show-board", (drawBoardArray) => { //display drawing from before joining the game to the board
+    let boardArray = drawBoardArray;
+    for (let emit of boardArray) {
+      stroke(emit.selectedColor)
+      strokeWeight(selectedStrokeWeight)
+      line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
+    }
+  })
+  canvas = document.getElementById("defaultCanvas0")
+  ctx = canvas.getContext("2d")
+}
 
 ////// comment box
 async function createChats() {
@@ -138,29 +157,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
 })
-function setup() {
-  const myCanvas = createCanvas(1100, 785); // 遊戲版 Width x Height
-  myCanvas.parent(document.querySelector("#drawing-board"))
-  strokeWeight(3) // 線條粗幼度
-  noLoop()
-  socket.emit("get-board", (socketID))
-  socket.on("show-board", (drawBoardArray) => { //display drawing from before joining the game to the board
-    let boardArray = drawBoardArray;
-    for (let emit of boardArray) {
-      stroke(emit.selectedColor)
-      strokeWeight(selectedStrokeWeight)
-      line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
 
-    }
-
-  })
-  // socket.emit('barStart', "game started")
-  // socket.emit('get-bar-status')
-
-
-  canvas = document.getElementById("defaultCanvas0")
-  ctx = canvas.getContext("2d")
-}
 
 
 function mousePressed() {

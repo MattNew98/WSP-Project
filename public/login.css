@@ -1,27 +1,31 @@
-body{
-    display: flex; 
+body {
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     background-image: url(background.jpeg);
-   
     height: 100%;
     margin: 100px;
-    
-
 }
 
-.login-container{
+
+.button {
+    background-color: #d0d0e3;
+    border: solid 1px;
+    border-radius: 7px;
+}
+
+
+
+.login-container {
     background-color: white;
-    height: 500px;
+    height: 600px;
     width: 800px;
     display: flex;
     align-content: space-around;
-    justify-content: space-around;
+    justify-content: space-evenly;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-end;
     border-radius: 5%;
-
-
 }
 
 #login-form #login-username,
@@ -31,7 +35,7 @@ body{
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    
+
     width: 15rem;
     height: 2rem;
     border-radius: 15px;
@@ -39,7 +43,7 @@ body{
     text-decoration: none;
     padding-left: 1rem;
     margin: 10px;
-    
+
 }
 
 #register-form #register-username,
@@ -49,7 +53,7 @@ body{
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    
+
     width: 15rem;
     height: 2rem;
     border-radius: 15px;
@@ -57,21 +61,41 @@ body{
     text-decoration: none;
     padding-left: 1rem;
     margin: 10px;
-    
+
 }
 
 
-#register-form ,#login-form{
-    border: solid 2px;
+#register-form{  
     border-radius: 15px;
     padding: 5px;
 }
 
-.login-icon img{
-    width: 110px;
-    height: 110px;
+#login-form {
+    border: solid 2px;
+    border-radius: 15px;
+    padding: 10px;
+    height: 180px;
+    width: 280px;
+}
+
+.register-icon img {
+    width: 145px;
+    height: 145px;
     border: 3px #fff solid;
-    box-shadow: 0 0 0 3px #043173;
-    border-radius: 50%;
+    box-shadow: 0 0 0 3px #27287c87;
+    border-radius: 45%;
+    align-items: center;
+}
+
+.register-container {
+    border: solid 2px;
+    border-radius: 15px;
+    padding: 5px;
+    height: 500px;
+    width: 300px;
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+    flex-direction: column;
     align-items: center;
 }

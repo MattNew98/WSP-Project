@@ -103,19 +103,22 @@ socket.on('show-room-data', (roomData) => {
 
 ////// create comment box
 async function createChats() {
+
   const chatsFormElement = document.querySelector('#message-form')
   chatsFormElement.addEventListener('submit', async (e) => {
     e.preventDefault()
     const form = e.target
     const content = form.chat.value
-    socket.emit('chat', ({ content, username, socketID }))
-    if (content == topicsArray[turnCounter]) {
-      let score = 1
-      console.log("3333333")
-      socket.emit('user-scored', ({username, score, socketID}))
+    if (drawable == false){
+      socket.emit('chat', ({ content, username, socketID }))
+      if (content == topicsArray[turnCounter]) {
+        let score = 1
+        console.log("3333333")
+        socket.emit('user-scored', ({username, score, socketID}))
+      }
+      form.reset()
+      console.log(socketID)
     }
-    form.reset()
-    console.log(socketID)
   })
 }
 createChats()

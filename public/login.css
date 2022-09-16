@@ -5,38 +5,25 @@ body {
     background-image: url(background.jpeg);
     height: 100%;
     margin: 100px;
-
     font-size: 20px;
 }
 
-
-.button {
-    background-color: #d0d0e3;
-    border: solid 1px;
-    border-radius: 7px;
-
-}
-
-
-.loginBtn-container {
-    width: 260px;
+.game-title {
+    font-size: 65px;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    border: solid 3px #27287c87;
+    justify-content: center;
+    text-align: center;
 }
 
 
 .login-container {
-    background-color: white;
+    background-color: #1e201fbd;
     height: 100%;
-    width: 700px;
-    display: flex;
-    align-content: space-around;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
     align-items: flex-end;
     border-radius: 5%;
     padding: 10px;
+    display: flex;
 }
 
 #login-form #login-username,
@@ -57,6 +44,18 @@ body {
 
 }
 
+#login-form {
+    box-shadow: 0 0 0 3px #27287c87;
+    border-radius: 15px;
+    padding: 10px;
+    height: 180px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
 #register-form #register-username,
 #register-form #register-password {
     display: flex;
@@ -72,25 +71,14 @@ body {
     text-decoration: none;
     padding-left: 1rem;
     margin: 10px;
-
 }
 
 
-#register-form{  
+#register-form {
     border-radius: 15px;
     padding: 5px;
-}
-
-#login-form {
-    box-shadow: 0 0 0 3px #27287c87;
-    border-radius: 15px;
-    padding: 10px;
-    height: 180px;
-    width: 280px;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    align-content: flex-start;
     align-items: center;
 }
 
@@ -103,7 +91,7 @@ body {
     align-items: center;
 }
 
-.register-container {
+.left-container {
     box-shadow: 0 0 0 3px #27287c87;
     border-radius: 15px;
     padding: 5px;
@@ -114,6 +102,45 @@ body {
     justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
 }
 
 
+
+.button {
+    background-color: #d0d0e3;
+    border: solid 1px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #6a6cac;
+    box-shadow: 1px 5px 10px #2b233d;
+    color: rgb(110, 47, 47);
+    transform: translateY(-5px);
+}
+
+.register-button {
+    background-color: #d0d0e3;
+    border: solid 1px;
+    border-radius: 7px;
+    cursor: pointer;
+    position: relative;
+    bottom: -15px;
+}
+
+.register-button:hover {
+    background-color: #6a6cac;
+    box-shadow: 1px 5px 10px #2b233d;
+    color: rgb(110, 47, 47);
+    transform: translateY(-5px);
+}
+
+
+.loginBtn-container {
+    width: 260px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

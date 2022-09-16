@@ -11,7 +11,7 @@ let username
 let socketID
 let userIcon
 let playerScore = []
-let drawable = true
+let drawable = false
 let turnCounter = 0
 let topicsArray
 

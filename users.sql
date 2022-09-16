@@ -4,6 +4,11 @@ CREATE TABLE users (
     username VARCHAR(255) not null,
     password VARCHAR(255) not null
 );
+CREATE TABLE topics (
+    id SERIAL primary key,
+    topic VARCHAR(255) not null,
+    difficulty VARCHAR(255) not null
+);
 INSERT INTO users (username, password)
 VALUES (
         'louie',
@@ -32,10 +37,7 @@ VALUES ('bird', 'easy'),
 ('toilet', 'medium'),
 ('bread', 'medium'),
 ('earphone', 'hard'),
-('prison', 'hard');
-
-INSERT INTO topics (topic, difficulty)
-VALUES 
+('prison', 'hard'),
 ('leaves', 'easy'),
 ('birthday cake', 'medium'),
 ('ice cream', 'easy'),

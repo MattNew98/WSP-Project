@@ -1,8 +1,6 @@
 body {
     background-image: url(./img/background3.jpg);
-    background-repeat: no-repeat;
-    background-size: 100%;
-    
+    background-size: cover;   
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -31,8 +29,7 @@ body {
     border-radius: 5%;
     padding: 10px;
     display: flex;
-    position: relative;
-    top: 13vh;
+    margin-top: 20px;
 }
 
 #login-form #login-username,

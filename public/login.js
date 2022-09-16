@@ -1,12 +1,14 @@
+// CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
+let SERVER_IP = "192.168.59.61:8080"
 login()
 async function login() {
-    
+
     const loginForm = document.querySelector('#login-form')
     console.log(loginForm)
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault()
-        const form  = e.target
+        const form = e.target
         const username = form.username.value
         const password = form.password.value
         console.log(username, password)
@@ -17,30 +19,29 @@ async function login() {
                 password
             }),
             headers: {
-                'Content-Type': 'application/json',   
+                'Content-Type': 'application/json',
             }
         })
         if (res.ok) {
-            window.location = 'lobby.html'
-            console.log("Login successful")
+            window.location = `/lobby.html`
         }
         if (res.status == 400) {
             alert("Invalid username or password! Please try again.")
         }
+
     })
-    
+
 }
 
 register()
 async function register() {
-    
+
     const registerForm = document.querySelector('#register-form')
     console.log(registerForm)
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault()
-        console.log("test")
-        const form  = e.target
+        const form = e.target
         const registerUsername = form.registerUsername.value
         const registerPassword = form.registerPassword.value
         const registerImage = form.userImage.files[0]
@@ -50,7 +51,7 @@ async function register() {
         formData.append('registerPassword', registerPassword)
         formData.append('image', registerImage)
 
- 
+
         const res = await fetch('/user/register', {
             method: "POST",
             body: formData
@@ -62,5 +63,5 @@ async function register() {
             alert("Registered successful")
         }
     })
-    
+
 }

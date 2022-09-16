@@ -8,17 +8,23 @@ body {
 
 
 .header-container {
-
+  
+    background-color: #1e201fbd;
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
     justify-content: space-around;
+
+    
 }
+
+
 
 
 .header-title {
     font-size: 100px;
     color: #75b6e5;
+   
 
 }
 
@@ -30,7 +36,8 @@ body {
 
 .user-name {
     font-size: 30px;
-    color: #75b6e5
+    color: #75b6e5;
+
 }
 
 
@@ -39,6 +46,7 @@ body {
     height: 80px;
     border-radius: 25%;
     align-items: center;
+    font-weight: bold;
 }
 
 

@@ -17,7 +17,7 @@
 
     <div class="login-container">
 
-        <div class="register-container">
+        <div class="left-container">
 
             <div class="register-icon">
                 <img src="person-icon.png">
@@ -43,34 +43,45 @@
                     </div>
                     <input type="file" name="userImage" placeholder="file" class="button">
                 </div>
-                <input type="submit" value="Register" class="button" />
+                <input type="submit" value="Register" class="register-button" />
             </form>
 
         </div>
 
-        <form id="login-form">
-            <label class="username">
-                username:
-                <input type="text" name="username" placeholder="username" id="login-username" />
-            </label>
 
 
-            <label class="password">
-                password:
-                <input type="password" name="password" placeholder="password" id="login-password" />
-            </label>
-            <!-- <input type="submit" value="Login" /> -->
 
-            <div class="loginBtn-container">
-                <div>
-                    <a href="/connect/google" class="btn btn-success"><i class="fa-brands fa-google"></i></a>
-                </div>
-                <div>
-                    <input type="submit" value="login" class="button">
-                </div>
+
+        <div class="right-container">
+
+            <div class="game-title">
+                <p class="title">TECKY
+                    <br>DRAW.IO</p>
             </div>
-        </form>
 
+            <form id="login-form">
+                <label class="username">
+                    username:
+                    <input type="text" name="username" placeholder="username" id="login-username" />
+                </label>
+
+
+                <label class="password">
+                    password:
+                    <input type="password" name="password" placeholder="password" id="login-password" />
+                </label>
+                <!-- <input type="submit" value="Login" /> -->
+
+                <div class="loginBtn-container">
+                    <div>
+                        <a href="/connect/google" class="btn btn-success"><i class="fa-brands fa-google"></i></a>
+                    </div>
+                    <div>
+                        <input type="submit" value="login" class="button">
+                    </div>
+                </div>
+            </form>
+        </div>
 
 
     </div>

@@ -76,7 +76,7 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false, Drawing: username })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false, drawing: username })
         io.emit('new-room', { id });
         socket.join(`${id}`)
         id++
@@ -123,6 +123,16 @@ io.on('connection', function (socket) {
 
         }
 
+
+    })
+
+    socket.on('fetch-topics', async (data) => {
+        let socketID = data.socketID
+        for (let x = 0; x < data.topicAmount * 4; x++) {
+            let randomTopic = Math.floor(Math.random() * 6) + 1
+            let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
+            io.to(`${socketID}`).emit('return-topics', (topicDB.rows[0]))
+        }
 
     })
 })

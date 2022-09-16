@@ -1,3 +1,4 @@
+
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
 let SERVER_IP = "localhost:8080"
 let selectedColor = '#000000' // default selected color
@@ -11,22 +12,32 @@ let socketID
 let userIcon
 let playerScore = []
 let drawable = false
-
+let topicsArray
+let turnCounter = 0
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 socketID = id
 
+// GAME FLOW:
+// Game loaded start 321 countdown on front end
+//     vv
+//if Player 1 >> Prompt WORD to P1 screen , drawable =true,start countdown bar
+//     vv
+//else display Player[x] is drawing,start guessing with chat
+//     vv
+//if Player[x] guessed correctly , Player[x] score ++
+//if countdown bar ends, prompt scoreboard, Player 1 drawable=false
+//     vv
+//Next phase
+//start 321 countdown 
+//prompt word to next player screen drawable =true,start countdown bar
+
+
 socket.emit('fetch-room-data', (socketID))
 
-socket.on('show-room-data', (roomData) => {
-  players = roomData.players
-  for (let player of players) {
-    playerScore.push({ player: player, score: 0 })
-  }
-  createScoreboard()
-})
+
 
 ////// get user data
 async function getProfile() {
@@ -64,6 +75,34 @@ function setup() {
   ctx = canvas.getContext("2d")//get canvas context
 }
 
+socket.on('show-room-data', (roomData) => {
+  players = roomData.players
+  for (let player of players) {
+    playerScore.push({ player: player, score: 0 })
+  }
+  createScoreboard()
+  let topicAmount = players.length
+  socket.emit('fetch-topics', ({ topicAmount, socketID }))
+
+  if (roomData.drawing == username) {
+    drawable = true
+
+    document.querySelector('.topic-container').innerHTML = `
+    <div class="topic">Your Topic is "${topicsArray[turnCounter].topic} </div>
+    `
+  } else {
+    document.querySelector('.topic-container').innerHTML = `
+    <div class="topic">${players[turnCounter]} is drawing</div>
+    `
+  }
+
+})
+
+socket.on('return-topics', (topics) => {
+  console.log('ding')
+})
+
+
 ////// create comment box
 async function createChats() {
   const chatsFormElement = document.querySelector('#message-form')
@@ -86,21 +125,8 @@ socket.on('chat', ({ content, username }) => {
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 })
 
+//START FIRST COUNT DOWN
 
-
-// GAME FLOW:
-// Game loaded start 321 countdown on front end
-//     vv
-//if Player 1 >> Prompt WORD to P1 screen , drawable =true,start countdown bar
-//     vv
-//else display Player[x] is drawing,start guessing with chat
-//     vv
-//if Player[x] guessed correctly , Player[x] score ++
-//if countdown bar ends, prompt scoreboard, Player 1 drawable=false
-//     vv
-//Next phase
-//start 321 countdown 
-//prompt word to next player screen drawable =true,start countdown bar
 
 
 // progress bar

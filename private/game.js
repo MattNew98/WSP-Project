@@ -11,7 +11,7 @@ let username
 let socketID
 let userIcon
 let playerScore = []
-let drawable = false
+let drawable = true
 let turnCounter = 0
 let topicsArray
 
@@ -73,6 +73,8 @@ function setup() {
   })
   canvas = document.getElementById("defaultCanvas0")//get canvas element
   ctx = canvas.getContext("2d")//get canvas context
+
+
 }
 
 socket.on('show-room-data', (roomData) => {
@@ -109,12 +111,12 @@ async function createChats() {
     e.preventDefault()
     const form = e.target
     const content = form.chat.value
-    if (drawable == false){
+    if (drawable == false) {
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
         let score = 1
         console.log("3333333")
-        socket.emit('user-scored', ({username, score, socketID}))
+        socket.emit('user-scored', ({ username, score, socketID }))
       }
       form.reset()
       console.log(socketID)
@@ -185,7 +187,10 @@ socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor, emitter }) => {
   if (emitter === username) {
     return;
   }
-  flood_fill(mouseX, mouseY, color_to_rgba(selectedColor))
+  let ratio = canvas.width / 1100;
+  ratio = 1
+  // flood_fill(floor(mouseX * ratio), floor(mouseY * ratio), color_to_rgba(selectedColor))
+  flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
   console.log(`${emitter} is drawing`)
 })
 
@@ -288,6 +293,12 @@ function keyPressed() {//save canvas as png
 
 // Function for fillBucket
 function flood_fill(original_x, original_y, color) {
+  let mouseRatio = canvas.width / 1100;
+  let screenRatio = 1;
+  original_x = original_x * mouseRatio;
+  original_y = original_y * mouseRatio;
+  const width = canvas.width * screenRatio;
+  const height = canvas.height * screenRatio;
   console.log(`CanvasWidth:${canvas.width},CanvasHeight:${canvas.height}`)
 
   original_color = ctx.getImageData(original_x, original_y, 1, 1).data;
@@ -300,16 +311,18 @@ function flood_fill(original_x, original_y, color) {
 
   x = original_x;
   y = original_y;
+  console.log("MouseClicked", x, y)
 
-  boundary_pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  boundary_pixels = ctx.getImageData(0, 0, width, height);
+  console.log(boundary_pixels)
 
 
   // console.log(canvas.width, canvas.height)
   // first we go up until we find a boundary
-  linear_cords = (y * canvas.width + x) * 4;
+  linear_cords = (y * width + x) * 4;
   var done = false;
   while (y >= 0 && !done) {
-    var new_linear_cords = ((y - 1) * canvas.width + x) * 4;
+    var new_linear_cords = ((y - 1) * width + x) * 4;
     if (boundary_pixels.data[new_linear_cords] == original_color.r &&
       boundary_pixels.data[new_linear_cords + 1] == original_color.g &&
       boundary_pixels.data[new_linear_cords + 2] == original_color.b &&
@@ -321,7 +334,7 @@ function flood_fill(original_x, original_y, color) {
     }
   }
   // then we loop around until we get back to the starting point
-  var path = [{ x: x, y: y }];
+  var path = [{ x: x / mouseRatio, y: y / mouseRatio }];
   var first_iteration = true;
   var iteration_count = 0;
   var orientation = 1; // 0:^, 1:<-, 2:v, 3:->
@@ -352,8 +365,8 @@ function flood_fill(original_x, original_y, color) {
       var both = (orientation + look_at) % 4;
       if (both == 0) {
         // we try right
-        if (!got_it && (x + 1) < canvas.width) {
-          linear_cords = (y * canvas.width + (x + 1)) * 4;
+        if (!got_it && (x + 1) < width) {
+          linear_cords = (y * width + (x + 1)) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -365,7 +378,7 @@ function flood_fill(original_x, original_y, color) {
       } else if (both == 1) {
         // we try up
         if (!got_it && (y - 1) >= 0) {
-          linear_cords = ((y - 1) * canvas.width + x) * 4;
+          linear_cords = ((y - 1) * width + x) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -377,7 +390,7 @@ function flood_fill(original_x, original_y, color) {
       } else if (both == 2) {
         // we try left
         if (!got_it && (x - 1) >= 0) {
-          linear_cords = (y * canvas.width + (x - 1)) * 4;
+          linear_cords = (y * width + (x - 1)) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -388,8 +401,8 @@ function flood_fill(original_x, original_y, color) {
         }
       } else if (both == 3) {
         // we try down
-        if (!got_it && (y + 1) < canvas.height) {
-          linear_cords = ((y + 1) * canvas.width + x) * 4;
+        if (!got_it && (y + 1) < height) {
+          linear_cords = ((y + 1) * width + x) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -402,7 +415,7 @@ function flood_fill(original_x, original_y, color) {
     }
 
     if (got_it) {
-      path.push({ x: x, y: y });
+      path.push({ x: x / mouseRatio, y: y / mouseRatio });
     }
   }
 

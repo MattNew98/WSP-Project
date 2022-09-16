@@ -12,7 +12,6 @@ let socketID
 let userIcon
 let playerScore = []
 let drawable = false
-let topicsArray
 let turnCounter = 0
 
 const queryString = window.location.search;
@@ -81,14 +80,13 @@ socket.on('show-room-data', (roomData) => {
     playerScore.push({ player: player, score: 0 })
   }
   createScoreboard()
-  let topicAmount = players.length
-  socket.emit('fetch-topics', ({ topicAmount, socketID }))
+
 
   if (roomData.drawing == username) {
     drawable = true
 
     document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">Your Topic is "${topicsArray[turnCounter].topic} </div>
+    <div class="topic">Your Topic is ${roomData.topics[0]} </div>
     `
   } else {
     document.querySelector('.topic-container').innerHTML = `
@@ -98,9 +96,7 @@ socket.on('show-room-data', (roomData) => {
 
 })
 
-socket.on('return-topics', (topics) => {
-  console.log('ding')
-})
+
 
 
 ////// create comment box

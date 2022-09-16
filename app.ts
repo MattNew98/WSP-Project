@@ -76,11 +76,11 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false, drawing: username })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false, drawing: username, topics: [] })
         io.emit('new-room', { id });
         socket.join(`${id}`)
         id++
-
+        // console.log(roomList)
     })
 
     socket.on('fetch-room', () => {
@@ -95,8 +95,15 @@ io.on('connection', function (socket) {
 
     })
 
-    socket.on('start-game', (id) => {
+    socket.on('start-game', async (id) => {
+        let topicAmount = roomList[id].players.length * 4
+        for (let x = 0; x < topicAmount * 4; x++) {
+            let randomTopic = Math.floor(Math.random() * 6) + 1
+            let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
+            let topic = topicDB.rows[0].topic
+            roomList[id].topics.push(topic)
 
+        }
         // console.log(id)
         io.to(`${id}`).emit('launch-game', (id))
         roomList[id].start = true
@@ -126,15 +133,7 @@ io.on('connection', function (socket) {
 
     })
 
-    socket.on('fetch-topics', async (data) => {
-        let socketID = data.socketID
-        for (let x = 0; x < data.topicAmount * 4; x++) {
-            let randomTopic = Math.floor(Math.random() * 6) + 1
-            let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
-            io.to(`${socketID}`).emit('return-topics', (topicDB.rows[0]))
-        }
 
-    })
 })
 
 app.use(express.json())

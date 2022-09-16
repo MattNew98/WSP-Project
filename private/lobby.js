@@ -80,7 +80,7 @@ async function displayRoom(id, roomName, players, start) {
         <div class="room${id}">
         <div>${roomName}</div>
         <div class="room-${id}-players">
-    
+
         </div>
         <div class="room-${id}-buttons">
         <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
@@ -142,12 +142,12 @@ function removeRoom(username) {
 }
 
 socket.on('launch-game', (id) => {
-    if (SERVER_IP[0]== "l") {
+    if (SERVER_IP[0] == "l") {
         location.assign(`/game.html?id=${id}`)
     } else {
         location.assign(`http://${SERVER_IP}/game.html?id=${id}`)
     }
-    
+
 })
 socket.on('room-started', (id) => {
 

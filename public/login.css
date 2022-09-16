@@ -1,29 +1,38 @@
 body {
+    background-image: url(./img/background3.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    background-image: url(background.jpeg);
     height: 100%;
-    margin: 100px;
     font-size: 20px;
 }
 
 .game-title {
-    font-size: 65px;
     display: flex;
     border: solid 3px #27287c87;
-    justify-content: center;
-    text-align: center;
+    border-radius: 15px;
+    margin: 10px;   
+}
+
+.icon {
+    height: 295px;
+    width: 298px;
+
 }
 
 
 .login-container {
-    background-color: #1e201fbd;
+    background-color: #b7bacbbd;
     height: 100%;
     align-items: flex-end;
     border-radius: 5%;
     padding: 10px;
     display: flex;
+    position: relative;
+    top: 13vh;
 }
 
 #login-form #login-username,
@@ -83,9 +92,8 @@ body {
 }
 
 .register-icon img {
-    width: 145px;
-    height: 145px;
-    border: 3px #fff solid;
+    width: 166px;
+    height: 147px;
     box-shadow: 0 0 0 3px #27287c87;
     border-radius: 45%;
     align-items: center;

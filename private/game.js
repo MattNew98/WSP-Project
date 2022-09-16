@@ -10,6 +10,7 @@ let username
 let socketID
 let userIcon
 let playerScore = []
+let drawable = false
 
 
 const queryString = window.location.search;
@@ -85,6 +86,23 @@ socket.on('chat', ({ content, username }) => {
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 })
 
+
+
+// GAME FLOW:
+// Game loaded start 321 countdown on front end
+//     vv
+//if Player 1 >> Prompt WORD to P1 screen , drawable =true,start countdown bar
+//     vv
+//else display Player[x] is drawing,start guessing with chat
+//     vv
+//if Player[x] guessed correctly , Player[x] score ++
+//if countdown bar ends, prompt scoreboard, Player 1 drawable=false
+//     vv
+//Next phase
+//start 321 countdown 
+//prompt word to next player screen drawable =true,start countdown bar
+
+
 // progress bar
 function move(width) {
   let i = 100;
@@ -109,10 +127,6 @@ function move(width) {
   }
 
 }
-
-
-
-
 
 
 //SOCKETS
@@ -169,18 +183,30 @@ function changeColor(color) {
   }
 }
 function changeStroke(number) {
+  if (drawable == false) {
+    return;
+  }
   selectedStrokeWeight = number
   fillBucket = false //turn off fillBucket when choosing stroke 
 }
 function clearBoard() {
+  if (drawable == false) {
+    return;
+  }
   let emitter = username
   background(255)
   socket.emit("clear-board", { socketID, emitter }) //tell server to clear drawing board
 }
 function fillBucketOn() {
+  if (drawable == false) {
+    return;
+  }
   fillBucket = true
 }
 function mousePressed() {
+  if (drawable == false) {
+    return;
+  }
   //update pmouse x and y for every new mouse press
   pmouseX = mouseX
   pmouseY = mouseY
@@ -200,6 +226,9 @@ function mousePressed() {
 
 }
 function mouseDragged() {
+  if (drawable == false) {
+    return;
+  }
   if (fillBucket == true) { return }//prevent drawing mode when fillBucket is on
   stroke(selectedColor)
   strokeWeight(selectedStrokeWeight)
@@ -218,6 +247,8 @@ function keyPressed() {//save canvas as png
 
 // Function for fillBucket
 function flood_fill(original_x, original_y, color) {
+  console.log(`CanvasWidth:${canvas.width},CanvasHeight:${canvas.height}`)
+
   original_color = ctx.getImageData(original_x, original_y, 1, 1).data;
   original_color = {
     r: original_color[0],
@@ -228,7 +259,10 @@ function flood_fill(original_x, original_y, color) {
 
   x = original_x;
   y = original_y;
+
   boundary_pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+
   // console.log(canvas.width, canvas.height)
   // first we go up until we find a boundary
   linear_cords = (y * canvas.width + x) * 4;
@@ -258,18 +292,18 @@ function flood_fill(original_x, original_y, color) {
     if (path.length >= 2) {
       if (path[path.length - 1].y - path[path.length - 2].y < 0) {
         orientation = 0;
-        //console.log( "^" ) ;
+        // console.log("^");
       } else if (path[path.length - 1].x - path[path.length - 2].x < 0) {
         orientation = 1;
-        //console.log( "<-" ) ;
+        // console.log("<-");
       } else if (path[path.length - 1].y - path[path.length - 2].y > 0) {
         orientation = 2;
-        //console.log( "v" ) ;
+        // console.log("v");
       } else if (path[path.length - 1].x - path[path.length - 2].x > 0) {
         orientation = 3;
-        //console.log( "->" ) ;
+        // console.log("->");
       } else {
-        console.log("we shouldn't be here");
+        // console.log("we shouldn't be here");
       }
     }
 
@@ -417,3 +451,6 @@ function createScoreboard() {
   }
   document.querySelector("#scrollScore").innerHTML = html
 }
+
+
+

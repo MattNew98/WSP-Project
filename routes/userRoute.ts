@@ -1,3 +1,5 @@
+// CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
+let SERVER_IP = "localhost:8080"
 import express from 'express'
 import { client } from '../app'
 import { checkPassword, hashPassword } from '../hash'
@@ -102,14 +104,19 @@ userRoutes.post('/login', async (req, res) => {
 	console.log(username + ' is logged in')
 	req.session['user'] = sessionUser
 	req.session.username = username
-	res.redirect('/lobby.html')
+	res.json({ "success": true })
 })
 
 
 userRoutes.get('/logout', (req, res) => {
 	console.log(req.session.username + ' is logged out')
 	req.session.destroy(() => { })
-	res.redirect('/login.html')
+
+	if (SERVER_IP[0] == "l") {
+		res.redirect(`/login.html`)
+	} else {
+		res.redirect(`http://${SERVER_IP}/login.html`)
+	}
 })
 
 userRoutes.get('/me', async (req, res) => {
@@ -146,21 +153,27 @@ async function loginGoogle(req: express.Request, res: express.Response) {
 
 	let user = users[0];
 
-	console.log(googleProfile);
 
 	if (!user) {
 		// Create the user when the user does not exist
 		const randomString = crypto.randomBytes(32).toString('hex');
 		let hashedPassword = await hashPassword(randomString)
-		user = (await client.query(`INSERT INTO users (username,password) 
-                VALUES ($1,$2) RETURNING *`,
-			[googleProfile.email, hashedPassword])).rows[0]
+		user = (await client.query(`INSERT INTO users (username,password, image) 
+                VALUES ($1,$2,$3) RETURNING *`,
+			[googleProfile.name, hashedPassword, googleProfile.picture])).rows[0]
 	}
-	console.log(googleProfile.email + ' is logged in')
+	console.log(googleProfile.name + ' is logged in')
 	if (req.session) {
 		req.session['user'] = googleProfile
-		req.session.username = googleProfile.email
+		req.session.username = googleProfile.name
 	}
-	return res.redirect('/lobby.html')
+	console.log("testtesttest")
+	if (SERVER_IP[0] == "l") {
+		res.redirect(`/lobby.html`)
+	} else {
+		console.log("testtest")
+		res.redirect(`http://${SERVER_IP}/lobby.html`)
+	}
+	return res.status(200)
 }
 

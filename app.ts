@@ -76,11 +76,12 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false, drawing: username, topics: [] })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [], drawBoardArray: [], start: false, drawing: username, topics: [] })
+        roomList[id].players.push({name: username, score: 0})
         io.emit('new-room', { id });
         socket.join(`${id}`)
+        console.log(roomList[id].players)
         id++
-        // console.log(roomList)
     })
 
     socket.on('fetch-room', () => {
@@ -88,10 +89,12 @@ io.on('connection', function (socket) {
     })
 
     socket.on('join-room', (data) => {
+        let username = data.username
         const i = data.id
-        roomList[i].players.push(data.username)
+        roomList[i].players.push({name: username, score: 0})
         io.emit('update-room', ({ roomList }));
         socket.join(`${i}`)
+        console.log(roomList[0].players)
 
     })
 

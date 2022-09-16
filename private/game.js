@@ -13,6 +13,7 @@ let userIcon
 let playerScore = []
 let drawable = false
 let turnCounter = 0
+let topicsArray
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -75,6 +76,7 @@ function setup() {
 }
 
 socket.on('show-room-data', (roomData) => {
+  topicsArray = roomData.topics
   players = roomData.players
   for (let player of players) {
     playerScore.push({ player: player, score: 0 })
@@ -114,7 +116,11 @@ async function createChats() {
 createChats()
 socket.on('chat', ({ content, username }) => {
   const html = document.querySelector('.chatroom-container')
-  html.innerHTML += `<div>${username}: ${content}</div>`
+  if (content == topicsArray[turnCounter]) {
+    html.innerHTML += `<div>${username} guessed the word</div>`
+  } else {
+    html.innerHTML += `<div>${username}: ${content}</div>`
+  }
   console.log(`${username}: ${content}`)
   // always scroll to bottom
   let messageBody = document.querySelector('#scroll');

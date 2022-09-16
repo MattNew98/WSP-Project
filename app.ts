@@ -97,7 +97,7 @@ io.on('connection', function (socket) {
 
     socket.on('start-game', async (id) => {
         let topicAmount = roomList[id].players.length * 4
-        for (let x = 0; x < topicAmount * 4; x++) {
+        for (let x = 0; x < topicAmount; x++) {
             let randomTopic = Math.floor(Math.random() * 6) + 1
             let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
             let topic = topicDB.rows[0].topic

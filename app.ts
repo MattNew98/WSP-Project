@@ -136,6 +136,19 @@ io.on('connection', function (socket) {
 
     })
 
+    socket.on('user-scored', ({username, score, socketID}) => {
+        // console.log(username, score, socketID)
+        console.log("2222222")
+        for(let player of roomList[socketID].players) {
+            if (player.name == username) {
+                player.score = player.score + score
+            }
+        }
+        let players = roomList[socketID].players
+        io.to(`${socketID}`).emit('score-update', (players))
+
+    })
+
 
 })
 

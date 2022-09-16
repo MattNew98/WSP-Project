@@ -79,7 +79,7 @@ socket.on('show-room-data', (roomData) => {
   topicsArray = roomData.topics
   players = roomData.players
   for (let player of players) {
-    playerScore.push({ player: player, score: 0 })
+    playerScore.push({ name: player.name, score: player.score })
   }
   createScoreboard()
 
@@ -92,7 +92,7 @@ socket.on('show-room-data', (roomData) => {
     `
   } else {
     document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">${players[turnCounter]} is drawing</div>
+    <div class="topic">${players[turnCounter].name} is drawing</div>
     `
   }
 
@@ -109,6 +109,11 @@ async function createChats() {
     const form = e.target
     const content = form.chat.value
     socket.emit('chat', ({ content, username, socketID }))
+    if (content == topicsArray[turnCounter]) {
+      let score = 1
+      console.log("3333333")
+      socket.emit('user-scored', ({username, score, socketID}))
+    }
     form.reset()
     console.log(socketID)
   })
@@ -125,6 +130,11 @@ socket.on('chat', ({ content, username }) => {
   // always scroll to bottom
   let messageBody = document.querySelector('#scroll');
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+})
+
+socket.on('score-update', (data) => {
+  playerScore = data
+  createScoreboard()
 })
 
 //START FIRST COUNT DOWN
@@ -475,7 +485,7 @@ function createScoreboard() {
   html = ''
   for (let i = 0; i < playerScore.length; i++) {
     console.log(playerScore[i])
-    html += `<div class="player-info">${playerScore[i].player}: ${playerScore[i].score}</div>`
+    html += `<div class="player-info">${playerScore[i].name}: ${playerScore[i].score}</div>`
   }
   document.querySelector("#scrollScore").innerHTML = html
 }

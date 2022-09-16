@@ -46,7 +46,7 @@ io.on('connection', function (socket) {
         io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor, emitter })
     })
     socket.on("clear-board", ({ socketID, emitter }) => {
-        console.log(socketID)
+        // console.log(socketID)
         io.to(`${socketID}`).emit("clear", (emitter)) // ask sockets to clear the board
 
         roomList[socketID].drawBoardArray = []
@@ -60,7 +60,7 @@ io.on('connection', function (socket) {
 
 
     socket.on("chat", ({ content, username, socketID }) => {
-        console.log(socketID)
+        // console.log(socketID)
         console.log(`${username}: ${content}`)
         io.to(`${socketID}`).emit("chat", ({ content, username }))
     })
@@ -76,7 +76,7 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [username], drawBoardArray: [], start: false, Drawing: username })
         io.emit('new-room', { id });
         socket.join(`${id}`)
         id++
@@ -97,7 +97,7 @@ io.on('connection', function (socket) {
 
     socket.on('start-game', (id) => {
 
-        console.log(id)
+        // console.log(id)
         io.to(`${id}`).emit('launch-game', (id))
         roomList[id].start = true
         console.log(roomList[id])

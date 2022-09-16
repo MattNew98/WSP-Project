@@ -1,7 +1,7 @@
 body {
     background-image: url(./img/background3.jpg);
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     
     display: flex;
     flex-wrap: wrap;
@@ -57,7 +57,7 @@ body {
     box-shadow: 0 0 0 3px #27287c87;
     border-radius: 15px;
     padding: 10px;
-    height: 180px;
+    height: 195px;
     width: 280px;
     display: flex;
     flex-direction: column;

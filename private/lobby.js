@@ -7,6 +7,7 @@ const roomButtons = document.querySelector('.room-buttons')
 let result
 let username
 let socketID
+let playerList = []
 
 async function getProfile() {
     const res = await fetch('/user/me')
@@ -50,8 +51,9 @@ window.onload = () => { socket.emit('fetch-room') }
 
 async function displayRoom(id, roomName, players, start) {
 
+// console.log("AHHA" +players[0].name)
 
-    if (players[0] == username) {
+    if (players[0].name == username) {
         roomContainer.innerHTML += await `
     <div class="room${id}">
     <div>${roomName}</div>
@@ -75,19 +77,20 @@ async function displayRoom(id, roomName, players, start) {
     <div>Game In Progress</div>
     </div>
     `
-    } else if (players[1] == username || players[2] == username || players[3] == username) {
-        roomContainer.innerHTML += await `
-        <div class="room${id}">
-        <div>${roomName}</div>
-        <div class="room-${id}-players">
-    
-        </div>
-        <div class="room-${id}-buttons">
-        <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
-        </div>
-        </div>
-        `
-    }
+    } 
+    // else if (players[1].name == username || players[2].name == username || players[3].name == username) {
+    //     roomContainer.innerHTML += await `
+    //     <div class="room${id}">
+    //     <div>${roomName}</div>
+    //     <div class="room-${id}-players">
+
+    //     </div>
+    //     <div class="room-${id}-buttons">
+    //     <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
+    //     </div>
+    //     </div>
+    //     `
+    // }
     else {
         roomContainer.innerHTML += await `
     <div class="room${id}" >
@@ -106,7 +109,7 @@ async function displayRoom(id, roomName, players, start) {
     for (let player of players) {
         let playerContainer = document.querySelector(`.room-${id}-players`)
         playerContainer.innerHTML += `
-        <div>P${p}:${player}</div>
+        <div>P${p}:${player.name}</div>
         `
         p++
     }
@@ -142,12 +145,12 @@ function removeRoom(username) {
 }
 
 socket.on('launch-game', (id) => {
-    if (SERVER_IP[0]== "l") {
+    if (SERVER_IP[0] == "l") {
         location.assign(`/game.html?id=${id}`)
     } else {
         location.assign(`http://${SERVER_IP}/game.html?id=${id}`)
     }
-    
+
 })
 socket.on('room-started', (id) => {
 
@@ -161,9 +164,9 @@ socket.on('new-room', (data) => {
 })
 
 socket.on('update-room', ({ roomList }) => {
+    console.log("test" + roomList)
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
-        // console.log(room)
-        displayRoom(room.id, room.roomName, room.players, room.start)
+        displayRoom(room.id, room.roomName,room.players, room.start)
     }
 })

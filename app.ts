@@ -222,32 +222,46 @@ io.on('connection', function (socket) {
         // let emitter = data.emitter
         for (let room of roomList) {
             if (room.id == id) {
+
                 room.barWidth = width
-                let emitter = room.drawingPlayer
-                io.to(`${id}`).emit("move-bar", ({ width, emitter }))
-            }
-        }
-
-    })
-
-    socket.on('next-turn', (data) => {
-        console.log(data)
-        let id = data.socketID
-        for (let room of roomList) {
-            if (room.id == id) {
-                room.turn++
-                let turn = room.turn
-                if (turn >= room.players.length) {
-                    turn = turn % room.players.length
+                if (room.barWidth == 0) {
+                    room.turn++
+                    let turn = room.turn
+                    if (turn >= room.players.length) {
+                        turn = turn % room.players.length
+                    }
+                    room.drawingPlayer = room.players[turn].name
+                    console.log(room.drawingPlayer)
+                    room.barWidth = 100
+                    io.to(`${id}`).emit("next-turn")
+                } else {
+                    let emitter = room.drawingPlayer
+                    io.to(`${id}`).emit("move-bar", ({ width, emitter }))
                 }
-                room.drawingPlayer = room.players[turn].name
-                console.log(room.drawingPlayer)
-                room.barWidth = 100
-                io.to(`${id}}`).emit("next-turn", (room))
+
             }
         }
 
     })
+
+    // socket.on('next-turn', (data) => {
+    //     console.log(data)
+    //     let id = data.socketID
+    //     for (let room of roomList) {
+    //         if (room.id == id) {
+    //             room.turn++
+    //             let turn = room.turn
+    //             if (turn >= room.players.length) {
+    //                 turn = turn % room.players.length
+    //             }
+    //             room.drawingPlayer = room.players[turn].name
+    //             console.log(room.drawingPlayer)
+    //             room.barWidth = 100
+    //             io.to(`${id}}`).emit("next-turn", (room))
+    //         }
+    //     }
+
+    // })
 
 })
 

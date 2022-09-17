@@ -83,6 +83,8 @@ function setup() {
 }
 
 socket.on('show-room-data', (roomData) => {
+
+  document.querySelector('.topic-container').innerHTML = " "
   console.log(roomData.drawingPlayer)
   topicsArray = roomData.topics
   players = roomData.players
@@ -102,11 +104,13 @@ socket.on('show-room-data', (roomData) => {
     <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
     `
   } else {
+    drawable = false
     let numberOfCharacters = roomData.topics[turnCounter].length
     let guess = " "
     for (let i = 0; i < numberOfCharacters; i++) {
       guess += " _ "
     }
+
     document.querySelector('.topic-container').innerHTML = `
     <div class="topic">${roomData.drawingPlayer} is drawing:</div>
     
@@ -117,27 +121,9 @@ socket.on('show-room-data', (roomData) => {
 })
 
 
-socket.on('next-turn', (roomData) => {
-  if (roomData.drawingPlayer == username) {
-    move(roomData.barWidth)
-    drawable = true
-
-    document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
-    `
-  } else {
-    let numberOfCharacters = roomData.topics[turnCounter].length
-    let guess = " "
-    for (let i = 0; i < numberOfCharacters; i++) {
-      guess += " _ "
-    }
-    document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">${roomData.drawingPlayer} is drawing:</div>
-    
-    <div>${guess}</div>
-    `
-  }
-
+socket.on('next-turn', () => {
+  console.log('next-turn')
+  socket.emit('fetch-room-data', (socketID))
 
 })
 
@@ -217,9 +203,7 @@ socket.on('move-bar', (data) => {
   if (username === emitter) {
     return
   }
-  if (width == 0) {
-    socket.emit('next-turn', ({ socketID, turnCounter }))
-  }
+
   let elem = document.getElementById("myBar");
   elem.style.width = width + "%";
 })

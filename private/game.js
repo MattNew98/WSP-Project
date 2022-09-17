@@ -81,7 +81,7 @@ socket.on('show-room-data', (roomData) => {
   topicsArray = roomData.topics
   players = roomData.players
   for (let player of players) {
-    playerScore.push({ name: player.name, score: player.score, userIcon: userIcon })
+    playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon })
   }
   createScoreboard()
 
@@ -497,11 +497,17 @@ function color_to_rgba(color) {
 
 // create Scoreboard element
 function createScoreboard() {
-  console.log(playerScore[0].userIcon)
+  console.log(playerScore)
+
+  let scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
+    return parseFloat(b.score) - parseFloat(a.score)
+  })
+
+  console.log(scoreboardInAscendingOrder)
+
   html = ''
-  for (let i = 0; i < playerScore.length; i++) {
-    console.log(playerScore[i])
-    html += `<div class="player-info"><img class="scoreBoardIcon" src="${playerScore[0].userIcon}">${playerScore[i].name}: ${playerScore[i].score}</div>`
+  for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
+    html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
   }
   document.querySelector("#scrollScore").innerHTML = html
 }

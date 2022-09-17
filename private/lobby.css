@@ -60,8 +60,8 @@ body {
 
 
 .room-background {
-    background-color: #436985;
-    height: 50%;
+    /* background-color: #436985; */
+    height: 100%;
     padding: 3px;
     display: flex;
     flex-wrap: wrap;
@@ -84,14 +84,31 @@ body {
 
 
 
-.room {
-    background-color: #ffffff;
+.roomStyle0 {
+    background-color: lightcoral;
     width: 600px;
     height: 200px;
     margin: 10px;
     border-radius: 15px;
     font-size: 30px;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.roomStyle1 {
+    background-color: lightblue;
+    width: 600px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 15px;
+    font-size: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-decoration: none;

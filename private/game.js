@@ -11,14 +11,15 @@ let socketID
 let userIcon
 let playerScore = []
 let drawable = false
-let turnCounter = 0
 let topicsArray
 let guessedTheWord = false
 let timer = document.querySelector('.timer')
+let turnCounter
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 socketID = id
+
 
 // GAME FLOW:
 // Game loaded start 321 countdown on front end
@@ -82,16 +83,19 @@ function setup() {
 }
 
 socket.on('show-room-data', (roomData) => {
+  console.log(roomData.drawingPlayer)
   topicsArray = roomData.topics
   players = roomData.players
   playerScore = []
+  turnCounter = roomData.turn
   for (let player of players) {
     playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon })
   }
   createScoreboard()
 
 
-  if (roomData.drawing == username) {
+  if (roomData.drawingPlayer == username) {
+    move(roomData.barWidth)
     drawable = true
 
     document.querySelector('.topic-container').innerHTML = `
@@ -104,7 +108,7 @@ socket.on('show-room-data', (roomData) => {
       guess += " _ "
     }
     document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">${players[turnCounter].name} is drawing:</div>
+    <div class="topic">${roomData.drawingPlayer} is drawing:</div>
     
     <div>${guess}</div>
     `
@@ -113,7 +117,29 @@ socket.on('show-room-data', (roomData) => {
 })
 
 
+socket.on('next-turn', (roomData) => {
+  if (roomData.drawingPlayer == username) {
+    move(roomData.barWidth)
+    drawable = true
 
+    document.querySelector('.topic-container').innerHTML = `
+    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
+    `
+  } else {
+    let numberOfCharacters = roomData.topics[turnCounter].length
+    let guess = " "
+    for (let i = 0; i < numberOfCharacters; i++) {
+      guess += " _ "
+    }
+    document.querySelector('.topic-container').innerHTML = `
+    <div class="topic">${roomData.drawingPlayer} is drawing:</div>
+    
+    <div>${guess}</div>
+    `
+  }
+
+
+})
 
 ////// create comment box
 async function createChats() {
@@ -166,27 +192,37 @@ socket.on('score-update', (data) => {
 
 
 // progress bar
-function move() {
-
+function move(width) {
+  let emitter = username
   let elem = document.getElementById("myBar");
-  let width = 100
-  let id = setInterval(frame, 200); // change time here //
+  // let width = 100
+  let id = setInterval(frame, 50); // change time here //
   function frame() {
     if (width <= 0) {
-      width = 100;
+      return
     } else {
       width--;
-      /////
-      // socket.emit('bar', ({ width }))
-
+      socket.emit('bar-moving', ({ width, socketID, emitter }))
       elem.style.width = width + "%";
     }
-    socket.emit('send-bar-status', ({ width }))
   }
 
 }
-move()
 
+socket.on('move-bar', (data) => {
+  let width = data.width
+  let emitter = data.emitter
+
+
+  if (username === emitter) {
+    return
+  }
+  if (width == 0) {
+    socket.emit('next-turn', ({ socketID, turnCounter }))
+  }
+  let elem = document.getElementById("myBar");
+  elem.style.width = width + "%";
+})
 
 //SOCKETS
 //接收server送來的command
@@ -221,12 +257,6 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
 })
 
 // UI:
-socket.on('bar-Start', (message) => {
-  move(100)
-})
-socket.on('show-bar-status', (width) => {
-  move(width)
-})
 
 socket.on('host-left', () => {
   window.alert("This host has left the game. Redirecting to lobby...")

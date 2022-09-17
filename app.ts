@@ -90,12 +90,31 @@ io.on('connection', function (socket) {
     })
 
     socket.on('join-room', (data) => {
+        let inRoom = false
         let username = data.username
         const i = data.id
-        roomList[i].players.push({ name: username, score: 0 })
-        io.emit('update-room', ({ roomList }));
-        socket.join(`${i}`)
-        console.log(roomList[0].players)
+
+        for (let room of roomList) { //check if user is already a host
+            console.log(room)
+            for (let player of room.players) {
+                if (player.name === username) {
+                    socket.emit('join-room-error', ('You are in another room. \r Please leave your room and try again.'))
+                    inRoom = true
+                }
+            }
+        }
+
+        if (inRoom == true) {
+
+        } else {
+            if (roomList[i]) {
+                roomList[i].players.push({ name: username, score: 0 })
+                io.emit('update-room', ({ roomList }));
+                socket.join(`${i}`)
+            }
+        }
+
+
 
     })
 

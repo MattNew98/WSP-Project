@@ -53,7 +53,12 @@ async function displayRoom(id, roomName, players, start) {
 
     // console.log("AHHA" +players[0].name)
 
-    if (players[0].name == username) {
+    if (players[0].name == username && start != true) {
+
+        roomButtons.innerHTML = `
+    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom()"/>
+    `
+
         roomContainer.innerHTML += `
     <div class="room${id}">
     <div>${roomName}</div>
@@ -77,6 +82,18 @@ async function displayRoom(id, roomName, players, start) {
     <div>Game In Progress</div>
     </div>
     `
+    } else if (isParticipant(username, players)) {
+        roomContainer.innerHTML += await `
+        <div class="room${id}">
+        <div>${roomName}</div>
+        <div class="room-${id}-players">
+
+        </div>
+        <div class="room-${id}-buttons">
+        <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
+        </div>
+        </div>
+        `
     } else {
         roomContainer.innerHTML += `
     <div class="room${id}" >
@@ -100,26 +117,21 @@ async function displayRoom(id, roomName, players, start) {
         p++
     }
 
-    // else if (players[1].name == username || players[2].name == username || players[3].name == username) {
-    //     roomContainer.innerHTML += await `
-    //     <div class="room${id}">
-    //     <div>${roomName}</div>
-    //     <div class="room-${id}-players">
 
-    //     </div>
-    //     <div class="room-${id}-buttons">
-    //     <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
-    //     </div>
-    //     </div>
-    //     `
-    // }
 
 }
 
+function isParticipant(name, players) {
+    for (let player of players) {
+        if (player.name == name) {
+            return true
+        }
+    }
+}
 
 
 function joinGame(id) {
-    console.log(username)
+    // console.log(username)
     socket.emit('join-room', ({ id, username }))
     socketID = id
 }
@@ -136,7 +148,7 @@ function createRoom() {
     `
 }
 
-function removeRoom(username) {
+function removeRoom() {
     // console.log(username)
     socket.emit('remove-room', (username))
     roomButtons.innerHTML = `
@@ -160,10 +172,15 @@ socket.on('new-room', (data) => {
 })
 
 socket.on('update-room', ({ roomList }) => {
-    console.log("test" + roomList)
+    // console.log("test" + roomList)
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
         console.log(room)
         displayRoom(room.id, room.roomName, room.players, room.start)
     }
 })
+
+socket.on('join-room-error', (data) => {
+    window.alert(data)
+}
+)

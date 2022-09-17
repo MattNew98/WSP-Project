@@ -76,12 +76,13 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [], drawBoardArray: [], start: false, drawing: username, topics: [] })
-        roomList[id].players.push({name: username, score: 0})
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0 }], drawBoardArray: [], start: false, drawing: username, topics: [] })
+        // roomList[id].players.push({ name: username, score: 0 })
         io.emit('new-room', { id });
         socket.join(`${id}`)
-        console.log(roomList[id].players)
+        // console.log(roomList[id].players)
         id++
+
     })
 
     socket.on('fetch-room', () => {
@@ -91,7 +92,7 @@ io.on('connection', function (socket) {
     socket.on('join-room', (data) => {
         let username = data.username
         const i = data.id
-        roomList[i].players.push({name: username, score: 0})
+        roomList[i].players.push({ name: username, score: 0 })
         io.emit('update-room', ({ roomList }));
         socket.join(`${i}`)
         console.log(roomList[0].players)
@@ -125,7 +126,7 @@ io.on('connection', function (socket) {
         let index = 0
         for (let room of roomList) {
 
-            if (room.players[0] == username) {
+            if (room.players[0].name == username) {
                 roomList.splice(index, 1)
                 io.emit('update-room', ({ roomList }))
                 return
@@ -136,10 +137,10 @@ io.on('connection', function (socket) {
 
     })
 
-    socket.on('user-scored', ({username, score, socketID}) => {
+    socket.on('user-scored', ({ username, score, socketID }) => {
         // console.log(username, score, socketID)
         console.log("2222222")
-        for(let player of roomList[socketID].players) {
+        for (let player of roomList[socketID].players) {
             if (player.name == username) {
                 player.score = player.score + score
             }

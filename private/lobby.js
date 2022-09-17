@@ -51,10 +51,10 @@ window.onload = () => { socket.emit('fetch-room') }
 
 async function displayRoom(id, roomName, players, start) {
 
-// console.log("AHHA" +players[0].name)
+    // console.log("AHHA" +players[0].name)
 
     if (players[0].name == username) {
-        roomContainer.innerHTML += await `
+        roomContainer.innerHTML += `
     <div class="room${id}">
     <div>${roomName}</div>
     <div class="room-${id}-players">
@@ -68,7 +68,7 @@ async function displayRoom(id, roomName, players, start) {
     } else if (start === true) {
 
 
-        roomContainer.innerHTML += await `
+        roomContainer.innerHTML += `
     <div class="room${id}">
     <div>${roomName}</div>
     <div class="room-${id}-players">
@@ -77,22 +77,8 @@ async function displayRoom(id, roomName, players, start) {
     <div>Game In Progress</div>
     </div>
     `
-    } 
-    // else if (players[1].name == username || players[2].name == username || players[3].name == username) {
-    //     roomContainer.innerHTML += await `
-    //     <div class="room${id}">
-    //     <div>${roomName}</div>
-    //     <div class="room-${id}-players">
-
-    //     </div>
-    //     <div class="room-${id}-buttons">
-    //     <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
-    //     </div>
-    //     </div>
-    //     `
-    // }
-    else {
-        roomContainer.innerHTML += await `
+    } else {
+        roomContainer.innerHTML += `
     <div class="room${id}" >
     <div>${roomName}</div>
     <div class="room-${id}-players">
@@ -113,6 +99,20 @@ async function displayRoom(id, roomName, players, start) {
         `
         p++
     }
+
+    // else if (players[1].name == username || players[2].name == username || players[3].name == username) {
+    //     roomContainer.innerHTML += await `
+    //     <div class="room${id}">
+    //     <div>${roomName}</div>
+    //     <div class="room-${id}-players">
+
+    //     </div>
+    //     <div class="room-${id}-buttons">
+    //     <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
+    //     </div>
+    //     </div>
+    //     `
+    // }
 
 }
 
@@ -152,10 +152,6 @@ socket.on('launch-game', (id) => {
     }
 
 })
-socket.on('room-started', (id) => {
-
-
-})
 
 socket.on('new-room', (data) => {
     // console.log(data.id)
@@ -167,6 +163,7 @@ socket.on('update-room', ({ roomList }) => {
     console.log("test" + roomList)
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
-        displayRoom(room.id, room.roomName,room.players, room.start)
+        console.log(room)
+        displayRoom(room.id, room.roomName, room.players, room.start)
     }
 })

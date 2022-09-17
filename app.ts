@@ -76,7 +76,7 @@ io.on('connection', function (socket) {
 
     socket.on('create-room', ({ username, userIcon }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon}], drawBoardArray: [], start: false, drawing: username, topics: [] })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawing: username, topics: [] })
         // roomList[id].players.push({ name: username, score: 0 })
         io.emit('new-room', { id });
         socket.join(`${id}`)
@@ -96,7 +96,7 @@ io.on('connection', function (socket) {
         const i = data.id
 
         for (let room of roomList) { //check if user is already a host
-            console.log(room)
+            // console.log(room)
             for (let player of room.players) {
                 if (player.name === username) {
                     socket.emit('join-room-error', ('You are in another room. \r Please leave your room and try again.'))
@@ -109,7 +109,7 @@ io.on('connection', function (socket) {
 
         } else {
             if (roomList[i]) {
-                roomList[i].players.push({ name: username, score: 0 , userIcon})
+                roomList[i].players.push({ name: username, score: 0, userIcon })
                 io.emit('update-room', ({ roomList }));
                 socket.join(`${i}`)
             }
@@ -120,6 +120,7 @@ io.on('connection', function (socket) {
     })
 
     socket.on('start-game', async (id) => {
+        if (!roomList[id]) return
         let topicAmount = roomList[id].players.length * 4
         for (let x = 0; x < topicAmount; x++) {
             let randomTopic = Math.floor(Math.random() * 55) + 1
@@ -131,7 +132,7 @@ io.on('connection', function (socket) {
         // console.log(id)
         io.to(`${id}`).emit('launch-game', (id))
         roomList[id].start = true
-        console.log(roomList[id])
+        // console.log(roomList[id])
         io.emit('update-room', ({ roomList }));
     })
 
@@ -149,7 +150,7 @@ io.on('connection', function (socket) {
             if (room.players[0].name == username) {
                 roomList.splice(index, 1)
                 io.emit('update-room', ({ roomList }))
-                return
+
             } else { index++ }
 
         }
@@ -159,7 +160,7 @@ io.on('connection', function (socket) {
 
     socket.on('user-scored', ({ username, score, socketID }) => {
         // console.log(username, score, socketID)
-        console.log("2222222")
+        // console.log("2222222")
         for (let player of roomList[socketID].players) {
             if (player.name == username) {
                 player.score = player.score + score
@@ -170,7 +171,38 @@ io.on('connection', function (socket) {
 
     })
 
+    socket.on('leave-game', ({ username, socketID }) => {
+        let index = 0
+        let p = 0
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                if (room.players[0].name == username) {
+                    io.to(`${socketID}`).emit('host-left')
+                    roomList.splice(index, 1)
+                    io.emit('update-room', ({ roomList }))
 
+                } else {
+                    for (let player of room.players) {
+
+                        if (player.name == username) {
+                            io.to(`${socketID}`).emit('player-left')
+                            room.players.splice(p, 1)
+                            console.log(room.players)
+
+                            io.emit('update-room', ({ roomList }))
+                            console.log('Player:' + username + ' has left the game')
+
+                        }
+                        p++
+                    }
+                }
+
+
+            }
+            index++
+        }
+
+    })
 })
 
 app.use(express.json())

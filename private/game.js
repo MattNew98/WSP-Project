@@ -80,6 +80,7 @@ function setup() {
 socket.on('show-room-data', (roomData) => {
   topicsArray = roomData.topics
   players = roomData.players
+  playerScore = []
   for (let player of players) {
     playerScore.push({ name: player.name, score: player.score, userIcon: userIcon })
   }
@@ -212,6 +213,19 @@ socket.on('show-bar-status', (width) => {
   move(width)
 })
 
+socket.on('host-left', () => {
+  if (SERVER_IP[0] == "l") {
+    location.assign(`/lobby.html`)
+  } else {
+    location.assign(`http://${SERVER_IP}/lobby.html`)
+  }
+})
+
+socket.on('player-left', () => {
+  socket.emit('fetch-room-data', (socketID))
+  // createScoreboard()
+})
+
 // GAME CONTROLS
 function changeColor(color) {
   if (color === 'red') {
@@ -289,7 +303,6 @@ function keyPressed() {//save canvas as png
     saveCanvas('myart.png');
   }
 }
-
 
 // Function for fillBucket
 function flood_fill(original_x, original_y, color) {
@@ -506,5 +519,12 @@ function createScoreboard() {
   document.querySelector("#scrollScore").innerHTML = html
 }
 
+
+function leaveGame() {
+  socket.emit("leave-game", { username, socketID })
+  let content = `has left the game.`
+  socket.emit('chat', ({ content, username, socketID }))
+
+}
 
 

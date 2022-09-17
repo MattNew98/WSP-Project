@@ -35,51 +35,12 @@ const server = new http.Server(app);
 export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
-    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID, emitter }) => {
-        roomList[socketID].drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
-        io.to(`${socketID}`).emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter })
-        // console.log(emits)
-
-
-    })
-    socket.on('new-fill', ({ mouseX, mouseY, selectedColor, socketID, emitter }) => {
-        io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor, emitter })
-    })
-    socket.on("clear-board", ({ socketID, emitter }) => {
-        // console.log(socketID)
-        io.to(`${socketID}`).emit("clear", (emitter)) // ask sockets to clear the board
-
-        roomList[socketID].drawBoardArray = []
-    }
-    )
-
-    socket.on("get-board", (socketID) => {
-        for (let room of roomList) {
-            if (room.id == socketID) {
-                io.to(`${socketID}`).emit("show-board", (room.drawBoardArray)) //send drawBoardArray to js//
-            }
-        }
-
+    //LOBBY SOCKETS
+    socket.on('fetch-room', () => {//update rooms in lobby
+        io.emit('update-room', ({ roomList }));
     })
 
-
-
-    socket.on("chat", ({ content, username, socketID }) => {
-        // console.log(socketID)
-        console.log(`${username}: ${content}`)
-        io.to(`${socketID}`).emit("chat", ({ content, username }))
-    })
-    socket.on("barStart", () => {
-
-        if (counter > 1) {
-            return
-        }
-        counter
-        io.emit("bar-Start")
-
-    })
-
-    socket.on('create-room', ({ username, userIcon }) => {
+    socket.on('create-room', ({ username, userIcon }) => {//create a new room
         let inRoom = false
         for (let room of roomList) {
             for (let player of room.players) {
@@ -98,15 +59,19 @@ io.on('connection', function (socket) {
             // console.log(roomList[id].players)
             id++
         }
-
-
     })
 
-    socket.on('fetch-room', () => {
-        io.emit('update-room', ({ roomList }));
+    socket.on('remove-room', (username) => {//remove room you created
+        let index = 0
+        for (let room of roomList) {
+            if (room.players[0].name == username) {
+                roomList.splice(index, 1)
+                io.emit('update-room', ({ roomList }))
+            } else { index++ }
+        }
     })
 
-    socket.on('join-room', (data) => {
+    socket.on('join-room', (data) => {//join a room
         let inRoom = false
         let username = data.username
         let userIcon = data.userIcon
@@ -131,7 +96,7 @@ io.on('connection', function (socket) {
         }
     })
 
-    socket.on('start-game', async (id) => {
+    socket.on('start-game', async (id) => {//start the game
         for (let room of roomList) {
             if (room.id == id) {
                 let topicAmount = room.players.length * 4
@@ -147,62 +112,10 @@ io.on('connection', function (socket) {
                 io.emit('update-room', ({ roomList }));
             }
         }
-
-        // console.log(id)
-        // io.to(`${id}`).emit('launch-game', (id))
-        // roomList[id].start = true
-        // // console.log(roomList[id])
-        // io.emit('update-room', ({ roomList }));
     })
 
-    socket.on('fetch-room-data', (id) => {
-        for (let room of roomList) {
-            if (room.id === id) {
-                socket.join(`${id}`)
-                socket.emit('show-room-data', (room))
-            }
-        }
-    })
-
-    socket.on('remove-room', (username) => {
-
-
-        let index = 0
-        for (let room of roomList) {
-
-            if (room.players[0].name == username) {
-                roomList.splice(index, 1)
-
-                io.emit('update-room', ({ roomList }))
-
-            } else { index++ }
-
-        }
-
-
-    })
-
-    socket.on('user-scored', ({ username, score, socketID }) => {
-        // console.log(username, score, socketID)
-        // console.log("2222222")
-        for (let room of roomList) {
-            if (room.id == socketID) {
-                for (let player of room.players) {
-                    if (player.name == username) {
-                        player.score = player.score + score
-                    }
-                }
-                let players = room.players
-                io.to(`${socketID}`).emit('score-update', (players))
-            }
-        }
-
-
-
-    })
-
-    socket.on('leave-game', (data) => {
-        console.log(data)
+    socket.on('leave-game', (data) => {//leave the game
+        // console.log(data)
         let socketID = data.id
         let username = data.username
         let index = 0
@@ -216,26 +129,91 @@ io.on('connection', function (socket) {
 
                 } else {
                     for (let player of room.players) {
-
                         if (player.name == username) {
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
-                            console.log(room.players)
-
                             io.emit('update-room', ({ roomList }))
-                            console.log('Player:' + username + ' has left the game')
-
+                            // console.log('Player:' + username + ' has left the game')
                         }
                         p++
                     }
                 }
-
-
             }
             index++
         }
-
     })
+
+
+    //GAME SOCKETS
+    socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID, emitter }) => {//standard drawing
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                room.drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
+                io.to(`${socketID}`).emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter })
+            }
+        }
+    })
+
+    socket.on('new-fill', ({ mouseX, mouseY, selectedColor, socketID, emitter }) => {//fill bucket
+        io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor, emitter })
+    })
+
+    socket.on("clear-board", ({ socketID, emitter }) => {//clear drawBoard
+        // console.log(socketID)
+        io.to(`${socketID}`).emit("clear", (emitter)) // ask sockets to clear the board
+        roomList[socketID].drawBoardArray = []
+    }
+    )
+
+    socket.on("get-board", (socketID) => {//load drawBoard
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                io.to(`${socketID}`).emit("show-board", (room.drawBoardArray)) //send drawBoardArray to js//
+            }
+        }
+    })
+
+    socket.on("chat", ({ content, username, socketID }) => {//game chat
+        // console.log(socketID)
+        console.log(`${username}: ${content}`)
+        io.to(`${socketID}`).emit("chat", ({ content, username }))
+    })
+
+    socket.on("barStart", () => {
+        if (counter > 1) {
+            return
+        }
+        counter
+        io.emit("bar-Start")
+    })
+
+    socket.on('fetch-room-data', (id) => {//get latest room data
+        for (let room of roomList) {
+            if (room.id === id) {
+                socket.join(`${id}`)
+                socket.emit('show-room-data', (room))
+            }
+        }
+    })
+
+
+
+    socket.on('user-scored', ({ username, score, socketID }) => {//update user scores
+        // console.log(username, score, socketID)
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                for (let player of room.players) {
+                    if (player.name == username) {
+                        player.score = player.score + score
+                    }
+                }
+                let players = room.players
+                io.to(`${socketID}`).emit('score-update', (players))
+            }
+        }
+    })
+
+
 })
 
 app.use(express.json())

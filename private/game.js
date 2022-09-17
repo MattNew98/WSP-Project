@@ -91,7 +91,7 @@ socket.on('show-room-data', (roomData) => {
     drawable = true
 
     document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">Your Topic is ${roomData.topics[0]} </div>
+    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[0]}</div> </div>
     `
   } else {
     document.querySelector('.topic-container').innerHTML = `
@@ -116,11 +116,11 @@ async function createChats() {
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
         let score = 1
-        console.log("3333333")
+        // console.log("3333333")
         socket.emit('user-scored', ({ username, score, socketID }))
       }
       form.reset()
-      console.log(socketID)
+      // console.log(socketID)
     }
   })
 }
@@ -128,11 +128,14 @@ createChats()
 socket.on('chat', ({ content, username }) => {
   const html = document.querySelector('.chatroom-container')
   if (content == topicsArray[turnCounter]) {
-    html.innerHTML += `<div>${username} guessed the word</div>`
+    html.innerHTML += `<div style="color: lightgreen;">${username} guessed the word</div>`
+    html.innerHTML += `<img src="/img/sticker.png" width="100px" height="100px"></img>`
+  } else if (content == "has left the game.") {
+    html.innerHTML += `<div style="color: red;">${username} ${content}</div>`
   } else {
-    html.innerHTML += `<div>${username}: ${content}</div>`
+    html.innerHTML += `<div> ${username}: ${content}</div>`
   }
-  console.log(`${username}: ${content}`)
+  // console.log(`${username}: ${content} `)
   // always scroll to bottom
   let messageBody = document.querySelector('#scroll');
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -216,7 +219,7 @@ socket.on('show-bar-status', (width) => {
 socket.on('host-left', () => {
   if (SERVER_IP[0] == "l") {
     window.location.replace(`/lobby.html`);
-    // location.assign(`/lobby.html`)
+    // location.assign(`/ lobby.html`)
   } else {
     window.location.replace(`http://${SERVER_IP}/lobby.html`);
     // location.assign(`http://${SERVER_IP}/lobby.html`)
@@ -529,7 +532,8 @@ function createScoreboard() {
 
 
 function leaveGame() {
-  socket.emit("leave-game", { username, socketID })
+  let id = socketID
+  socket.emit("leave-game", ({ username, id }))
   let content = `has left the game.`
   socket.emit('chat', ({ content, username, socketID }))
 

@@ -80,13 +80,25 @@ io.on('connection', function (socket) {
     })
 
     socket.on('create-room', ({ username, userIcon }) => {
+        let inRoom = false
+        for (let room of roomList) {
+            for (let player of room.players) {
+                if (player.name === username) {
+                    inRoom = true
+                    socket.emit('room-error', ('You are in another room. \r Please leave your room and try again.'))
+                }
+            }
+        }
+        if (inRoom == false) {
+            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawing: username, topics: [] })
+            // roomList[id].players.push({ name: username, score: 0 })
+            io.emit('new-room', { id });
+            socket.emit('room-created')
+            socket.join(`${id}`)
+            // console.log(roomList[id].players)
+            id++
+        }
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawing: username, topics: [] })
-        // roomList[id].players.push({ name: username, score: 0 })
-        io.emit('new-room', { id });
-        socket.join(`${id}`)
-        // console.log(roomList[id].players)
-        id++
 
     })
 
@@ -95,44 +107,28 @@ io.on('connection', function (socket) {
     })
 
     socket.on('join-room', (data) => {
-
         let inRoom = false
         let username = data.username
         let userIcon = data.userIcon
-        let i = data.id
-        console.log(i)
-        console.log(roomList)
+        let id = data.id
         for (let room of roomList) { //check if user is already a host
             // console.log(room)
             for (let player of room.players) {
                 if (player.name === username) {
-                    socket.emit('join-room-error', ('You are in another room. \r Please leave your room and try again.'))
+                    socket.emit('room-error', ('You are in another room. \r Please leave your room and try again.'))
                     inRoom = true
                 }
             }
         }
-
         if (inRoom == false) {
-
             for (let room of roomList) {
-                if (room.id == i) {
-                    console.log('ok')
+                if (room.id == id) {
                     room.players.push({ name: username, score: 0, userIcon })
                     io.emit('update-room', ({ roomList }));
-                    socket.join(`${i}`)
+                    socket.join(`${id}`)
                 }
             }
-
-            //     if (roomList[i]) {
-            //         console.log('ok')
-            //         roomList[i].players.push({ name: username, score: 0, userIcon })
-            //         io.emit('update-room', ({ roomList }));
-            //         socket.join(`${i}`)
-            //     }
-            // } else return
-
         }
-
     })
 
     socket.on('start-game', async (id) => {
@@ -189,17 +185,26 @@ io.on('connection', function (socket) {
     socket.on('user-scored', ({ username, score, socketID }) => {
         // console.log(username, score, socketID)
         // console.log("2222222")
-        for (let player of roomList[socketID].players) {
-            if (player.name == username) {
-                player.score = player.score + score
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                for (let player of room.players) {
+                    if (player.name == username) {
+                        player.score = player.score + score
+                    }
+                }
+                let players = room.players
+                io.to(`${socketID}`).emit('score-update', (players))
             }
         }
-        let players = roomList[socketID].players
-        io.to(`${socketID}`).emit('score-update', (players))
+
+
 
     })
 
-    socket.on('leave-game', ({ username, socketID }) => {
+    socket.on('leave-game', (data) => {
+        console.log(data)
+        let socketID = data.id
+        let username = data.username
         let index = 0
         let p = 0
         for (let room of roomList) {

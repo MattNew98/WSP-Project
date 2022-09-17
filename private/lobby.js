@@ -137,6 +137,11 @@ function joinGame(id) {
     socketID = id
 }
 
+function leaveGame(id) {
+    socket.emit('leave-game', ({ username, id }))
+    socketID = null
+}
+
 function startGame(id) {
     socket.emit('start-game', (id))
 }
@@ -144,9 +149,7 @@ function startGame(id) {
 
 function createRoom() {
     socket.emit('create-room', ({ username, userIcon }))
-    roomButtons.innerHTML = `
-    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
-    `
+
 }
 
 function removeRoom() {
@@ -181,7 +184,13 @@ socket.on('update-room', ({ roomList }) => {
     }
 })
 
-socket.on('join-room-error', (data) => {
+socket.on('room-error', (data) => {
     window.alert(data)
 }
 )
+
+socket.on('room-created', () => {
+    roomButtons.innerHTML = `
+    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
+    `
+})

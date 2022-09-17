@@ -46,7 +46,7 @@ body {
     font-size: 1rem;
     text-decoration: none;
     padding-left: 1rem;
-    margin: 10px;
+    margin: 3px;
 
 }
 
@@ -100,7 +100,7 @@ body {
     box-shadow: 0 0 0 3px #27287c87;
     border-radius: 15px;
     padding: 5px;
-    height: 500px;
+    height: 513px;
     width: 300px;
     display: flex;
     align-content: center;

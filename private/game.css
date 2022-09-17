@@ -76,10 +76,8 @@ canvas {
     height: 45px;
     width: 1100px;
     background-color: rgb(60, 150, 105);
-}
-
-.topic-container {
     display: flex;
+    justify-content: center;
 }
 
 .controls-container {
@@ -192,6 +190,7 @@ canvas {
 
 .user-name {
     padding-left: 10px;
+    color: red;
 }
 
 .chatroom-container {
@@ -249,4 +248,8 @@ canvas {
     border-radius: 25px;
     margin-right: 8px;
 
+}
+.topic {
+    display: flex;
+    align-items: center;
 }

@@ -52,11 +52,9 @@ io.on('connection', function (socket) {
         }
         if (inRoom == false) {
             roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawing: username, topics: [] })
-            // roomList[id].players.push({ name: username, score: 0 })
             io.emit('new-room', { id });
             socket.emit('room-created')
             socket.join(`${id}`)
-            // console.log(roomList[id].players)
             id++
         }
     })
@@ -112,7 +110,6 @@ io.on('connection', function (socket) {
                 }
                 io.to(`${id}`).emit('launch-game', (id))
                 room.start = true
-                // console.log(roomList[id])
                 io.emit('update-room', ({ roomList }));
             }
         }
@@ -150,22 +147,34 @@ io.on('connection', function (socket) {
 
     //GAME SOCKETS
     socket.on("new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, socketID, emitter }) => {//standard drawing
+        let fill = false
         for (let room of roomList) {
             if (room.id == socketID) {
-                room.drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight });//push current emit data to array
+                room.drawBoardArray.push({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, fill });//push current emit data to array
                 io.to(`${socketID}`).emit("draw-new-line", { mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter })
             }
         }
     })
 
     socket.on('new-fill', ({ mouseX, mouseY, selectedColor, socketID, emitter }) => {//fill bucket
-        io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor, emitter })
+        let fill = true
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                room.drawBoardArray.push({ mouseX, mouseY, selectedColor, fill });//push current emit data to array
+                io.to(`${socketID}`).emit('draw-new-fill', { mouseX, mouseY, selectedColor, emitter })
+            }
+        }
+
     })
 
     socket.on("clear-board", ({ socketID, emitter }) => {//clear drawBoard
         // console.log(socketID)
         io.to(`${socketID}`).emit("clear", (emitter)) // ask sockets to clear the board
-        roomList[socketID].drawBoardArray = []
+        for (let room of roomList) {
+            if (room.id == socketID) {
+                room.drawBoardArray = []
+            }
+        }
     }
     )
 

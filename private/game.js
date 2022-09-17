@@ -1,4 +1,3 @@
-
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
 let SERVER_IP = "localhost:8080"
 let selectedColor = '#000000' // default selected color
@@ -14,7 +13,7 @@ let playerScore = []
 let drawable = false
 let turnCounter = 0
 let topicsArray
-
+let guessedTheWord = false
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
@@ -66,9 +65,13 @@ function setup() {
   socket.on("show-board", (drawBoardArray) => {
     let boardArray = drawBoardArray;
     for (let emit of boardArray) {
-      stroke(emit.selectedColor)
-      strokeWeight(emit.selectedStrokeWeight)
-      line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
+      if (emit.fill == false) {
+        stroke(emit.selectedColor)
+        strokeWeight(emit.selectedStrokeWeight)
+        line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
+      } else if (emit.fill == true) {
+        flood_fill(floor(emit.mouseX), floor(emit.mouseY), color_to_rgba(emit.selectedColor))
+      }
     }
   })
   canvas = document.getElementById("defaultCanvas0")//get canvas element
@@ -120,10 +123,13 @@ async function createChats() {
     const form = e.target
     const content = form.chat.value
     if (drawable == false) {
+      if (guessedTheWord && content == topicsArray[turnCounter]) {
+        return
+      }
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
         let score = 1
-        // console.log("3333333")
+        guessedTheWord = true
         socket.emit('user-scored', ({ username, score, socketID }))
       }
       form.reset()
@@ -134,6 +140,7 @@ async function createChats() {
 createChats()
 socket.on('chat', ({ content, username }) => {
   const html = document.querySelector('.chatroom-container')
+
   if (content == topicsArray[turnCounter]) {
     html.innerHTML += `<div style="color: lightgreen;">${username} guessed the word</div>`
     html.innerHTML += `<img src="/img/sticker.png" width="100px" height="100px"></img>`
@@ -224,6 +231,7 @@ socket.on('show-bar-status', (width) => {
 })
 
 socket.on('host-left', () => {
+  window.alert("This host has left the game. Redirecting to lobby...")
   if (SERVER_IP[0] == "l") {
     window.location.replace(`/lobby.html`);
     // location.assign(`/ lobby.html`)
@@ -324,7 +332,7 @@ function flood_fill(original_x, original_y, color) {
   original_y = original_y * mouseRatio;
   const width = canvas.width * screenRatio;
   const height = canvas.height * screenRatio;
-  console.log(`CanvasWidth:${canvas.width},CanvasHeight:${canvas.height}`)
+  // console.log(`CanvasWidth:${canvas.width},CanvasHeight:${canvas.height}`)
 
   original_color = ctx.getImageData(original_x, original_y, 1, 1).data;
   original_color = {
@@ -336,10 +344,10 @@ function flood_fill(original_x, original_y, color) {
 
   x = original_x;
   y = original_y;
-  console.log("MouseClicked", x, y)
+  // console.log("MouseClicked", x, y)
 
   boundary_pixels = ctx.getImageData(0, 0, width, height);
-  console.log(boundary_pixels)
+  // console.log(boundary_pixels)
 
 
   // console.log(canvas.width, canvas.height)

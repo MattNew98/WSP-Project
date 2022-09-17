@@ -50,7 +50,7 @@ io.on('connection', function (socket) {
             }
         }
         if (inRoom == false) {
-            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0 })
+            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 2 })
             io.emit('new-room', { id });
             socket.emit('room-created')
             socket.join(`${id}`)
@@ -100,7 +100,7 @@ io.on('connection', function (socket) {
                     socket.emit('room-error', ("Don't play alone. That's sad :("))
                     return
                 }
-                let topicAmount = room.players.length * 4
+                let topicAmount = room.players.length * 2
                 for (let x = 0; x < topicAmount; x++) {
                     let randomTopic = Math.floor(Math.random() * 55) + 1
                     let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
@@ -230,9 +230,15 @@ io.on('connection', function (socket) {
                     if (turn >= room.players.length) {
                         turn = turn % room.players.length
                     }
+                    if (room.turn / room.round == room.players.length) {
+                        io.to(`${id}`).emit("game-ended")
+                        return
+                    }
+
                     room.drawingPlayer = room.players[turn].name
                     console.log(room.drawingPlayer)
                     room.barWidth = 100
+                    room.drawBoardArray = []
                     io.to(`${id}`).emit("next-turn")
                 } else {
                     let emitter = room.drawingPlayer

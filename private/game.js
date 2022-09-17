@@ -182,7 +182,7 @@ function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
   // let width = 100
-  let id = setInterval(frame, 50); // change time here //
+  let id = setInterval(frame, 200); // change time here //
   function frame() {
     if (width <= 0) {
       return
@@ -206,6 +206,17 @@ socket.on('move-bar', (data) => {
 
   let elem = document.getElementById("myBar");
   elem.style.width = width + "%";
+})
+
+socket.on('game-ended', () => {
+  window.alert("End of Game. Redirecting to lobby...")
+  if (SERVER_IP[0] == "l") {
+    window.location.replace(`/lobby.html`);
+    // location.assign(`/ lobby.html`)
+  } else {
+    window.location.replace(`http://${SERVER_IP}/lobby.html`);
+    // location.assign(`http://${SERVER_IP}/lobby.html`)
+  }
 })
 
 //SOCKETS

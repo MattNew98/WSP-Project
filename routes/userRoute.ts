@@ -19,7 +19,14 @@ userRoutes.post('/register', async (req, res) => {
 		const data = await formParse(req)
 		const newUsername = data.fields.registerUsername
 		const newPassword = data.fields.registerPassword
-		const newImage = data.filename
+		let newImage
+
+		if (data.filename == null) {
+			newImage = `icon${Math.floor(Math.random() * 2) + 1}.png`
+		} else {
+			newImage = data.filename
+		}
+
 		console.log(newUsername, newPassword, newImage)
 
 

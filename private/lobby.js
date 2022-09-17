@@ -157,6 +157,7 @@ function removeRoom() {
     socket.emit('remove-room', (username))
     roomButtons.innerHTML = `
     <input class="create-room-btn" type="button" value="Create Room" onclick="createRoom()"/>
+    <i class="fa-solid fa-plus"></i>
     `
 }
 

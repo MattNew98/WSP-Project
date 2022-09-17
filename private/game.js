@@ -91,11 +91,18 @@ socket.on('show-room-data', (roomData) => {
     drawable = true
 
     document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[0]}</div> </div>
+    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
     `
   } else {
+    let numberOfCharacters = roomData.topics[turnCounter].length
+    let guess = " "
+    for (let i = 0; i < numberOfCharacters; i++) {
+      guess += " _ "
+    }
     document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">${players[turnCounter].name} is drawing</div>
+    <div class="topic">${players[turnCounter].name} is drawing:</div>
+    
+    <div>${guess}</div>
     `
   }
 
@@ -515,14 +522,11 @@ function color_to_rgba(color) {
 
 // create Scoreboard element
 function createScoreboard() {
-  console.log(playerScore)
-
+  // console.log(playerScore)
   let scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
     return parseFloat(b.score) - parseFloat(a.score)
   })
-
-  console.log(scoreboardInAscendingOrder)
-
+  // console.log(scoreboardInAscendingOrder)
   html = ''
   for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
     html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`

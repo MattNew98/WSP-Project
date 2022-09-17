@@ -1,5 +1,6 @@
 body {
-    background-image: url(./img/background.jpeg);
+    background-image: url(./img/background3.jpg);
+    background-size: cover;
     margin: 0;
     height: 100%
 }
@@ -227,6 +228,7 @@ canvas {
     height: 10px;
     background-color: green;
 }
+
 .player-info {
     background-color: aquamarine;
     width: auto;
@@ -237,19 +239,23 @@ canvas {
     justify-content: center;
     font-size: 18px;
 }
+
 #scrollScore {
     overflow-y: scroll;
     scroll-behavior: smooth;
     height: 90%;
 }
-.scoreBoardIcon{
+
+.scoreBoardIcon {
     width: 3rem;
     height: 3rem;
     border-radius: 25px;
     margin-right: 8px;
 
 }
+
 .topic {
+    padding: 5px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }

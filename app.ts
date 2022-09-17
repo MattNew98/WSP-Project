@@ -99,6 +99,10 @@ io.on('connection', function (socket) {
     socket.on('start-game', async (id) => {//start the game
         for (let room of roomList) {
             if (room.id == id) {
+                if (room.players.length <= 1) {
+                    socket.emit('room-error', ("Don't play alone. That's sad :("))
+                    return
+                }
                 let topicAmount = room.players.length * 4
                 for (let x = 0; x < topicAmount; x++) {
                     let randomTopic = Math.floor(Math.random() * 55) + 1

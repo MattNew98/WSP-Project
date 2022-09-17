@@ -160,8 +160,12 @@ io.on('connection', function (socket) {
     })
 
     socket.on('fetch-room-data', (id) => {
-        socket.join(`${id}`)
-        socket.emit('show-room-data', (roomList[id]))
+        for (let room of roomList) {
+            if (room.id === id) {
+                socket.join(`${id}`)
+                socket.emit('show-room-data', (room))
+            }
+        }
     })
 
     socket.on('remove-room', (username) => {

@@ -243,3 +243,10 @@ canvas {
     scroll-behavior: smooth;
     height: 90%;
 }
+.scoreBoardIcon{
+    width: 13vh;
+    height: 13vh;
+    border-radius: 25px;
+    margin-right: 8px;
+
+}

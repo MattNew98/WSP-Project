@@ -74,9 +74,9 @@ io.on('connection', function (socket) {
 
     })
 
-    socket.on('create-room', ({ username }) => {
+    socket.on('create-room', ({ username, userIcon }) => {
 
-        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0 }], drawBoardArray: [], start: false, drawing: username, topics: [] })
+        roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon}], drawBoardArray: [], start: false, drawing: username, topics: [] })
         // roomList[id].players.push({ name: username, score: 0 })
         io.emit('new-room', { id });
         socket.join(`${id}`)
@@ -92,6 +92,7 @@ io.on('connection', function (socket) {
     socket.on('join-room', (data) => {
         let inRoom = false
         let username = data.username
+        let userIcon = data.userIcon
         const i = data.id
 
         for (let room of roomList) { //check if user is already a host
@@ -108,7 +109,7 @@ io.on('connection', function (socket) {
 
         } else {
             if (roomList[i]) {
-                roomList[i].players.push({ name: username, score: 0 })
+                roomList[i].players.push({ name: username, score: 0 , userIcon})
                 io.emit('update-room', ({ roomList }));
                 socket.join(`${i}`)
             }

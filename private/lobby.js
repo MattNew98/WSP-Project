@@ -8,6 +8,7 @@ let result
 let username
 let socketID
 let playerList = []
+let userIcon
 
 async function getProfile() {
     const res = await fetch('/user/me')
@@ -132,7 +133,7 @@ function isParticipant(name, players) {
 
 function joinGame(id) {
     // console.log(username)
-    socket.emit('join-room', ({ id, username }))
+    socket.emit('join-room', ({ id, username, userIcon }))
     socketID = id
 }
 
@@ -142,7 +143,7 @@ function startGame(id) {
 
 
 function createRoom() {
-    socket.emit('create-room', ({ username }))
+    socket.emit('create-room', ({ username, userIcon }))
     roomButtons.innerHTML = `
     <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
     `

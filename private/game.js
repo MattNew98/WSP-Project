@@ -14,6 +14,7 @@ let drawable = false
 let turnCounter = 0
 let topicsArray
 let guessedTheWord = false
+let timer = document.querySelector('.timer')
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
@@ -550,5 +551,4 @@ function leaveGame() {
   socket.emit('chat', ({ content, username, socketID }))
 
 }
-
 

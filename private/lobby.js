@@ -22,7 +22,7 @@ async function getProfile() {
 }
 getProfile()
 
-window.onload = () => { socket.emit('fetch-room') }
+socket.emit('fetch-room')
 
 
 //// Create a new room

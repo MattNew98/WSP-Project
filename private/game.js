@@ -215,9 +215,11 @@ socket.on('show-bar-status', (width) => {
 
 socket.on('host-left', () => {
   if (SERVER_IP[0] == "l") {
-    location.assign(`/lobby.html`)
+    window.location.replace(`/lobby.html`);
+    // location.assign(`/lobby.html`)
   } else {
-    location.assign(`http://${SERVER_IP}/lobby.html`)
+    window.location.replace(`http://${SERVER_IP}/lobby.html`);
+    // location.assign(`http://${SERVER_IP}/lobby.html`)
   }
 })
 

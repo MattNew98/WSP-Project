@@ -166,29 +166,26 @@ socket.on('score-update', (data) => {
 
 
 // progress bar
-function move(width) {
-  let i = 100;
-  if (i == 100) {
-    let elem = document.getElementById("myBar");
+function move() {
 
-    let id = setInterval(frame, 100); // change time here //
-    function frame() {
-      if (width <= 0) {
-        i = 100;
-        width = 100;
-      } else {
-        width--;
-        /////
-        // socket.emit('bar', ({ width }))
+  let elem = document.getElementById("myBar");
+  let width = 100
+  let id = setInterval(frame, 200); // change time here //
+  function frame() {
+    if (width <= 0) {
+      width = 100;
+    } else {
+      width--;
+      /////
+      // socket.emit('bar', ({ width }))
 
-        elem.style.width = width + "%";
-      }
-      socket.emit('send-bar-status', ({ width }))
+      elem.style.width = width + "%";
     }
-
+    socket.emit('send-bar-status', ({ width }))
   }
 
 }
+move()
 
 
 //SOCKETS

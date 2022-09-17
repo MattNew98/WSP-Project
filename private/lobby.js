@@ -53,7 +53,12 @@ socket.emit('fetch-room')
 async function displayRoom(id, roomName, players, start) {
 
     // console.log("AHHA" +players[0].name)
-
+    let odd
+    if (id % 2 === 0) {
+        odd = 0
+    } else {
+        odd = 1
+    }
     if (players[0].name == username && start != true) {
 
         roomButtons.innerHTML = `
@@ -61,7 +66,7 @@ async function displayRoom(id, roomName, players, start) {
     `
 
         roomContainer.innerHTML += `
-    <div class="room${id}">
+    <div class="room${id} roomStyle${odd}" >
     <div>${roomName}</div>
     <div class="room-${id}-players">
 
@@ -75,7 +80,7 @@ async function displayRoom(id, roomName, players, start) {
 
 
         roomContainer.innerHTML += `
-    <div class="room${id}">
+    <div class="room${id} roomStyle${odd}" >
     <div>${roomName}</div>
     <div class="room-${id}-players">
 
@@ -85,7 +90,7 @@ async function displayRoom(id, roomName, players, start) {
     `
     } else if (isParticipant(username, players)) {
         roomContainer.innerHTML += await `
-        <div class="room${id}">
+        <div class="room${id} roomStyle${odd}" >
         <div>${roomName}</div>
         <div class="room-${id}-players">
 
@@ -97,16 +102,16 @@ async function displayRoom(id, roomName, players, start) {
         `
     } else {
         roomContainer.innerHTML += `
-    <div class="room${id}" >
-    <div>${roomName}</div>
-    <div class="room-${id}-players">
+        <div class="room${id} roomStyle${odd}" >
+        <div>${roomName}</div>
+        <div class="room-${id}-players">
  
-    </div>
-    <div class="room-${id}-buttons">
-    <button class="join-button" value="Join" onclick="joinGame(${id})">Join</button>
-    </div>
-    </div>
-    `
+        </div>
+        <div class="room-${id}-buttons">
+        <button class="join-button" value="Join" onclick="joinGame(${id})">Join</button>
+        </div>
+        </div>
+        `
     }
 
     let p = 1
@@ -178,6 +183,7 @@ socket.on('new-room', (data) => {
 
 socket.on('update-room', ({ roomList }) => {
     // console.log("test" + roomList)
+
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
         console.log(room)

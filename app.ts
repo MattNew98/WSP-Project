@@ -62,7 +62,7 @@ io.on('connection', function (socket) {
     socket.on('remove-room', (username) => {//remove room you created
         let index = 0
         for (let room of roomList) {
-            if (room.players[0].name == username) {
+            if (room.players[0].name === username) {
                 roomList.splice(index, 1)
                 io.emit('update-room', ({ roomList }))
             } else { index++ }
@@ -123,14 +123,14 @@ io.on('connection', function (socket) {
         let p = 0
         for (let room of roomList) {
             if (room.id == socketID) {
-                if (room.players[0].name == username) {
+                if (room.players[0].name === username) {
                     io.to(`${socketID}`).emit('host-left')
                     roomList.splice(index, 1)
                     io.emit('update-room', ({ roomList }))
 
                 } else {
                     for (let player of room.players) {
-                        if (player.name == username) {
+                        if (player.name === username) {
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))

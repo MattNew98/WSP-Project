@@ -130,6 +130,18 @@ io.on('connection', function (socket) {
                 } else {
                     for (let player of room.players) {
                         if (player.name === username) {
+                            if (username === room.drawingPlayer) {
+                                let turn = room.turn
+                                turn++
+                                if (turn >= room.players.length) {
+                                    turn = turn % room.players.length
+                                }
+                                room.drawingPlayer = room.players[turn].name
+                                console.log(room.drawingPlayer)
+                                room.barWidth = 100
+                                io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+                                io.to(`${socketID}`).emit("next-turn")
+                            }
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))
@@ -232,11 +244,17 @@ io.on('connection', function (socket) {
                     }
                     if (room.turn / room.round == room.players.length) {
                         io.to(`${id}`).emit("game-ended")
+                        let index = 0
+                        for (let room of roomList) {
+                            if (room.id === id) {
+                                roomList.splice(index, 1)
+                                io.emit('update-room', ({ roomList }))
+                            } else { index++ }
+                        }
                         return
                     }
 
                     room.drawingPlayer = room.players[turn].name
-                    console.log(room.drawingPlayer)
                     room.barWidth = 100
                     io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("next-turn")

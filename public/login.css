@@ -7,13 +7,13 @@ body {
 }
 
 
-.container{
-        background-size: cover;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        min-width: 900px;
-        margin-top: 20vh;
+.container {
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    min-width: 900px;
+    margin-top: 20vh;
 }
 
 
@@ -25,7 +25,8 @@ body {
     border-radius: 15px;
     margin: 10px;
     height: 290px;
-    width: 290px;
+
+    justify-content: center;
 
 }
 

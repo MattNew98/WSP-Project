@@ -125,7 +125,7 @@ button {
 .roomStyle0 {
     background-color: lightcoral;
     width: 600px;
-    height: 200px;
+    /* height: 200px; */
     margin: 10px;
     padding: 10px;
     border-radius: 15px;
@@ -140,7 +140,7 @@ button {
 .roomStyle1 {
     background-color: lightblue;
     width: 600px;
-    height: 200px;
+    /* height: 200px; */
     margin: 10px;
     padding: 10px;
     border-radius: 15px;

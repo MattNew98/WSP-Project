@@ -50,7 +50,7 @@ io.on('connection', function (socket) {
             }
         }
         if (inRoom == false) {
-            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 2 })
+            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, roomIcon: userIcon, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 2 })
             io.emit('new-room', { id });
             socket.emit('room-created')
             socket.join(`${id}`)
@@ -137,7 +137,7 @@ io.on('connection', function (socket) {
                                     turn = turn % room.players.length
                                 }
                                 room.drawingPlayer = room.players[turn].name
-                                console.log(room.drawingPlayer)
+                                // console.log(room.drawingPlayer)
                                 room.barWidth = 100
                                 io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                                 io.to(`${socketID}`).emit("next-turn")
@@ -199,7 +199,7 @@ io.on('connection', function (socket) {
 
     socket.on("chat", ({ content, username, socketID }) => {//game chat
         // console.log(socketID)
-        console.log(`${username}: ${content}`)
+        // console.log(`${username}: ${content}`)
         io.to(`${socketID}`).emit("chat", ({ content, username }))
     })
 
@@ -350,7 +350,7 @@ app.use(express.static('public'))
 app.use(isloggedin, express.static('private'))
 // app.use(express.static('private'))
 app.post('/chats', (req, res) => {
-    console.log(123123)
+    // console.log(123123)
 })
 
 app.use((req, res) => {

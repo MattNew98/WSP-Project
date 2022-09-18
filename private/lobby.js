@@ -50,7 +50,7 @@ socket.emit('fetch-room')
 // }
 
 
-async function displayRoom(id, roomName, players, start) {
+async function displayRoom(id, roomName, roomIcon, players, start) {
 
     // console.log("AHHA" +players[0].name)
     let odd
@@ -67,6 +67,7 @@ async function displayRoom(id, roomName, players, start) {
 
         roomContainer.innerHTML += `
     <div class="room${id} roomStyle${odd}" >
+    <img src="${roomIcon}" class="roomIcon">
     <div>${roomName}</div>
     <div class="room-${id}-players">
 
@@ -81,6 +82,7 @@ async function displayRoom(id, roomName, players, start) {
 
         roomContainer.innerHTML += `
     <div class="room${id} roomStyle${odd}" >
+    <img src="${roomIcon}" class="roomIcon">
     <div>${roomName}</div>
     <div class="room-${id}-players">
 
@@ -91,6 +93,7 @@ async function displayRoom(id, roomName, players, start) {
     } else if (isParticipant(username, players)) {
         roomContainer.innerHTML += await `
         <div class="room${id} roomStyle${odd}" >
+        <img src="${roomIcon}" class="roomIcon">
         <div>${roomName}</div>
         <div class="room-${id}-players">
 
@@ -103,6 +106,7 @@ async function displayRoom(id, roomName, players, start) {
     } else {
         roomContainer.innerHTML += `
         <div class="room${id} roomStyle${odd}" >
+        <img src="${roomIcon}" class="roomIcon">
         <div>${roomName}</div>
         <div class="room-${id}-players">
  
@@ -186,8 +190,8 @@ socket.on('update-room', ({ roomList }) => {
 
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
-        console.log(room)
-        displayRoom(room.id, room.roomName, room.players, room.start)
+        // console.log(room)
+        displayRoom(room.id, room.roomName, room.roomIcon, room.players, room.start)
     }
 })
 

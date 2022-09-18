@@ -85,7 +85,7 @@ function setup() {
 socket.on('show-room-data', (roomData) => {
 
   document.querySelector('.topic-container').innerHTML = " "
-  console.log(roomData.drawingPlayer)
+  // console.log(roomData.drawingPlayer)
   topicsArray = roomData.topics
   players = roomData.players
   playerScore = []
@@ -228,7 +228,7 @@ socket.on("clear", (emitter) => { //clear drawing board as per sever
     return;
   }
   background(255)
-  console.log('cleared')
+  // console.log('cleared')
 })
 
 socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor, emitter }) => {
@@ -239,7 +239,7 @@ socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor, emitter }) => {
   ratio = 1
   // flood_fill(floor(mouseX * ratio), floor(mouseY * ratio), color_to_rgba(selectedColor))
   flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
-  console.log(`${emitter} is drawing`)
+  // console.log(`${emitter} is drawing`)
 })
 
 socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter }) => {
@@ -249,7 +249,7 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   strokeWeight(selectedStrokeWeight)
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
-  console.log(`${emitter} is drawing`)
+  // console.log(`${emitter} is drawing`)
 })
 
 // UI:
@@ -534,7 +534,7 @@ function color_to_rgba(color) {
 
   } else if (color.indexOf("rgba(") == 0) { // already in rgba notation
     color = color.replace("rgba(", "").replace(" ", "").replace(")", "").split(",");
-    console.log(color)
+    // console.log(color)
     return {
       r: color[0],
       g: color[1],
@@ -542,7 +542,7 @@ function color_to_rgba(color) {
       a: color[3] * 255
     };
   } else {
-    console.error("warning: can't convert color to rgba: " + color);
+    // console.error("warning: can't convert color to rgba: " + color);
     return {
       r: 0,
       g: 0,

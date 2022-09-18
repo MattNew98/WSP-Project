@@ -4,12 +4,14 @@ const socket = io.connect(SERVER_IP);
 const createButton = document.querySelector(".create-room-btn")
 const roomContainer = document.querySelector('.room-container')
 const roomButtons = document.querySelector('.room-buttons')
+const musicButton = document.querySelector('.music-button')
+let music = document.getElementById('lobbyMusic')
 let result
 let username
 let socketID
 let playerList = []
 let userIcon
-
+let playingMusic = false
 async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
@@ -25,29 +27,21 @@ getProfile()
 socket.emit('fetch-room')
 
 
-//// Create a new room
-
-// async function loadRooms() {
-//     const res = await fetch()
-//     const data = await res.json()
-//     if (res.ok) {
-//         let html = ''
-//         let room = 0
-//         for (let room of data) {
-//             html += `<a class="room" href="game.html">
-//             <p>Room ${room}</p>
-//             <div class="room-button">
-//             <i class="fa-solid fa-person-dress"></i>
-//             <i class="fa-sharp fa-solid fa-trophy"></i>
-//             </div>
-//             </a>`
-//         }
-//         const roomContainer = document.querySelector('.room-container')
-//         roomContainer.innerHTML = html
-
-
-//     }
-// }
+function playMusic() {
+    if (playingMusic == false) {
+        music.play()
+        playingMusic = true
+        musicButton.innerHTML = `
+        <i class="fa-solid fa-volume-high"></i>
+        `
+    } else {
+        music.pause()
+        playingMusic = false
+        musicButton.innerHTML = `
+        <i class="fa-solid fa-volume-xmark"></i>
+        `
+    }
+}
 
 
 async function displayRoom(id, roomName, roomIcon, players, start) {
@@ -158,6 +152,9 @@ function startGame(id) {
 
 function createRoom() {
     socket.emit('create-room', ({ username, userIcon }))
+    if (playingMusic == false) {
+        // playMusic()
+    }
 
 }
 

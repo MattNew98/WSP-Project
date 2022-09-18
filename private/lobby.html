@@ -13,7 +13,11 @@
 </head>
 
 <body>
+    <audio id="lobbyMusic">
+        <source src="./audio/lobby.mp3" type="audio/mpeg">
+    </audio>
     <div class="container">
+        <div class="music-button" onclick="playMusic()"><i class="fa-solid fa-volume-xmark"></i></div>
         <div class="header-container">
 
             <div class="header-title">
@@ -27,7 +31,7 @@
                 <div class="user-icon">
                     <!-- <img src="/uploads/d26b5f7602bef7eef7fb49001.JPG"> -->
                 </div>
-                
+
                 <div class="logout-button">
                     <a href="/user/logout" class="btn btn-error" onclick="removeRoom()">
                         <i class="fa-sharp fa-solid fa-right-from-bracket"></i>

@@ -85,9 +85,10 @@ io.on('connection', function (socket) {
         if (inRoom == false) {
             for (let room of roomList) {
                 if (room.id == id) {
+                    socket.join(`${id}`)
                     room.players.push({ name: username, score: 0, userIcon })
                     io.emit('update-room', ({ roomList }));
-                    socket.join(`${id}`)
+
                 }
             }
         }
@@ -146,11 +147,11 @@ io.on('connection', function (socket) {
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))
-                            if (room.players.length == 1) {
-                                io.to(`${socketID}`).emit("game-ended")
-                                roomList.splice(index, 1)
-                                io.emit('update-room', ({ roomList }))
-                            }
+                            // if (room.players.length == 1) {
+                            //     io.to(`${socketID}`).emit("game-ended")
+                            //     roomList.splice(index, 1)
+                            //     io.emit('update-room', ({ roomList }))
+                            // }
                             // console.log('Player:' + username + ' has left the game')
                         }
                         p++

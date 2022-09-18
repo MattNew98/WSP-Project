@@ -15,12 +15,12 @@
 
 <body>
     <div class="game-lobby-text">
-        <a href="lobby.html" class="buttonsInGame" onclick="endGameSession()">Back to lobby</a>
+        <a href="lobby.html" class="buttonsInGame" onclick="leaveGame()">Back to lobby</a>
         <div class="user-name-and-photo-container">
             <div class="user-icon"></div>
             <div class="user-name"></div>
         </div>
-        <a href="/user/logout" class="buttonsInGame">Logout</a>
+        <a href="/user/logout" class="buttonsInGame" onclick="leaveGame()">Logout</a>
 
     </div>
     <div class="main-container">
@@ -34,28 +34,37 @@
 
 
         <div class="middle-container">
-            <div class="topic-container"></div>
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
+            <div class="topic-container">
+
+            </div>
+
             <div class="controls-container">
                 <div class="clear-button" onclick="clearBoard()">Clear</div>
                 <div>Color:</div>
+                <div class="black color-button" onclick="changeColor('black')"></div>
                 <div class="red color-button" onclick="changeColor('red')"></div>
+                <div class="orange color-button" onclick="changeColor('orange')"></div>
+                <div class="yellow color-button" onclick="changeColor('yellow')"></div>
                 <div class="green color-button" onclick="changeColor('green')"></div>
                 <div class="blue color-button" onclick="changeColor('blue')"></div>
-                <div class="yellow color-button" onclick="changeColor('yellow')"></div>
-                <div class="black color-button" onclick="changeColor('black')"></div>
+                <div class="darkblue color-button" onclick="changeColor('darkblue')"></div>
+                <div class="purple color-button" onclick="changeColor('purple')"></div>
+                <div class="pink color-button" onclick="changeColor('pink')"></div>
                 <div class="eraser color-button" onclick="changeColor('white')"></div>
                 <div>Stroke:</div>
                 <div class="small stroke-button" onclick="changeStroke(10)"></div>
                 <div class="medium stroke-button" onclick="changeStroke(15)"></div>
                 <div class="large stroke-button" onclick="changeStroke(20)"></div>
                 <div class="fill-button" onclick="fillBucketOn()">Fill</div>
+                <div class="timer"></div>
             </div>
 
 
             <div id="drawing-board"></div>
-            <div id="myProgress">
-                <div id="myBar"></div>
-            </div>
+
 
 
         </div>

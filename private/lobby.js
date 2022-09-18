@@ -8,6 +8,7 @@ let result
 let username
 let socketID
 let playerList = []
+let userIcon
 
 async function getProfile() {
     const res = await fetch('/user/me')
@@ -17,11 +18,11 @@ async function getProfile() {
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
-    document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}">`
+    document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
 getProfile()
 
-window.onload = () => { socket.emit('fetch-room') }
+socket.emit('fetch-room')
 
 
 //// Create a new room
@@ -49,13 +50,24 @@ window.onload = () => { socket.emit('fetch-room') }
 // }
 
 
-async function displayRoom(id, roomName, players, start) {
+async function displayRoom(id, roomName, roomIcon, players, start) {
 
-// console.log("AHHA" +players[0].name)
+    // console.log("AHHA" +players[0].name)
+    let odd
+    if (id % 2 === 0) {
+        odd = 0
+    } else {
+        odd = 1
+    }
+    if (players[0].name == username && start != true) {
 
-    if (players[0].name == username) {
-        roomContainer.innerHTML += await `
-    <div class="room${id}">
+        roomButtons.innerHTML = `
+    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom()"/>
+    `
+
+        roomContainer.innerHTML += `
+    <div class="room${id} roomStyle${odd}" >
+    <img src="${roomIcon}" class="roomIcon">
     <div>${roomName}</div>
     <div class="room-${id}-players">
 
@@ -68,8 +80,9 @@ async function displayRoom(id, roomName, players, start) {
     } else if (start === true) {
 
 
-        roomContainer.innerHTML += await `
-    <div class="room${id}">
+        roomContainer.innerHTML += `
+    <div class="room${id} roomStyle${odd}" >
+    <img src="${roomIcon}" class="roomIcon">
     <div>${roomName}</div>
     <div class="room-${id}-players">
 
@@ -77,32 +90,32 @@ async function displayRoom(id, roomName, players, start) {
     <div>Game In Progress</div>
     </div>
     `
-    } 
-    // else if (players[1].name == username || players[2].name == username || players[3].name == username) {
-    //     roomContainer.innerHTML += await `
-    //     <div class="room${id}">
-    //     <div>${roomName}</div>
-    //     <div class="room-${id}-players">
-
-    //     </div>
-    //     <div class="room-${id}-buttons">
-    //     <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
-    //     </div>
-    //     </div>
-    //     `
-    // }
-    else {
+    } else if (isParticipant(username, players)) {
         roomContainer.innerHTML += await `
-    <div class="room${id}" >
-    <div>${roomName}</div>
-    <div class="room-${id}-players">
+        <div class="room${id} roomStyle${odd}" >
+        <img src="${roomIcon}" class="roomIcon">
+        <div>${roomName}</div>
+        <div class="room-${id}-players">
+
+        </div>
+        <div class="room-${id}-buttons">
+        <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
+        </div>
+        </div>
+        `
+    } else {
+        roomContainer.innerHTML += `
+        <div class="room${id} roomStyle${odd}" >
+        <img src="${roomIcon}" class="roomIcon">
+        <div>${roomName}</div>
+        <div class="room-${id}-players">
  
-    </div>
-    <div class="room-${id}-buttons">
-    <button class="join-button" value="Join" onclick="joinGame(${id})">Join</button>
-    </div>
-    </div>
-    `
+        </div>
+        <div class="room-${id}-buttons">
+        <button class="join-button" value="Join" onclick="joinGame(${id})">Join</button>
+        </div>
+        </div>
+        `
     }
 
     let p = 1
@@ -114,14 +127,28 @@ async function displayRoom(id, roomName, players, start) {
         p++
     }
 
+
+
+}
+
+function isParticipant(name, players) {
+    for (let player of players) {
+        if (player.name == name) {
+            return true
+        }
+    }
 }
 
 
-
 function joinGame(id) {
-    console.log(username)
-    socket.emit('join-room', ({ id, username }))
+    // console.log(username)
+    socket.emit('join-room', ({ id, username, userIcon }))
     socketID = id
+}
+
+function leaveGame(id) {
+    socket.emit('leave-game', ({ username, id }))
+    socketID = null
 }
 
 function startGame(id) {
@@ -130,17 +157,16 @@ function startGame(id) {
 
 
 function createRoom() {
-    socket.emit('create-room', ({ username }))
-    roomButtons.innerHTML = `
-    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
-    `
+    socket.emit('create-room', ({ username, userIcon }))
+
 }
 
-function removeRoom(username) {
+function removeRoom() {
     // console.log(username)
     socket.emit('remove-room', (username))
     roomButtons.innerHTML = `
     <input class="create-room-btn" type="button" value="Create Room" onclick="createRoom()"/>
+    <i class="fa-solid fa-plus"></i>
     `
 }
 
@@ -152,10 +178,6 @@ socket.on('launch-game', (id) => {
     }
 
 })
-socket.on('room-started', (id) => {
-
-
-})
 
 socket.on('new-room', (data) => {
     // console.log(data.id)
@@ -164,9 +186,22 @@ socket.on('new-room', (data) => {
 })
 
 socket.on('update-room', ({ roomList }) => {
-    console.log("test" + roomList)
+    // console.log("test" + roomList)
+
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
-        displayRoom(room.id, room.roomName,room.players, room.start)
+        // console.log(room)
+        displayRoom(room.id, room.roomName, room.roomIcon, room.players, room.start)
     }
+})
+
+socket.on('room-error', (data) => {
+    window.alert(data)
+}
+)
+
+socket.on('room-created', () => {
+    roomButtons.innerHTML = `
+    <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
+    `
 })

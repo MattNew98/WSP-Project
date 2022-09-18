@@ -1,4 +1,3 @@
-
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
 let SERVER_IP = "localhost:8080"
 let selectedColor = '#000000' // default selected color
@@ -12,13 +11,15 @@ let socketID
 let userIcon
 let playerScore = []
 let drawable = false
-let turnCounter = 0
 let topicsArray
-
+let guessedTheWord = false
+let timer = document.querySelector('.timer')
+let turnCounter
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 socketID = id
+
 
 // GAME FLOW:
 // Game loaded start 321 countdown on front end
@@ -66,40 +67,71 @@ function setup() {
   socket.on("show-board", (drawBoardArray) => {
     let boardArray = drawBoardArray;
     for (let emit of boardArray) {
-      stroke(emit.selectedColor)
-      strokeWeight(emit.selectedStrokeWeight)
-      line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
+      if (emit.fill == false) {
+        stroke(emit.selectedColor)
+        strokeWeight(emit.selectedStrokeWeight)
+        line(emit.mouseX, emit.mouseY, emit.pmouseX, emit.pmouseY)
+      } else if (emit.fill == true) {
+        flood_fill(floor(emit.mouseX), floor(emit.mouseY), color_to_rgba(emit.selectedColor))
+      }
     }
   })
   canvas = document.getElementById("defaultCanvas0")//get canvas element
   ctx = canvas.getContext("2d")//get canvas context
+
+
 }
 
 socket.on('show-room-data', (roomData) => {
+
+  document.querySelector('.topic-container').innerHTML = " "
+  // console.log(roomData.drawingPlayer)
   topicsArray = roomData.topics
   players = roomData.players
+  playerScore = []
+  turnCounter = roomData.turn
   for (let player of players) {
-    playerScore.push({ name: player.name, score: player.score })
+    playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon })
   }
   createScoreboard()
 
 
-  if (roomData.drawing == username) {
+  if (roomData.drawingPlayer == username) {
+    move(roomData.barWidth)
     drawable = true
 
-    document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">Your Topic is ${roomData.topics[0]} </div>
+    document.querySelector('.topic-container').innerHTML += `
+    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
     `
   } else {
-    document.querySelector('.topic-container').innerHTML = `
-    <div class="topic">${players[turnCounter].name} is drawing</div>
+    drawable = false
+    let numberOfCharacters = roomData.topics[turnCounter].length
+    let guess = " "
+    for (let i = 0; i < numberOfCharacters; i++) {
+      if (roomData.topics[turnCounter][i] == " ") {
+        guess += " - "
+      } else {
+        guess += " _ "
+      }
+
+    }
+
+    document.querySelector('.topic-container').innerHTML += `
+    <div class="topic">${roomData.drawingPlayer} is drawing:</div>
+    
+    <div>${guess}</div>
     `
   }
 
 })
 
 
+socket.on('next-turn', () => {
 
+
+  socket.emit('fetch-room-data', (socketID))
+
+})
 
 ////// create comment box
 async function createChats() {
@@ -109,27 +141,34 @@ async function createChats() {
     e.preventDefault()
     const form = e.target
     const content = form.chat.value
-    if (drawable == false){
+    if (drawable == false) {
+      if (guessedTheWord && content == topicsArray[turnCounter]) {
+        return
+      }
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
         let score = 1
-        console.log("3333333")
-        socket.emit('user-scored', ({username, score, socketID}))
+        guessedTheWord = true
+        socket.emit('user-scored', ({ username, score, socketID }))
       }
       form.reset()
-      console.log(socketID)
+      // console.log(socketID)
     }
   })
 }
 createChats()
 socket.on('chat', ({ content, username }) => {
   const html = document.querySelector('.chatroom-container')
+
   if (content == topicsArray[turnCounter]) {
-    html.innerHTML += `<div>${username} guessed the word</div>`
+    html.innerHTML += `<div style="color: lightgreen;">${username} guessed the word</div>`
+    html.innerHTML += `<img src="/img/sticker.png" width="100px" height="100px"></img>`
+  } else if (content == "has left the game.") {
+    html.innerHTML += `<div style="color: red;">${username} ${content}</div>`
   } else {
-    html.innerHTML += `<div>${username}: ${content}</div>`
+    html.innerHTML += `<div> ${username}: ${content}</div>`
   }
-  console.log(`${username}: ${content}`)
+  // console.log(`${username}: ${content} `)
   // always scroll to bottom
   let messageBody = document.querySelector('#scroll');
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -146,29 +185,45 @@ socket.on('score-update', (data) => {
 
 // progress bar
 function move(width) {
-  let i = 100;
-  if (i == 100) {
-    let elem = document.getElementById("myBar");
-
-    let id = setInterval(frame, 100); // change time here //
-    function frame() {
-      if (width <= 0) {
-        i = 100;
-        width = 100;
-      } else {
-        width--;
-        /////
-        // socket.emit('bar', ({ width }))
-
-        elem.style.width = width + "%";
-      }
-      socket.emit('send-bar-status', ({ width }))
+  let emitter = username
+  let elem = document.getElementById("myBar");
+  // let width = 100
+  let id = setInterval(frame, 400); // change time here //
+  function frame() {
+    if (width <= 0) {
+      return
+    } else {
+      width--;
+      socket.emit('bar-moving', ({ width, socketID, emitter }))
+      elem.style.width = width + "%";
     }
-
   }
 
 }
 
+socket.on('move-bar', (data) => {
+  let width = data.width
+  let emitter = data.emitter
+
+
+  if (username === emitter) {
+    return
+  }
+
+  let elem = document.getElementById("myBar");
+  elem.style.width = width + "%";
+})
+
+socket.on('game-ended', () => {
+  window.alert("End of Game. Redirecting to lobby...")
+  if (SERVER_IP[0] == "l") {
+    window.location.replace(`/lobby.html`);
+    // location.assign(`/ lobby.html`)
+  } else {
+    window.location.replace(`http://${SERVER_IP}/lobby.html`);
+    // location.assign(`http://${SERVER_IP}/lobby.html`)
+  }
+})
 
 //SOCKETS
 //接收server送來的command
@@ -178,15 +233,18 @@ socket.on("clear", (emitter) => { //clear drawing board as per sever
     return;
   }
   background(255)
-  console.log('cleared')
+  // console.log('cleared')
 })
 
 socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor, emitter }) => {
   if (emitter === username) {
     return;
   }
-  flood_fill(mouseX, mouseY, color_to_rgba(selectedColor))
-  console.log(`${emitter} is drawing`)
+  let ratio = canvas.width / 1100;
+  ratio = 1
+  // flood_fill(floor(mouseX * ratio), floor(mouseY * ratio), color_to_rgba(selectedColor))
+  flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
+  // console.log(`${emitter} is drawing`)
 })
 
 socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, selectedStrokeWeight, emitter }) => {
@@ -196,31 +254,49 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
   strokeWeight(selectedStrokeWeight)
   stroke(selectedColor)
   line(mouseX, mouseY, pmouseX, pmouseY)
-  console.log(`${emitter} is drawing`)
+  // console.log(`${emitter} is drawing`)
 })
 
 // UI:
-socket.on('bar-Start', (message) => {
-  move(100)
+
+socket.on('host-left', () => {
+  window.alert("This host has left the game. Redirecting to lobby...")
+  if (SERVER_IP[0] == "l") {
+    window.location.replace(`/lobby.html`);
+    // location.assign(`/ lobby.html`)
+  } else {
+    window.location.replace(`http://${SERVER_IP}/lobby.html`);
+    // location.assign(`http://${SERVER_IP}/lobby.html`)
+  }
 })
-socket.on('show-bar-status', (width) => {
-  move(width)
+
+socket.on('player-left', () => {
+  socket.emit('fetch-room-data', (socketID))
+  // createScoreboard()
 })
 
 // GAME CONTROLS
 function changeColor(color) {
   if (color === 'red') {
-    selectedColor = '#ff0000';
-  } else if (color === 'green') {
-    selectedColor = '#008000';
-  } else if (color === 'blue') {
-    selectedColor = '#0000ff';
+    selectedColor = '#FE7C9B';
+  } else if (color === 'orange') {
+    selectedColor = '#FBA879';
   } else if (color === 'yellow') {
-    selectedColor = '#ffff00'
-  } else if (color === 'black') {
-    selectedColor = '#000000'
+    selectedColor = '#FDCC0D';
+  } else if (color === 'green') {
+    selectedColor = '#AAD7D2'
+  } else if (color === 'blue') {
+    selectedColor = '#B7D6EB'
+  } else if (color === 'darkblue') {
+    selectedColor = '#B4B7DC'
+  } else if (color === 'purple') {
+    selectedColor = '#CF9FCA'
+  } else if (color === 'pink') {
+    selectedColor = '#FAD0E3'
   } else if (color === 'white') {
     selectedColor = '#ffffff'
+  } else if (color === 'black') {
+    selectedColor = '#000000'
   }
 }
 function changeStroke(number) {
@@ -285,10 +361,15 @@ function keyPressed() {//save canvas as png
   }
 }
 
-
 // Function for fillBucket
 function flood_fill(original_x, original_y, color) {
-  console.log(`CanvasWidth:${canvas.width},CanvasHeight:${canvas.height}`)
+  let mouseRatio = canvas.width / 1100;
+  let screenRatio = 1;
+  original_x = original_x * mouseRatio;
+  original_y = original_y * mouseRatio;
+  const width = canvas.width * screenRatio;
+  const height = canvas.height * screenRatio;
+  // console.log(`CanvasWidth:${canvas.width},CanvasHeight:${canvas.height}`)
 
   original_color = ctx.getImageData(original_x, original_y, 1, 1).data;
   original_color = {
@@ -300,16 +381,18 @@ function flood_fill(original_x, original_y, color) {
 
   x = original_x;
   y = original_y;
+  // console.log("MouseClicked", x, y)
 
-  boundary_pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  boundary_pixels = ctx.getImageData(0, 0, width, height);
+  // console.log(boundary_pixels)
 
 
   // console.log(canvas.width, canvas.height)
   // first we go up until we find a boundary
-  linear_cords = (y * canvas.width + x) * 4;
+  linear_cords = (y * width + x) * 4;
   var done = false;
   while (y >= 0 && !done) {
-    var new_linear_cords = ((y - 1) * canvas.width + x) * 4;
+    var new_linear_cords = ((y - 1) * width + x) * 4;
     if (boundary_pixels.data[new_linear_cords] == original_color.r &&
       boundary_pixels.data[new_linear_cords + 1] == original_color.g &&
       boundary_pixels.data[new_linear_cords + 2] == original_color.b &&
@@ -321,7 +404,7 @@ function flood_fill(original_x, original_y, color) {
     }
   }
   // then we loop around until we get back to the starting point
-  var path = [{ x: x, y: y }];
+  var path = [{ x: x / mouseRatio, y: y / mouseRatio }];
   var first_iteration = true;
   var iteration_count = 0;
   var orientation = 1; // 0:^, 1:<-, 2:v, 3:->
@@ -352,8 +435,8 @@ function flood_fill(original_x, original_y, color) {
       var both = (orientation + look_at) % 4;
       if (both == 0) {
         // we try right
-        if (!got_it && (x + 1) < canvas.width) {
-          linear_cords = (y * canvas.width + (x + 1)) * 4;
+        if (!got_it && (x + 1) < width) {
+          linear_cords = (y * width + (x + 1)) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -365,7 +448,7 @@ function flood_fill(original_x, original_y, color) {
       } else if (both == 1) {
         // we try up
         if (!got_it && (y - 1) >= 0) {
-          linear_cords = ((y - 1) * canvas.width + x) * 4;
+          linear_cords = ((y - 1) * width + x) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -377,7 +460,7 @@ function flood_fill(original_x, original_y, color) {
       } else if (both == 2) {
         // we try left
         if (!got_it && (x - 1) >= 0) {
-          linear_cords = (y * canvas.width + (x - 1)) * 4;
+          linear_cords = (y * width + (x - 1)) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -388,8 +471,8 @@ function flood_fill(original_x, original_y, color) {
         }
       } else if (both == 3) {
         // we try down
-        if (!got_it && (y + 1) < canvas.height) {
-          linear_cords = ((y + 1) * canvas.width + x) * 4;
+        if (!got_it && (y + 1) < height) {
+          linear_cords = ((y + 1) * width + x) * 4;
           if (boundary_pixels.data[linear_cords] == original_color.r &&
             boundary_pixels.data[linear_cords + 1] == original_color.g &&
             boundary_pixels.data[linear_cords + 2] == original_color.b &&
@@ -402,7 +485,7 @@ function flood_fill(original_x, original_y, color) {
     }
 
     if (got_it) {
-      path.push({ x: x, y: y });
+      path.push({ x: x / mouseRatio, y: y / mouseRatio });
     }
   }
 
@@ -464,7 +547,7 @@ function color_to_rgba(color) {
 
   } else if (color.indexOf("rgba(") == 0) { // already in rgba notation
     color = color.replace("rgba(", "").replace(" ", "").replace(")", "").split(",");
-    console.log(color)
+    // console.log(color)
     return {
       r: color[0],
       g: color[1],
@@ -472,7 +555,7 @@ function color_to_rgba(color) {
       a: color[3] * 255
     };
   } else {
-    console.error("warning: can't convert color to rgba: " + color);
+    // console.error("warning: can't convert color to rgba: " + color);
     return {
       r: 0,
       g: 0,
@@ -484,14 +567,24 @@ function color_to_rgba(color) {
 
 // create Scoreboard element
 function createScoreboard() {
-  console.log(playerScore)
+  // console.log(playerScore)
+  let scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
+    return parseFloat(b.score) - parseFloat(a.score)
+  })
+  // console.log(scoreboardInAscendingOrder)
   html = ''
-  for (let i = 0; i < playerScore.length; i++) {
-    console.log(playerScore[i])
-    html += `<div class="player-info">${playerScore[i].name}: ${playerScore[i].score}</div>`
+  for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
+    html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
   }
   document.querySelector("#scrollScore").innerHTML = html
 }
 
 
+function leaveGame() {
+  let id = socketID
+  socket.emit("leave-game", ({ username, id }))
+  let content = `has left the game.`
+  socket.emit('chat', ({ content, username, socketID }))
+
+}
 

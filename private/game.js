@@ -100,7 +100,7 @@ socket.on('show-room-data', (roomData) => {
     move(roomData.barWidth)
     drawable = true
 
-    document.querySelector('.topic-container').innerHTML = `
+    document.querySelector('.topic-container').innerHTML += `
     <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
     `
   } else {
@@ -116,7 +116,7 @@ socket.on('show-room-data', (roomData) => {
 
     }
 
-    document.querySelector('.topic-container').innerHTML = `
+    document.querySelector('.topic-container').innerHTML += `
     <div class="topic">${roomData.drawingPlayer} is drawing:</div>
     
     <div>${guess}</div>

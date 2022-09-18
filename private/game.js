@@ -127,7 +127,7 @@ socket.on('show-room-data', (roomData) => {
 
 
 socket.on('next-turn', () => {
-  // console.log('next-turn')
+
 
   socket.emit('fetch-room-data', (socketID))
 
@@ -278,17 +278,25 @@ socket.on('player-left', () => {
 // GAME CONTROLS
 function changeColor(color) {
   if (color === 'red') {
-    selectedColor = '#ff0000';
-  } else if (color === 'green') {
-    selectedColor = '#008000';
-  } else if (color === 'blue') {
-    selectedColor = '#0000ff';
+    selectedColor = '#FE7C9B';
+  } else if (color === 'orange') {
+    selectedColor = '#FBA879';
   } else if (color === 'yellow') {
-    selectedColor = '#ffff00'
-  } else if (color === 'black') {
-    selectedColor = '#000000'
+    selectedColor = '#FDCC0D';
+  } else if (color === 'green') {
+    selectedColor = '#AAD7D2'
+  } else if (color === 'blue') {
+    selectedColor = '#B7D6EB'
+  } else if (color === 'darkblue') {
+    selectedColor = '#B4B7DC'
+  } else if (color === 'purple') {
+    selectedColor = '#CF9FCA'
+  } else if (color === 'pink') {
+    selectedColor = '#FAD0E3'
   } else if (color === 'white') {
     selectedColor = '#ffffff'
+  } else if (color === 'black') {
+    selectedColor = '#000000'
   }
 }
 function changeStroke(number) {

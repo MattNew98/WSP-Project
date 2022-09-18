@@ -35,14 +35,21 @@
 
         <div class="middle-container">
             <div class="topic-container"></div>
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
             <div class="controls-container">
                 <div class="clear-button" onclick="clearBoard()">Clear</div>
                 <div>Color:</div>
+                <div class="black color-button" onclick="changeColor('black')"></div>
                 <div class="red color-button" onclick="changeColor('red')"></div>
+                <div class="orange color-button" onclick="changeColor('orange')"></div>
+                <div class="yellow color-button" onclick="changeColor('yellow')"></div>
                 <div class="green color-button" onclick="changeColor('green')"></div>
                 <div class="blue color-button" onclick="changeColor('blue')"></div>
-                <div class="yellow color-button" onclick="changeColor('yellow')"></div>
-                <div class="black color-button" onclick="changeColor('black')"></div>
+                <div class="darkblue color-button" onclick="changeColor('darkblue')"></div>
+                <div class="purple color-button" onclick="changeColor('purple')"></div>
+                <div class="pink color-button" onclick="changeColor('pink')"></div>
                 <div class="eraser color-button" onclick="changeColor('white')"></div>
                 <div>Stroke:</div>
                 <div class="small stroke-button" onclick="changeStroke(10)"></div>
@@ -54,9 +61,7 @@
 
 
             <div id="drawing-board"></div>
-            <div id="myProgress">
-                <div id="myBar"></div>
-            </div>
+
 
 
         </div>

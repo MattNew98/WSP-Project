@@ -82,6 +82,7 @@ canvas {
 }
 
 .controls-container {
+    height: 80px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -89,6 +90,8 @@ canvas {
 
 
 .clear-button {
+    width: 40px;
+    height: 40px;
     margin: 5px;
     border-style: solid;
     border-width: 5px;
@@ -110,22 +113,40 @@ canvas {
 
 .color-button:hover {
     cursor: pointer;
+    width: 60px;
+    height: 60px;
 }
 
 .red {
-    background-color: #ff0000;
+    background-color: #FE7C9B;
 }
 
-.green {
-    background-color: #008000;
-}
-
-.blue {
-    background-color: #0000ff;
+.orange {
+    background-color: #FBA879;
 }
 
 .yellow {
-    background-color: #ffff00;
+    background-color: #FDCC0D;
+}
+
+.green {
+    background-color: #AAD7D2;
+}
+
+.blue {
+    background-color: #B7D6EB;
+}
+
+.darkblue {
+    background-color: #B4B7DC;
+}
+
+.purple {
+    background-color: #CF9FCA;
+}
+
+.pink {
+    background-color: #FAD0E3;
 }
 
 .black {
@@ -170,11 +191,13 @@ canvas {
 .user-icon img {
     width: 60px;
     height: 60px;
-    border-radius: 25%;
+    /* border-radius: 25%; */
     align-items: center;
 }
 
 .user-name-and-photo-container {
+    padding: 5px;
+    background-color: rgba(128, 128, 128, 0.9);
     display: flex;
     font-size: 30px;
     align-items: center;
@@ -191,7 +214,7 @@ canvas {
 
 .user-name {
     padding-left: 10px;
-    color: red;
+    color: #FE7C9B;
 }
 
 .chatroom-container {
@@ -225,7 +248,7 @@ canvas {
 
 #myBar {
     width: 100%;
-    height: 10px;
+    height: 20px;
     background-color: green;
 }
 
@@ -249,7 +272,7 @@ canvas {
 .scoreBoardIcon {
     width: 3rem;
     height: 3rem;
-    border-radius: 25px;
+    /* border-radius: 25px; */
     margin-right: 8px;
 
 }

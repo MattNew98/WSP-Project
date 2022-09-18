@@ -61,10 +61,11 @@ async function displayRoom(id, roomName, roomIcon, players, start) {
 
         roomContainer.innerHTML += `
     <div class="room${id} roomStyle${odd}" >
-    <img src="${roomIcon}" class="roomIcon">
-    <div>${roomName}</div>
+    <div><img src="${roomIcon}" class="roomIcon">
+    <div>${roomName}</div></div>
+    
     <div class="room-${id}-players">
-
+    Players:
     </div>
     <div class="room-${id}-buttons">
     <button class="start-button" value="Start" onclick="startGame(${id})">Start</button>
@@ -75,11 +76,11 @@ async function displayRoom(id, roomName, roomIcon, players, start) {
 
 
         roomContainer.innerHTML += `
-    <div class="room${id} roomStyle${odd}" >
-    <img src="${roomIcon}" class="roomIcon">
-    <div>${roomName}</div>
+        <div class="room${id} roomStyle${odd}" >
+        <div><img src="${roomIcon}" class="roomIcon">
+        <div>${roomName}</div></div>
     <div class="room-${id}-players">
-
+    Players:
     </div>
     <div>Game In Progress</div>
     </div>
@@ -87,10 +88,10 @@ async function displayRoom(id, roomName, roomIcon, players, start) {
     } else if (isParticipant(username, players)) {
         roomContainer.innerHTML += await `
         <div class="room${id} roomStyle${odd}" >
-        <img src="${roomIcon}" class="roomIcon">
-        <div>${roomName}</div>
+        <div><img src="${roomIcon}" class="roomIcon">
+        <div>${roomName}</div></div>
         <div class="room-${id}-players">
-
+        Players:
         </div>
         <div class="room-${id}-buttons">
         <button class="Leave-button value="Leave" onclick="leaveGame(${id})">Leave</button>
@@ -100,10 +101,10 @@ async function displayRoom(id, roomName, roomIcon, players, start) {
     } else {
         roomContainer.innerHTML += `
         <div class="room${id} roomStyle${odd}" >
-        <img src="${roomIcon}" class="roomIcon">
-        <div>${roomName}</div>
+        <div><img src="${roomIcon}" class="roomIcon">
+        <div>${roomName}</div></div>
         <div class="room-${id}-players">
- 
+        Players:
         </div>
         <div class="room-${id}-buttons">
         <button class="join-button" value="Join" onclick="joinGame(${id})">Join</button>
@@ -115,9 +116,14 @@ async function displayRoom(id, roomName, roomIcon, players, start) {
     let p = 1
     for (let player of players) {
         let playerContainer = document.querySelector(`.room-${id}-players`)
-        playerContainer.innerHTML += `
-        <div class="player">P${p}:${player.name}</div>
+        if (player == players[0]) {
+            playerContainer.innerHTML += `
+        <div class="player">Host:${player.name}</div>
         `
+        } else {
+            playerContainer.innerHTML += `
+        <div class="player">P${p}:${player.name}</div>
+        `}
         p++
     }
 

@@ -101,7 +101,7 @@ socket.on('show-room-data', (roomData) => {
     drawable = true
 
     document.querySelector('.topic-container').innerHTML += `
-    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
+    <div class="topic">Your word is:<div style="font-weight: bold;margin-left:5px">${roomData.topics[turnCounter]}</div> </div>
     `
   } else {
     drawable = false
@@ -119,7 +119,7 @@ socket.on('show-room-data', (roomData) => {
     document.querySelector('.topic-container').innerHTML += `
     <div class="topic">${roomData.drawingPlayer} is drawing:</div>
     
-    <div>${guess}</div>
+    <div style="font-weight: bold;margin-left:5px">${guess}</div>
     `
   }
 
@@ -147,7 +147,7 @@ async function createChats() {
       }
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
-        let score = 1
+        let score = 10
         guessedTheWord = true
         socket.emit('user-scored', ({ username, score, socketID }))
       }

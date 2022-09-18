@@ -238,7 +238,7 @@ io.on('connection', function (socket) {
                     room.drawingPlayer = room.players[turn].name
                     console.log(room.drawingPlayer)
                     room.barWidth = 100
-                    room.drawBoardArray = []
+                    io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("next-turn")
                 } else {
                     let emitter = room.drawingPlayer
@@ -336,7 +336,7 @@ app.post('/chats', (req, res) => {
 })
 
 app.use((req, res) => {
-    res.redirect('/404.html')
+    res.redirect('/login.html')
 })
 
 const PORT = 8080;

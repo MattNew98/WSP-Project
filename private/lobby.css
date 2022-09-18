@@ -1,31 +1,45 @@
 body {
-    /* background-color: #0A5EFB; */
     background-image: url(./img/background3.jpg);
-    margin: 0;
-    height: 100%
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
+
+.room-container {
+    background-color: #35C6CA;
+    width: 165px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 15px;
+    text-decoration: none;
+    border: solid 3px #27287c87;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 
-
 .header-container {
-  
-    background-color: #1e201fbd;
+    background-color: #1e201f00;
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
     justify-content: space-around;
+    width: 110vh;
+    height: 18vh;
 
-    
 }
 
 
-
-
-.header-title {
-    font-size: 100px;
-    color: #75b6e5;
-   
-
+.big-room-container {
+    background-color: #9ca1c4b4;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 25px;
 }
 
 .user-container {
@@ -34,12 +48,16 @@ body {
 
 }
 
-.user-name {
-    font-size: 30px;
-    color: #75b6e5;
-
+.icon {
+    height: 240px;
+    width: 410px;
 }
 
+.user-name {
+    font-size: 30px;
+    color: #2e549b;
+
+}
 
 .user-icon img {
     width: 80px;
@@ -49,51 +67,11 @@ body {
     font-weight: bold;
 }
 
-
 .game-lobby-text {
     color: black;
     font-size: 60px;
     display: flex;
     justify-content: center;
-}
-
-
-.room-background {
-    background-color: #436985;
-    height: 50%;
-    padding: 3px;
-    display: flex;
-    flex-wrap: wrap;
-    border-radius: 15px;
-}
-
-
-
-.big-room-container {
-    background-color: #ffffff;
-    height: 100%;
-    padding: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 50px;
-    border-radius: 15px;
-}
-
-
-
-
-.room {
-    background-color: #ffffff;
-    width: 600px;
-    height: 200px;
-    margin: 10px;
-    border-radius: 15px;
-    font-size: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
 }
 
 .logout-button {
@@ -108,3 +86,17 @@ body {
     background-color: #ffffff;
     text-decoration: none;
 }
+
+/* .room-background {
+    background-color: #d2d4e2b4;
+    width: 300px;
+    height: 100px;
+    margin: 5px;
+    font-size: 20px;
+    display: flex;
+    border-radius: 15px;
+    text-decoration: none;
+    padding: 10px;
+    border: solid 3px #27287c87;
+
+} */

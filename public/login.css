@@ -1,35 +1,37 @@
 body {
     background-image: url(./img/background3.jpg);
-    background-size: cover;   
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    background-size: cover;
     height: 100%;
     font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 9vh;
 }
 
 .game-title {
     display: flex;
     border: solid 3px #27287c87;
     border-radius: 15px;
-    margin: 10px;   
+    margin: 10px;
+    height: 290px;
+    width: 290px;
+
 }
 
 .icon {
-    height: 295px;
-    width: 298px;
+    height: 290px;
+    width: 290px;
 
 }
 
 
 .login-container {
     background-color: #b7bacbbd;
-    height: 100%;
-    align-items: flex-end;
-    border-radius: 5%;
     padding: 10px;
+    border-radius: 25px;
     display: flex;
-    margin-top: 20px;
+    justify-content: center;
 }
 
 #login-form #login-username,
@@ -54,7 +56,7 @@ body {
     box-shadow: 0 0 0 3px #27287c87;
     border-radius: 15px;
     padding: 10px;
-    height: 195px;
+    height: 200px;
     width: 280px;
     display: flex;
     flex-direction: column;
@@ -79,9 +81,13 @@ body {
     margin: 10px;
 }
 
+.profile-picture {
+    margin: 10px;
+}
+
 
 #register-form {
-    border-radius: 15px;
+
     padding: 5px;
     display: flex;
     flex-direction: column;
@@ -100,8 +106,8 @@ body {
     box-shadow: 0 0 0 3px #27287c87;
     border-radius: 15px;
     padding: 5px;
-    height: 500px;
-    width: 300px;
+    height: 515px;
+    width: 305px;
     display: flex;
     align-content: center;
     justify-content: space-evenly;
@@ -110,6 +116,28 @@ body {
     margin: 10px;
 }
 
+.google-button {
+    /* background-color: #d0d0e3; */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.google-button :hover {
+    background-color: #6a6cac;
+    box-shadow: 1px 5px 10px #6c6088;
+    color: rgb(149, 84, 84);
+    transform: translateY(-5px);
+    border-radius: 50%;
+}
+
+
+.picture-button {
+    background-color: #d0d0e3;
+    border: solid 1px;
+    border-radius: 7px;
+    color: #414679;
+    font-size: 16px;
+}
 
 
 .button {
@@ -117,30 +145,19 @@ body {
     border: solid 1px;
     border-radius: 7px;
     cursor: pointer;
+    color: #414679;
+    font-size: 16px;
+
 }
 
 .button:hover {
     background-color: #6a6cac;
-    box-shadow: 1px 5px 10px #2b233d;
+    box-shadow: 1px 5px 10px #6c6088;
     color: rgb(110, 47, 47);
     transform: translateY(-5px);
 }
 
-.register-button {
-    background-color: #d0d0e3;
-    border: solid 1px;
-    border-radius: 7px;
-    cursor: pointer;
-    position: relative;
-    bottom: -15px;
-}
 
-.register-button:hover {
-    background-color: #6a6cac;
-    box-shadow: 1px 5px 10px #2b233d;
-    color: rgb(110, 47, 47);
-    transform: translateY(-5px);
-}
 
 
 .loginBtn-container {

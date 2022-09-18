@@ -109,7 +109,7 @@ async function displayRoom(id, roomName, players, start) {
     for (let player of players) {
         let playerContainer = document.querySelector(`.room-${id}-players`)
         playerContainer.innerHTML += `
-        <div>P${p}:${player.name}</div>
+        <div class="player">P${p}:${player.name}</div>
         `
         p++
     }

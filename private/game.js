@@ -108,7 +108,12 @@ socket.on('show-room-data', (roomData) => {
     let numberOfCharacters = roomData.topics[turnCounter].length
     let guess = " "
     for (let i = 0; i < numberOfCharacters; i++) {
-      guess += " _ "
+      if (roomData.topics[turnCounter][i] == " ") {
+        guess += " - "
+      } else {
+        guess += " _ "
+      }
+
     }
 
     document.querySelector('.topic-container').innerHTML = `

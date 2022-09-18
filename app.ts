@@ -100,7 +100,7 @@ io.on('connection', function (socket) {
                     socket.emit('room-error', ("Don't play alone. That's sad :("))
                     return
                 }
-                let topicAmount = room.players.length * 2
+                let topicAmount = room.players.length * room.round
                 for (let x = 0; x < topicAmount; x++) {
                     let randomTopic = Math.floor(Math.random() * 55) + 1
                     let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
@@ -110,6 +110,7 @@ io.on('connection', function (socket) {
                 io.to(`${id}`).emit('launch-game', (id))
                 room.start = true
                 io.emit('update-room', ({ roomList }));
+                // console.log(room.topics)
             }
         }
     })
@@ -145,6 +146,11 @@ io.on('connection', function (socket) {
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))
+                            if (room.players.length == 1) {
+                                io.to(`${socketID}`).emit("game-ended")
+                                roomList.splice(index, 1)
+                                io.emit('update-room', ({ roomList }))
+                            }
                             // console.log('Player:' + username + ' has left the game')
                         }
                         p++

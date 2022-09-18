@@ -113,18 +113,14 @@ async function displayRoom(id, roomName, roomIcon, players, start) {
         `
     }
 
-    let p = 1
+
     for (let player of players) {
         let playerContainer = document.querySelector(`.room-${id}-players`)
-        if (player == players[0]) {
-            playerContainer.innerHTML += `
-        <div class="player">Host:${player.name}</div>
+
+        playerContainer.innerHTML += `<div class="player-container"><img src="${player.userIcon}" class="player-icon">
+        <div class="player">${player.name}</div></div>
         `
-        } else {
-            playerContainer.innerHTML += `
-        <div class="player">P${p}:${player.name}</div>
-        `}
-        p++
+
     }
 
 

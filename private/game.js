@@ -188,7 +188,7 @@ function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
   // let width = 100
-  let id = setInterval(frame, 200); // change time here //
+  let id = setInterval(frame, 400); // change time here //
   function frame() {
     if (width <= 0) {
       return

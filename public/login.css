@@ -1,18 +1,22 @@
 body {
     background-image: url(./img/background3.jpg);
-    background-size: cover;   
+    background-size: cover;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     height: 100%;
     font-size: 20px;
+    min-width: 900px
 }
+
+
 
 .game-title {
     display: flex;
     border: solid 3px #27287c87;
     border-radius: 15px;
-    margin: 10px;   
+    margin: 10px;
+    justify-content: center;
 }
 
 .icon {
@@ -29,7 +33,7 @@ body {
     border-radius: 5%;
     padding: 10px;
     display: flex;
-    margin-top: 20px;
+    margin-top: 20vh;
 }
 
 #login-form #login-username,
@@ -55,7 +59,7 @@ body {
     border-radius: 15px;
     padding: 10px;
     height: 195px;
-    width: 280px;
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,12 +74,12 @@ body {
     flex-direction: column;
     align-items: center;
 
-    width: 15rem;
+    width: 90%;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
     text-decoration: none;
-    padding-left: 1rem;
+    /* padding-left: 1rem; */
     margin: 10px;
 }
 
@@ -86,6 +90,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .register-icon img {
@@ -148,4 +153,13 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+}
+
+#userImage {
+    width: 100%;
+}
+
+.username,
+.password {
+    width: 100%;
 }

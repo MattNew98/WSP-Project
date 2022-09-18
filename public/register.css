@@ -9,6 +9,7 @@ body {
 #register-form {
     margin-left: 4vw;
     margin-right: auto;
+    width: 80%;
 }
 
 #form-container fieldset {
@@ -43,7 +44,7 @@ body {
 #form-container .reg-info {
     margin-bottom: 1.5rem;
     padding: 0.5rem 3rem 0.5rem 0.3rem;
-    border:none;
+    border: none;
     border-bottom: 2px solid #F5B316;
 }
 

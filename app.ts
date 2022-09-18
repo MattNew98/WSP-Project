@@ -228,6 +228,9 @@ io.on('connection', function (socket) {
                     if (player.name == username) {
                         player.score = player.score + score
                     }
+                    if (player.name === room.drawingPlayer) {
+                        player.score = player.score + score
+                    }
                 }
                 let players = room.players
                 io.to(`${socketID}`).emit('score-update', (players))

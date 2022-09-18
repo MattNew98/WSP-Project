@@ -22,7 +22,7 @@ userRoutes.post('/register', async (req, res) => {
 		let newImage
 
 		if (data.filename == null) {
-			newImage = `icon${Math.floor(Math.random() * 4) + 1}.png`
+			newImage = `icon${Math.floor(Math.random() * 6) + 1}.png`
 		} else {
 			newImage = data.filename
 		}

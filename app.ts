@@ -147,6 +147,7 @@ io.on('connection', function (socket) {
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))
+                            socket.leave(`${socketID}`)
                             // if (room.players.length == 1) {
                             //     io.to(`${socketID}`).emit("game-ended")
                             //     roomList.splice(index, 1)

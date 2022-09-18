@@ -18,7 +18,7 @@ async function getProfile() {
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
-    document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}">`
+    document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
 getProfile()
 

@@ -15,11 +15,13 @@ let topicsArray
 let guessedTheWord = false
 let timer = document.querySelector('.timer')
 let turnCounter
+let scoreboardInAscendingOrder
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
 const topicContainer = document.querySelector('.topic-container')
 socketID = id
+
 
 
 // GAME FLOW:
@@ -200,7 +202,7 @@ socket.on('score-update', (data) => {
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
-  let id = setInterval(frame, 10); // change time here //
+  let id = setInterval(frame, 400); // change time here //
   function frame() {
     socket.on('stop-move', () => {
       width = 1
@@ -240,6 +242,39 @@ socket.on('game-ended', () => {
       // location.assign(`http://${SERVER_IP}/lobby.html`)
     }
   }, 5000)
+
+  // popup result 
+  function myFunction() {
+    let x = document.getElementById("snackbar");
+    x.className = "show";
+    if (scoreboardInAscendingOrder.length > 2) {
+      x.innerHTML += `<div>Game END ~~ Top players:</div>`
+
+      let counter = 0
+      for (let player of scoreboardInAscendingOrder) {
+        if (counter == 3) {
+          return
+        }
+        x.innerHTML += `<div>${player.name}${player.score}</div>`
+        counter++
+      }
+
+    } else {
+      x.innerHTML += `<div>Game END ~~ Top player:</div>`
+      for (let player of scoreboardInAscendingOrder) {
+        x.innerHTML += `<div>${player.name}${player.score}</div>`
+      }
+
+
+    }
+
+
+
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+  }
+  myFunction()
 
 
 })
@@ -289,7 +324,10 @@ socket.on('host-left', () => {
   }
 })
 
-socket.on('player-left', () => {
+socket.on('player-left', (username) => {
+  socket.emit('fetch-room-data', (socketID))
+  let content = `has left the game.`
+  socket.emit('chat', ({ content, username, socketID }))
   socket.emit('fetch-room-data', (socketID))
   // createScoreboard()
 })
@@ -586,10 +624,10 @@ function color_to_rgba(color) {
 
 // create Scoreboard element
 function createScoreboard() {
-  let scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
+  scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
     return parseFloat(b.score) - parseFloat(a.score)
   })
-  // console.log(scoreboardInAscendingOrder)
+  console.log(scoreboardInAscendingOrder)
   html = ''
   for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
     if (scoreboardInAscendingOrder[i].isDrawing == true) {
@@ -606,8 +644,5 @@ function createScoreboard() {
 function leaveGame() {
   let id = socketID
   socket.emit("leave-game", ({ username, id }))
-  let content = `has left the game.`
-  socket.emit('chat', ({ content, username, socketID }))
-
 }
 

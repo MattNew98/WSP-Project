@@ -1,5 +1,5 @@
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
-let SERVER_IP = "192.168.59.61:8080"
+let SERVER_IP = "localhost:8080"
 login()
 async function login() {
 
@@ -60,7 +60,7 @@ async function register() {
             alert("Invalid username/password or username already registered")
         }
         if (res.status == 200) {
-            alert("Registered successful")
+            window.location = `/lobby.html`
         }
     })
 
@@ -84,7 +84,7 @@ while (ranNums.length < topicAmount) {
     j = Math.floor(Math.random() * (6)); //change total number of topics
     if (!ranNums.includes(j)) {
         ranNums.push(j);
-    } 
+    }
 }
 
 

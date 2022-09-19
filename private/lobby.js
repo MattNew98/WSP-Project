@@ -1,5 +1,5 @@
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
-let SERVER_IP = "192.168.59.61:8080"
+let SERVER_IP = "localhost:8080"
 const socket = io.connect(SERVER_IP);
 const createButton = document.querySelector(".create-room-btn")
 const roomContainer = document.querySelector('.room-container')
@@ -15,8 +15,8 @@ let playingMusic = false
 async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
-    userIcon = result[0].image
-    username = result[0].username
+    userIcon = result.image
+    username = result.username
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`

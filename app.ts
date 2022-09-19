@@ -133,8 +133,8 @@ io.on('connection', function (socket) {
                     for (let player of room.players) {
                         if (player.name === username) {
                             if (username === room.drawingPlayer) {
+
                                 let turn = room.turn
-                                turn++
                                 if (turn >= room.players.length) {
                                     turn = turn % room.players.length
                                 }
@@ -267,7 +267,7 @@ io.on('connection', function (socket) {
 
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
-                    
+
 
                     // set interval
                     // setTimeout(() => {},3000)

@@ -99,20 +99,6 @@ io.on('connection', function (socket) {
         for (let room of roomList) {
             if (room.id == id) {
 
-                // a random topic function
-                // var nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                //     ranNums = [],
-                //     i = nums.length,
-                //     j = 0;
-
-                // while (i--) {
-                //     j = Math.floor(Math.random() * (i + 1));
-                //     ranNums.push(nums[j]);
-                //     nums.splice(j, 1);
-                // }
-
-
-
                 if (room.players.length <= 1) {
                     socket.emit('room-error', ("Don't play alone. That's sad :("))
                     return
@@ -120,7 +106,7 @@ io.on('connection', function (socket) {
                 let topicAmount = room.players.length * room.round
                 let ranNums: any = []
                 while (ranNums.length < topicAmount) {
-                    let j = Math.floor(Math.random() * (55)); //change total number of topics
+                    let j = Math.floor(Math.random() * (100)); //change total number of topics
                     if (!ranNums.includes(j)) {
                         ranNums.push(j);
                     }
@@ -130,12 +116,17 @@ io.on('connection', function (socket) {
                     let topic = topicDB.rows[0].topic
                     room.topics.push(topic)
                 }
+                console.log(room.topics)
+
+
                 // for (let x = 0; x < topicAmount; x++) {
                 //     let randomTopic = Math.floor(Math.random() * 55) + 1
                 //     let topicDB = await client.query(`select topic from topics where id = ${randomTopic}`)
                 //     let topic = topicDB.rows[0].topic
                 //     room.topics.push(topic)
                 // }
+
+
                 io.to(`${id}`).emit('launch-game', (id))
                 room.start = true
                 io.emit('update-room', ({ roomList }));

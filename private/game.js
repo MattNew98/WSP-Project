@@ -324,11 +324,16 @@ socket.on('host-left', () => {
   }
 })
 
-socket.on('player-left', (username) => {
+socket.on('player-left', (data) => {
+  let name = data.username
+  let host = data.host
   socket.emit('fetch-room-data', (socketID))
   let content = `has left the game.`
-  socket.emit('chat', ({ content, username, socketID }))
-  socket.emit('fetch-room-data', (socketID))
+  if (host == username) {
+    socket.emit('chat', ({ content, name, socketID }))
+    socket.emit('fetch-room-data', (socketID))
+  }
+
   // createScoreboard()
 })
 

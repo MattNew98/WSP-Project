@@ -45,9 +45,10 @@ io.on('connection', function (socket) {
             for (let player of room.players) {
                 if (player.name === username) {
                     let socketID = room.id
+                    let host = room.players[0]
                     room.players.splice(index, 1)
                     io.emit('update-room', ({ roomList }))
-                    io.to(`${socketID}`).emit('player-left', (username))
+                    io.to(`${socketID}`).emit('player-left', ({ username, host }))
                 }
                 index++
             }
@@ -271,10 +272,10 @@ io.on('connection', function (socket) {
                 }
                 let players = room.players
                 io.to(`${socketID}`).emit('score-update', (players))
-                room.guessed + 1
-
-                if (room.guessed = room.players.length - 1) {
-                    // let player = room.drawingPlayer
+                room.guessed++
+                // console.log(room.players.length, room.guessed)
+                if (room.guessed == room.players.length - 1) {
+                    // console.log('ding')
                     io.to(`${socketID}`).emit('stop-move')
                     room.guessed = 0
                 }

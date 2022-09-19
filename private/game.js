@@ -97,7 +97,7 @@ socket.on('show-room-data', (roomData) => {
     } else {
       playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon, isDrawing: false })
     }
-    
+
   }
   createScoreboard()
 
@@ -135,9 +135,9 @@ socket.on('show-room-data', (roomData) => {
 
 socket.on('next-turn', () => {
   drawable = false
-  // 
-  setTimeout(() => {socket.emit('fetch-room-data', (socketID))},3000)
-  
+  guessedTheWord = false
+  setTimeout(() => { socket.emit('fetch-room-data', (socketID)) }, 3000)
+
 
 })
 
@@ -227,11 +227,10 @@ socket.on('move-bar', (data) => {
 })
 
 socket.on('game-ended', () => {
+  // document.getElementById('drawing-board').innerHTML = `<div id = "snackbar" > Some text some message..</div >`
 
+  window.alert("End of Game. Redirecting to lobby...")
 
-
-  // window.alert("End of Game. Redirecting to lobby...")
-  set
   if (SERVER_IP[0] == "l") {
     window.location.replace(`/lobby.html`);
     // location.assign(`/ lobby.html`)
@@ -594,7 +593,7 @@ function createScoreboard() {
     } else {
       html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
     }
-    
+
   }
   document.querySelector("#scrollScore").innerHTML = html
 }

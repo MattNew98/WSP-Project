@@ -45,8 +45,8 @@ socket.emit('fetch-room-data', (socketID))
 async function getProfile() {
   const res = await fetch('/user/me')
   const result = await res.json()
-  username = result[0].username
-  userIcon = result[0].image
+  username = result.username
+  userIcon = result.image
   if (username) {
     document.querySelector('.user-name').innerHTML = `${username}`
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}">`

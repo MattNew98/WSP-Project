@@ -35,9 +35,23 @@ export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
     //LOBBY SOCKETS
-    socket.on('fetch-room', () => {//update rooms in lobby
-        io.emit('update-room', ({ roomList }));
+    socket.on('fetch-room', (username) => {//update rooms in lobby
+        let index = 0
+        for (let room of roomList) {
+            for (let player of room.players) {
+                if (player.name === username) {
+                    let socketID = room.id
+                    io.to(`${socketID}`).emit('player-left')
+                    room.players.splice(index, 1)
+                }
+                index++
+            }
+        }
+
+
+        io.emit('update-room', ({ roomList }))
     })
+
 
     socket.on('create-room', ({ username, userIcon }) => {//create a new room
         let inRoom = false
@@ -167,12 +181,12 @@ io.on('connection', function (socket) {
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))
                             socket.leave(`${socketID}`)
-                            // if (room.players.length == 1) {
-                            //     io.to(`${socketID}`).emit("game-ended")
-                            //     roomList.splice(index, 1)
-                            //     io.emit('update-room', ({ roomList }))
-                            // }
-                            // console.log('Player:' + username + ' has left the game')
+                            if (room.players.length == 1) {
+                                io.to(`${socketID}`).emit("game-ended")
+                                roomList.splice(index, 1)
+                                io.emit('update-room', ({ roomList }))
+                            }
+                            console.log('Player:' + username + ' has left the game')
                         }
                         p++
                     }

@@ -24,7 +24,7 @@ async function getProfile() {
 }
 getProfile()
 
-socket.emit('fetch-room')
+socket.emit('fetch-room', (username))
 
 
 function playMusic() {

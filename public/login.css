@@ -7,13 +7,6 @@ body {
     height: 100%;
 }
 
-input {
-    font-family: 'Indie Flower', cursive !important
-}
-
-button {
-    font-family: 'Indie Flower', cursive !important
-}
 
 .container {
     background-size: cover;
@@ -34,13 +27,13 @@ button {
     border-radius: 15px;
     justify-content: center;
     height: 10vh;
-    width: 56vh;
+    width: 75vh;
     align-items: center;
 }
 
 .icon {
     height: 61vh;
-    width: 64vh;
+    width: 75vh;
 }
 
 
@@ -120,19 +113,16 @@ button {
     align-items: center;
 }
 
-
-.google-button {
-    /* background-color: #d0d0e3; */
-    border-radius: 50%;
-    cursor: pointer;
+input {
+    font-family: 'Indie Flower', cursive !important
 }
 
-.google-button :hover {
-    background-color: #6a6cac;
-    box-shadow: 1px 5px 10px #6c6088;
-    color: rgb(149, 84, 84);
-    transform: translateY(-5px);
-    border-radius: 50%;
+button {
+    font-family: 'Indie Flower', cursive !important
+}
+
+#login-button {
+    font-size: 20px;
 }
 
 
@@ -187,6 +177,21 @@ button {
     justify-content: space-evenly;
     align-items: center;
 }
+
+.google-button {
+    /* background-color: #d0d0e3; */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.google-button :hover {
+    background-color: #6a6cac;
+    box-shadow: 1px 5px 10px #6c6088;
+    color: rgb(149, 84, 84);
+    transform: translateY(-5px);
+    border-radius: 50%;
+}
+
 
 #userImage {
     width: 100%;

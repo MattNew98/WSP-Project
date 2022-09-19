@@ -60,7 +60,7 @@ async function register() {
             alert("Invalid username/password or username already registered")
         }
         if (res.status == 200) {
-            alert("Registered successful")
+            window.location = `/lobby.html`
         }
     })
 
@@ -84,7 +84,7 @@ while (ranNums.length < topicAmount) {
     j = Math.floor(Math.random() * (6)); //change total number of topics
     if (!ranNums.includes(j)) {
         ranNums.push(j);
-    } 
+    }
 }
 
 

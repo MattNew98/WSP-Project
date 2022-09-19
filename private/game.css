@@ -1,8 +1,18 @@
 body {
+    font-family: 'Indie Flower', cursive;
+    font-size: large;
     background-image: url(./img/background3.jpg);
     background-size: cover;
     margin: 0;
     height: 100%
+}
+
+input {
+    font-family: 'Indie Flower', cursive !important
+}
+
+button {
+    font-family: 'Indie Flower', cursive !important
 }
 
 .header-container {
@@ -29,7 +39,7 @@ body {
     position: relative;
     background-color: white;
     height: 900px;
-    width: 1700px;
+    width: 1640px;
     margin: auto;
     display: flex;
 }
@@ -83,6 +93,7 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .controls-container {
@@ -94,16 +105,24 @@ canvas {
 
 
 .clear-button {
-    width: 40px;
+
     height: 40px;
     margin: 5px;
-    border-style: solid;
+    /* border-style: solid;
     border-width: 5px;
-    border-radius: 10%;
+    border-radius: 10%; */
 }
 
 .clear-button:hover {
     cursor: pointer;
+}
+
+#trashcan {
+    height: 50px;
+}
+
+#trashcan:hover {
+    height: 70px;
 }
 
 .color-button {
@@ -190,6 +209,14 @@ canvas {
 
 .fill-button:hover {
     cursor: pointer;
+}
+
+#bucket {
+    height: 50px
+}
+
+#bucket:hover {
+    height: 70px
 }
 
 .user-icon img {

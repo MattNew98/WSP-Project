@@ -1,4 +1,5 @@
 body {
+    font-family: 'Indie Flower', cursive;
     background-image: url(./img/background3.jpg);
     background-size: cover;
     font-size: 20px;
@@ -6,6 +7,13 @@ body {
     height: 100%;
 }
 
+input {
+    font-family: 'Indie Flower', cursive !important
+}
+
+button {
+    font-family: 'Indie Flower', cursive !important
+}
 
 .container {
     background-size: cover;

@@ -57,7 +57,7 @@ getProfile()
 
 // setup canvas
 function setup() {
-  const myCanvas = createCanvas(1100, 785); // 遊戲版 Width x Height
+  const myCanvas = createCanvas(1000, 700); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度
   noLoop()
@@ -101,7 +101,7 @@ socket.on('show-room-data', (roomData) => {
     drawable = true
 
     document.querySelector('.topic-container').innerHTML += `
-    <div class="topic">Your word is:<div style="font-weight: bold"> ${roomData.topics[turnCounter]}</div> </div>
+    <div class="topic">Your word is:<div style="font-weight: bold;margin-left:5px">${roomData.topics[turnCounter]}</div> </div>
     `
   } else {
     drawable = false
@@ -119,7 +119,7 @@ socket.on('show-room-data', (roomData) => {
     document.querySelector('.topic-container').innerHTML += `
     <div class="topic">${roomData.drawingPlayer} is drawing:</div>
     
-    <div>${guess}</div>
+    <div style="font-weight: bold;margin-left:5px">${guess}</div>
     `
   }
 
@@ -147,7 +147,7 @@ async function createChats() {
       }
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
-        let score = 1
+        let score = 10
         guessedTheWord = true
         socket.emit('user-scored', ({ username, score, socketID }))
       }
@@ -240,7 +240,7 @@ socket.on('draw-new-fill', ({ mouseX, mouseY, selectedColor, emitter }) => {
   if (emitter === username) {
     return;
   }
-  let ratio = canvas.width / 1100;
+  let ratio = canvas.width / 1000;
   ratio = 1
   // flood_fill(floor(mouseX * ratio), floor(mouseY * ratio), color_to_rgba(selectedColor))
   flood_fill(floor(mouseX), floor(mouseY), color_to_rgba(selectedColor))
@@ -363,7 +363,7 @@ function keyPressed() {//save canvas as png
 
 // Function for fillBucket
 function flood_fill(original_x, original_y, color) {
-  let mouseRatio = canvas.width / 1100;
+  let mouseRatio = canvas.width / 1000;
   let screenRatio = 1;
   original_x = original_x * mouseRatio;
   original_y = original_y * mouseRatio;

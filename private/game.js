@@ -18,6 +18,7 @@ let turnCounter
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
+const topicContainer = document.querySelector('.topic-container')
 socketID = id
 
 
@@ -91,7 +92,12 @@ socket.on('show-room-data', (roomData) => {
   playerScore = []
   turnCounter = roomData.turn
   for (let player of players) {
-    playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon })
+    if (player.name == roomData.drawingPlayer) {
+      playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon, isDrawing: true })
+    } else {
+      playerScore.push({ name: player.name, score: player.score, userIcon: player.userIcon, isDrawing: false })
+    }
+    
   }
   createScoreboard()
 
@@ -119,18 +125,24 @@ socket.on('show-room-data', (roomData) => {
     document.querySelector('.topic-container').innerHTML += `
     <div class="topic">${roomData.drawingPlayer} is drawing:</div>
     
-    <div style="font-weight: bold;margin-left:5px">${guess}</div>
+    <div style="font-weight: bold;margin-left:8px">${guess}</div>
     `
   }
 
 })
 
 
+
 socket.on('next-turn', () => {
+  drawable = false
+  // 
+  setTimeout(() => {socket.emit('fetch-room-data', (socketID))},3000)
+  
 
+})
 
-  socket.emit('fetch-room-data', (socketID))
-
+socket.on('show-topic', () => {
+  topicContainer.innerHTML = `<div class="topic">The answer is: <div class="topic-answer">${topicsArray[turnCounter]}</div> </div>`
 })
 
 ////// create comment box
@@ -188,7 +200,7 @@ function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
   // let width = 100
-  let id = setInterval(frame, 400); // change time here //
+  let id = setInterval(frame, 8000); // change time here //
   function frame() {
     if (width <= 0) {
       return
@@ -215,7 +227,11 @@ socket.on('move-bar', (data) => {
 })
 
 socket.on('game-ended', () => {
-  window.alert("End of Game. Redirecting to lobby...")
+
+
+
+  // window.alert("End of Game. Redirecting to lobby...")
+  set
   if (SERVER_IP[0] == "l") {
     window.location.replace(`/lobby.html`);
     // location.assign(`/ lobby.html`)
@@ -567,14 +583,18 @@ function color_to_rgba(color) {
 
 // create Scoreboard element
 function createScoreboard() {
-  // console.log(playerScore)
   let scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
     return parseFloat(b.score) - parseFloat(a.score)
   })
   // console.log(scoreboardInAscendingOrder)
   html = ''
   for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
-    html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
+    if (scoreboardInAscendingOrder[i].isDrawing == true) {
+      html += `<div class="player-info drawing"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
+    } else {
+      html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
+    }
+    
   }
   document.querySelector("#scrollScore").innerHTML = html
 }

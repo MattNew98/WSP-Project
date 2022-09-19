@@ -267,8 +267,14 @@ io.on('connection', function (socket) {
 
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
-                    io.to(`${id}`).emit("clear") // ask sockets to clear the board
+                    
+
+                    // set interval
+                    // setTimeout(() => {},3000)
+
                     io.to(`${id}`).emit("next-turn")
+                    io.to(`${id}`).emit("clear") // ask sockets to clear the board
+                    io.to(`${id}`).emit("show-topic")
                 } else {
                     let emitter = room.drawingPlayer
                     io.to(`${id}`).emit("move-bar", ({ width, emitter }))

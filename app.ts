@@ -50,7 +50,7 @@ io.on('connection', function (socket) {
             }
         }
         if (inRoom == false) {
-            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, roomIcon: userIcon, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 2 })
+            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, roomIcon: userIcon, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 2, guessed: 0 })
             io.emit('new-room', { id });
             socket.emit('room-created')
             socket.join(`${id}`)
@@ -140,9 +140,10 @@ io.on('connection', function (socket) {
                                 }
                                 room.drawingPlayer = room.players[turn].name
                                 // console.log(room.drawingPlayer)
-                                room.barWidth = 100
-                                io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
-                                io.to(`${socketID}`).emit("next-turn")
+                                room.guessed = 0
+                                room.barWidth = 0
+                                // io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+                                // io.to(`${socketID}`).emit("next-turn")
                             }
                             io.to(`${socketID}`).emit('player-left')
                             room.players.splice(p, 1)
@@ -236,6 +237,12 @@ io.on('connection', function (socket) {
                 }
                 let players = room.players
                 io.to(`${socketID}`).emit('score-update', (players))
+                room.guessed + 1
+
+                if (room.guessed = room.players.length - 1) {
+                    // let player = room.drawingPlayer
+                    io.to(`${socketID}`).emit('stop-move')
+                }
             }
         }
     })
@@ -267,7 +274,7 @@ io.on('connection', function (socket) {
 
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
-
+                    room.guessed = 0
 
                     // set interval
                     // setTimeout(() => {},3000)
@@ -275,36 +282,40 @@ io.on('connection', function (socket) {
                     io.to(`${id}`).emit("next-turn")
                     io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("show-topic")
+                } else if (room.barWidth == 100) {
+                    return
                 } else {
+                    let width = room.barWidth
                     let emitter = room.drawingPlayer
                     io.to(`${id}`).emit("move-bar", ({ width, emitter }))
                 }
-
             }
-        }
 
+        }
     })
 
-    // socket.on('next-turn', (data) => {
-    //     console.log(data)
-    //     let id = data.socketID
-    //     for (let room of roomList) {
-    //         if (room.id == id) {
-    //             room.turn++
-    //             let turn = room.turn
-    //             if (turn >= room.players.length) {
-    //                 turn = turn % room.players.length
-    //             }
-    //             room.drawingPlayer = room.players[turn].name
-    //             console.log(room.drawingPlayer)
-    //             room.barWidth = 100
-    //             io.to(`${id}}`).emit("next-turn", (room))
-    //         }
-    //     }
-
-    // })
-
 })
+
+// socket.on('next-turn', (data) => {
+//     console.log(data)
+//     let id = data.socketID
+//     for (let room of roomList) {
+//         if (room.id == id) {
+//             room.turn++
+//             let turn = room.turn
+//             if (turn >= room.players.length) {
+//                 turn = turn % room.players.length
+//             }
+//             room.drawingPlayer = room.players[turn].name
+//             console.log(room.drawingPlayer)
+//             room.barWidth = 100
+//             io.to(`${id}}`).emit("next-turn", (room))
+//         }
+//     }
+
+// })
+
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

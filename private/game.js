@@ -23,6 +23,7 @@ const topicContainer = document.querySelector('.topic-container')
 socketID = id
 
 
+
 // GAME FLOW:
 // Game loaded start 321 countdown on front end
 //     vv
@@ -201,7 +202,7 @@ socket.on('score-update', (data) => {
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
-  let id = setInterval(frame, 10); // change time here //
+  let id = setInterval(frame, 400); // change time here //
   function frame() {
     socket.on('stop-move', () => {
       width = 1
@@ -323,7 +324,10 @@ socket.on('host-left', () => {
   }
 })
 
-socket.on('player-left', () => {
+socket.on('player-left', (username) => {
+  socket.emit('fetch-room-data', (socketID))
+  let content = `has left the game.`
+  socket.emit('chat', ({ content, username, socketID }))
   socket.emit('fetch-room-data', (socketID))
   // createScoreboard()
 })
@@ -640,8 +644,5 @@ function createScoreboard() {
 function leaveGame() {
   let id = socketID
   socket.emit("leave-game", ({ username, id }))
-  let content = `has left the game.`
-  socket.emit('chat', ({ content, username, socketID }))
-
 }
 

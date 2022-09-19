@@ -35,24 +35,24 @@ export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
     //LOBBY SOCKETS
-    socket.on('fetch-room', (username) => {//update rooms in lobby
+    socket.on('fetch-room', () => {//update rooms in lobby
+        io.emit('update-room', ({ roomList }))
+    })
+
+    socket.on('room-check', (username) => {
         let index = 0
         for (let room of roomList) {
             for (let player of room.players) {
                 if (player.name === username) {
                     let socketID = room.id
-                    io.to(`${socketID}`).emit('player-left')
                     room.players.splice(index, 1)
+                    io.emit('update-room', ({ roomList }))
+                    io.to(`${socketID}`).emit('player-left', (username))
                 }
                 index++
             }
         }
-
-
-        io.emit('update-room', ({ roomList }))
     })
-
-
     socket.on('create-room', ({ username, userIcon }) => {//create a new room
         let inRoom = false
         for (let room of roomList) {
@@ -120,7 +120,7 @@ io.on('connection', function (socket) {
                 let topicAmount = room.players.length * room.round
                 let ranNums: any = []
                 while (ranNums.length < topicAmount) {
-                    let j = Math.floor(Math.random() * (100)); //change total number of topics
+                    let j = Math.floor(Math.random() * (100) + 1); //change total number of topics
                     if (!ranNums.includes(j)) {
                         ranNums.push(j);
                     }
@@ -177,7 +177,7 @@ io.on('connection', function (socket) {
                                 // io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                                 // io.to(`${socketID}`).emit("next-turn")
                             }
-                            io.to(`${socketID}`).emit('player-left')
+                            io.to(`${socketID}`).emit('player-left', (username))
                             room.players.splice(p, 1)
                             io.emit('update-room', ({ roomList }))
                             socket.leave(`${socketID}`)

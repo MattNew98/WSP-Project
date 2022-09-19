@@ -140,42 +140,6 @@ canvas {
     height: 60px;
 }
 
-.red {
-    background-color: #FE7C9B;
-}
-
-.orange {
-    background-color: #FBA879;
-}
-
-.yellow {
-    background-color: #FDCC0D;
-}
-
-.green {
-    background-color: #AAD7D2;
-}
-
-.blue {
-    background-color: #B7D6EB;
-}
-
-.darkblue {
-    background-color: #B4B7DC;
-}
-
-.purple {
-    background-color: #CF9FCA;
-}
-
-.pink {
-    background-color: #FAD0E3;
-}
-
-.black {
-    background-color: black;
-}
-
 .small {
     margin: 5px;
     width: 15px;
@@ -406,3 +370,39 @@ canvas {
     from {opacity: 0;}
     to {opacity: 1;}
   }
+
+  .red {
+    background-color: #FE7C9B;
+}
+
+.orange {
+    background-color: #FBA879;
+}
+
+.yellow {
+    background-color: #FDCC0D;
+}
+
+.green {
+    background-color: #AAD7D2;
+}
+
+.blue {
+    background-color: #B7D6EB;
+}
+
+.darkblue {
+    background-color: #B4B7DC;
+}
+
+.purple {
+    background-color: #CF9FCA;
+}
+
+.pink {
+    background-color: #FAD0E3;
+}
+
+.black {
+    background-color: black;
+}

@@ -22,8 +22,11 @@ const id = urlParams.get('id')
 const topicContainer = document.querySelector('.topic-container')
 socketID = id
 
-
-
+if (SERVER_IP[0] == "l") {
+  history.pushState({ url: '/lobby.html' }, null)
+} else {
+  history.pushState({ url: 'http://${SERVER_IP}/lobby.html' }, null)
+}
 // GAME FLOW:
 // Game loaded start 321 countdown on front end
 //     vv
@@ -232,16 +235,16 @@ socket.on('move-bar', (data) => {
 
 socket.on('game-ended', () => {
   drawable = false;
-  // setTimeout(() => {
-  //   window.alert("End of Game. Redirecting to lobby...")
-  //   if (SERVER_IP[0] == "l") {
-  //     window.location.replace(`/lobby.html`);
-  //     // location.assign(`/ lobby.html`)
-  //   } else {
-  //     window.location.replace(`http://${SERVER_IP}/lobby.html`);
-  //     // location.assign(`http://${SERVER_IP}/lobby.html`)
-  //   }
-  // }, 5000)
+  setTimeout(() => {
+    window.alert("End of Game. Redirecting to lobby...")
+    if (SERVER_IP[0] == "l") {
+      window.location.replace(`/lobby.html`);
+      // location.assign(`/ lobby.html`)
+    } else {
+      window.location.replace(`http://${SERVER_IP}/lobby.html`);
+      // location.assign(`http://${SERVER_IP}/lobby.html`)
+    }
+  }, 20000)
 
 
 
@@ -254,19 +257,30 @@ socket.on('game-ended', () => {
 
       let counter = 0
       for (let player of scoreboardInAscendingOrder) {
-        if (counter == 3) {
-          return
+        if (counter == 0) {
+          x.innerHTML += `<div class="finalScoreBoard">1st PLACE-${player.name}:${player.score}</div>`
+        } else if (counter == 1) {
+          x.innerHTML += `<div class="finalScoreBoard">2nd PLACE-${player.name}:${player.score}</div>`
+        } else if (counter == 2) {
+          x.innerHTML += `<div class="finalScoreBoard">3rd PLACE-${player.name}:${player.score}</div>`
+        } else {
+          x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
         }
-        x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
         counter++
       }
-
+      x.innerHTML += `<a href="lobby.html" class="buttonsInGame" onclick="leaveGame()">Back to lobby</a>`
     } else {
       x.innerHTML += `<div class="finalScoreBoard">Game END ~~ Top player:</div>`
+      let counter = 0
       for (let player of scoreboardInAscendingOrder) {
-        x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
+        if (counter == 0) {
+          x.innerHTML += `<div class="finalScoreBoard">WINNER-${player.name}:${player.score}</div>`
+        } else {
+          x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
+        }
+        counter++
       }
-
+      x.innerHTML += `<a href="lobby.html" class="buttonsInGame" onclick="leaveGame()">Back to lobby</a>`
 
     }
 
@@ -315,7 +329,10 @@ socket.on("draw-new-line", ({ mouseX, mouseY, pmouseX, pmouseY, selectedColor, s
 
 // UI:
 
-socket.on('host-left', () => {
+socket.on('host-left', (host) => {
+  if (host === username) {
+    return;
+  }
   window.alert("This host has left the game. Redirecting to lobby...")
   if (SERVER_IP[0] == "l") {
     window.location.replace(`/lobby.html`);
@@ -327,14 +344,14 @@ socket.on('host-left', () => {
 })
 
 socket.on('player-left', (data) => {
-  let name = data.username
+  let name = data.name
   let host = data.host
-  socket.emit('fetch-room-data', (socketID))
   let content = `has left the game.`
   if (host == username) {
-    socket.emit('chat', ({ content, name, socketID }))
-    socket.emit('fetch-room-data', (socketID))
+    let username = name
+    socket.emit('chat', ({ content, username, socketID }))
   }
+  socket.emit('fetch-room-data', (socketID))
 
   // createScoreboard()
 })

@@ -12,6 +12,8 @@ let socketID
 let playerList = []
 let userIcon
 let playingMusic = false
+
+
 async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
@@ -24,12 +26,9 @@ async function getProfile() {
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
 getProfile()
-window.addEventListener('popstate', function (e) {
-    var state = e.state;
-    if (state !== null) {
-        this.location.reload
-    }
-});
+window.onpopstate = function () {
+    location.reload()
+};
 socket.emit('fetch-room')
 
 
@@ -161,7 +160,7 @@ function startGame(id) {
 function createRoom() {
     socket.emit('create-room', ({ username, userIcon }))
     if (playingMusic == false) {
-        // playMusic()
+        playMusic()
     }
 
 }

@@ -17,14 +17,20 @@ async function getProfile() {
     result = await res.json()
     userIcon = result.image
     username = result.username
+    socket.emit('room-check', (username))
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
 getProfile()
-
-socket.emit('fetch-room', (username))
+window.addEventListener('popstate', function (e) {
+    var state = e.state;
+    if (state !== null) {
+        this.location.reload
+    }
+});
+socket.emit('fetch-room')
 
 
 function playMusic() {

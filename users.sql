@@ -9,6 +9,9 @@ CREATE TABLE topics (
     topic VARCHAR(255) not null,
     difficulty VARCHAR(255) not null
 );
+
+DROP table topics;
+
 INSERT INTO users (username, password)
 VALUES (
         'louie',

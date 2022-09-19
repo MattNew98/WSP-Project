@@ -15,8 +15,8 @@ let playingMusic = false
 async function getProfile() {
     const res = await fetch('/user/me')
     result = await res.json()
-    userIcon = result[0].image
-    username = result[0].username
+    userIcon = result.image
+    username = result.username
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`

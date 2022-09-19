@@ -49,12 +49,14 @@ userRoutes.post('/register', async (req, res) => {
 		}
 
 		let hashedPassword = await hashPassword(newPassword)
-		await client.query(
-			`insert into users (username, password, image) values ($1, $2, $3)`,
+		
+		let insertResult =  await client.query(
+			`insert into users (username, password, image) values ($1, $2, $3) returning *`,
 			[newUsername, hashedPassword, newImage]
 		)
+		dbUser = insertResult.rows[0]
 		console.log(newUsername + ' is registered')
-		req.session['user'] = newUsername
+		req.session['user'] = dbUser
 		res.status(200).json({
 			message: 'registered successfully'
 		})
@@ -116,7 +118,7 @@ userRoutes.post('/login', async (req, res) => {
 
 
 userRoutes.get('/logout', (req, res) => {
-	console.log(req.session.username + ' is logged out')
+	console.log(req.session.user.username + ' is logged out')
 	req.session.destroy(() => { })
 
 	if (SERVER_IP[0] == "l") {
@@ -128,10 +130,10 @@ userRoutes.get('/logout', (req, res) => {
 
 userRoutes.get('/me', async (req, res) => {
 	let userResult = await client.query(
-		`select * from users where username = $1`,
-		[req.session.username]
+		`select * from users where id = $1`,
+		[req.session.user.id]
 	)
-	let dbUser = userResult.rows
+	let dbUser = userResult.rows[0]
 	res.json(dbUser)
 	// res.json({
 	// 	message: 'Success retrieve user',

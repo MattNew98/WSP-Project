@@ -2,63 +2,43 @@ body {
     font-family: 'Indie Flower', cursive;
     background-image: url(./img/background3.jpg);
     background-size: cover;
-    font-size: 20px;
+    font-size: 30px;
     min-width: 900px;
     height: 100%;
 }
 
-input {
-    font-family: 'Indie Flower', cursive !important
-}
-
-button {
-    font-family: 'Indie Flower', cursive !important
-}
 
 .container {
     background-size: cover;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
     min-width: 900px;
     margin-top: 20vh;
-}
-
-.left-container {
-    box-shadow: 0 0 0 3px #27287c87;
-    border-radius: 15px;
-    padding: 5px;
-    /* height: 513px;
-    width: 300px; */
     display: flex;
+    flex-wrap: wrap;
     align-content: center;
-    justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
 }
+
 
 
 
 .game-title {
     display: flex;
-    border: solid 3px #27287c87;
     border-radius: 15px;
-    margin: 10px;
-    height: 290px;
     justify-content: center;
-
+    height: 10vh;
+    width: 75vh;
+    align-items: center;
 }
 
 .icon {
-    height: 290px;
-    width: 290px;
-
+    height: 61vh;
+    width: 75vh;
 }
 
 
 .login-container {
-    background-color: #b7bacbbd;
+    background-color: #d0d0e3a1;
     padding: 10px;
     border-radius: 25px;
     display: flex;
@@ -72,27 +52,25 @@ button {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-
-    width: 15rem;
+    width: 86%;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
     text-decoration: none;
     padding-left: 1rem;
     margin: 3px;
-
 }
 
 #login-form {
-    box-shadow: 0 0 0 3px #27287c87;
+    box-shadow: 0 0 0 3px #6a6cac;
     border-radius: 15px;
     padding: 10px;
-    height: 195px;
-    width: 90%;
+    margin: 10px;
+    height: 379px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
+    justify-content: space-evenly;
 }
 
 #register-form #register-username,
@@ -102,15 +80,15 @@ button {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-
-    width: 90%;
+    width: 86%;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
     text-decoration: none;
-    /* padding-left: 1rem; */
+    padding-left: 1rem;
     margin: 10px;
 }
+
 
 .profile-picture {
     margin: 10px;
@@ -118,12 +96,13 @@ button {
 
 
 #register-form {
-
-    padding: 5px;
+    box-shadow: 0 0 0 3px #27287c87;
+    border-radius: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    margin: 10px;
 }
 
 .register-icon img {
@@ -134,19 +113,16 @@ button {
     align-items: center;
 }
 
-
-.google-button {
-    /* background-color: #d0d0e3; */
-    border-radius: 50%;
-    cursor: pointer;
+input {
+    font-family: 'Indie Flower', cursive !important
 }
 
-.google-button :hover {
-    background-color: #6a6cac;
-    box-shadow: 1px 5px 10px #6c6088;
-    color: rgb(149, 84, 84);
-    transform: translateY(-5px);
-    border-radius: 50%;
+button {
+    font-family: 'Indie Flower', cursive !important
+}
+
+#login-button {
+    font-size: 20px;
 }
 
 
@@ -201,6 +177,21 @@ button {
     justify-content: space-evenly;
     align-items: center;
 }
+
+.google-button {
+    /* background-color: #d0d0e3; */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.google-button :hover {
+    background-color: #6a6cac;
+    box-shadow: 1px 5px 10px #6c6088;
+    color: rgb(149, 84, 84);
+    transform: translateY(-5px);
+    border-radius: 50%;
+}
+
 
 #userImage {
     width: 100%;

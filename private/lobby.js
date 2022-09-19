@@ -1,5 +1,5 @@
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
-let SERVER_IP = "localhost:8080"
+let SERVER_IP = "192.168.59.61:8080"
 const socket = io.connect(SERVER_IP);
 const createButton = document.querySelector(".create-room-btn")
 const roomContainer = document.querySelector('.room-container')

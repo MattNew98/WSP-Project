@@ -1,5 +1,5 @@
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
-let SERVER_IP = "localhost:8080"
+let SERVER_IP = "192.168.59.61:8080"
 login()
 async function login() {
 
@@ -65,3 +65,27 @@ async function register() {
     })
 
 }
+// let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+//     ranNums = [],
+//     i = topicAmount,
+//     j = 0;
+
+// while (i--) {
+//     j = Math.floor(Math.random() * (i + 1));
+//     ranNums.push(nums[j]);
+//     nums.splice(j, 1);
+// }
+// console.log(nums)
+// console.log(ranNums)
+
+let topicAmount = 4
+let ranNums = []
+while (ranNums.length < topicAmount) {
+    j = Math.floor(Math.random() * (6)); //change total number of topics
+    if (!ranNums.includes(j)) {
+        ranNums.push(j);
+    } 
+}
+
+
+console.log(ranNums)

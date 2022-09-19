@@ -1,5 +1,5 @@
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
-let SERVER_IP = "localhost:8080"
+let SERVER_IP = "192.168.59.61:8080"
 let selectedColor = '#000000' // default selected color
 let selectedStrokeWeight = 10 //default selected stroke weight
 const socket = io.connect(SERVER_IP); // connect to socketIO
@@ -200,7 +200,7 @@ function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
   // let width = 100
-  let id = setInterval(frame, 8000); // change time here //
+  let id = setInterval(frame, 400); // change time here //
   function frame() {
     if (width <= 0) {
       return

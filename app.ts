@@ -182,6 +182,8 @@ io.on('connection', function (socket) {
                             io.emit('update-room', ({ roomList }))
                             socket.leave(`${socketID}`)
                             if (room.players.length == 1) {
+                                io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+                                io.to(`${socketID}`).emit("show-topic")
                                 io.to(`${socketID}`).emit("game-ended")
                                 roomList.splice(index, 1)
                                 io.emit('update-room', ({ roomList }))
@@ -293,6 +295,8 @@ io.on('connection', function (socket) {
                         turn = turn % room.players.length
                     }
                     if (room.turn / room.round == room.players.length) {
+                        io.to(`${id}`).emit("clear") // ask sockets to clear the board
+                        io.to(`${id}`).emit("show-topic")
                         io.to(`${id}`).emit("game-ended")
                         let index = 0
                         for (let room of roomList) {

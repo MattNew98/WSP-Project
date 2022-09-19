@@ -200,7 +200,7 @@ socket.on('score-update', (data) => {
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
-  let id = setInterval(frame, 400); // change time here //
+  let id = setInterval(frame, 10); // change time here //
   function frame() {
     socket.on('stop-move', () => {
       width = 1
@@ -230,16 +230,18 @@ socket.on('move-bar', (data) => {
 
 socket.on('game-ended', () => {
   // document.getElementById('drawing-board').innerHTML = `<div id = "snackbar" > Some text some message..</div >`
+  setTimeout(() => {
+    window.alert("End of Game. Redirecting to lobby...")
+    if (SERVER_IP[0] == "l") {
+      window.location.replace(`/lobby.html`);
+      // location.assign(`/ lobby.html`)
+    } else {
+      window.location.replace(`http://${SERVER_IP}/lobby.html`);
+      // location.assign(`http://${SERVER_IP}/lobby.html`)
+    }
+  }, 5000)
 
-  window.alert("End of Game. Redirecting to lobby...")
 
-  if (SERVER_IP[0] == "l") {
-    window.location.replace(`/lobby.html`);
-    // location.assign(`/ lobby.html`)
-  } else {
-    window.location.replace(`http://${SERVER_IP}/lobby.html`);
-    // location.assign(`http://${SERVER_IP}/lobby.html`)
-  }
 })
 
 //SOCKETS

@@ -118,7 +118,7 @@ userRoutes.post('/login', async (req, res) => {
 
 
 userRoutes.get('/logout', (req, res) => {
-	console.log(req.session.username + ' is logged out')
+	console.log(req.session.user.username + ' is logged out')
 	req.session.destroy(() => { })
 
 	if (SERVER_IP[0] == "l") {

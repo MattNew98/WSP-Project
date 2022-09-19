@@ -2,7 +2,7 @@ body {
     font-family: 'Indie Flower', cursive;
     background-image: url(./img/background3.jpg);
     background-size: cover;
-    font-size: 20px;
+    font-size: 30px;
     min-width: 900px;
     height: 100%;
 }
@@ -17,48 +17,35 @@ button {
 
 .container {
     background-size: cover;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
     min-width: 900px;
     margin-top: 20vh;
-}
-
-.left-container {
-    box-shadow: 0 0 0 3px #27287c87;
-    border-radius: 15px;
-    padding: 5px;
-    /* height: 513px;
-    width: 300px; */
     display: flex;
+    flex-wrap: wrap;
     align-content: center;
-    justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
 }
+
 
 
 
 .game-title {
     display: flex;
-    border: solid 3px #27287c87;
     border-radius: 15px;
-    margin: 10px;
-    height: 290px;
     justify-content: center;
-
+    height: 10vh;
+    width: 56vh;
+    align-items: center;
 }
 
 .icon {
-    height: 290px;
-    width: 290px;
-
+    height: 61vh;
+    width: 64vh;
 }
 
 
 .login-container {
-    background-color: #b7bacbbd;
+    background-color: #d0d0e3a1;
     padding: 10px;
     border-radius: 25px;
     display: flex;
@@ -72,27 +59,25 @@ button {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-
-    width: 15rem;
+    width: 86%;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
     text-decoration: none;
     padding-left: 1rem;
     margin: 3px;
-
 }
 
 #login-form {
-    box-shadow: 0 0 0 3px #27287c87;
+    box-shadow: 0 0 0 3px #6a6cac;
     border-radius: 15px;
     padding: 10px;
-    height: 195px;
-    width: 90%;
+    margin: 10px;
+    height: 379px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
+    justify-content: space-evenly;
 }
 
 #register-form #register-username,
@@ -102,15 +87,15 @@ button {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-
-    width: 90%;
+    width: 86%;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
     text-decoration: none;
-    /* padding-left: 1rem; */
+    padding-left: 1rem;
     margin: 10px;
 }
+
 
 .profile-picture {
     margin: 10px;
@@ -118,12 +103,13 @@ button {
 
 
 #register-form {
-
-    padding: 5px;
+    box-shadow: 0 0 0 3px #27287c87;
+    border-radius: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    margin: 10px;
 }
 
 .register-icon img {

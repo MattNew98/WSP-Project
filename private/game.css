@@ -228,19 +228,28 @@ canvas {
 
 .user-name-and-photo-container {
     padding: 5px;
-    background-color: rgba(128, 128, 128, 0.9);
+    background-color: rgba(178, 173, 173, 0.428);
     display: flex;
     font-size: 30px;
     align-items: center;
+    border-radius: 8px;
+    margin: 10px 0;
+    justify-content: center;
 }
 
 .buttonsInGame {
-    background-color: #75b6e5;
+    background-color: #75b6e581;
     text-decoration: none;
-    padding: 0 10px;
+    padding: 3px 10px;
     display: flex;
     align-items: center;
     font-weight: 500;
+    margin: 30px;
+    border-radius: 15px;
+    font-size:30px ;
+}
+.buttonsInGame:hover {
+    background-color: #75b6e5b6;
 }
 
 .user-name {
@@ -292,6 +301,7 @@ canvas {
     align-items: center;
     justify-content: center;
     font-size: 18px;
+    border-radius: 8px;
 }
 
 #scrollScore {
@@ -313,4 +323,36 @@ canvas {
     /* padding: 5px; */
     display: flex;
     /* align-items: center; */
+    font-size: 30px;
+}
+
+.topic-answer {
+    font-size: 30px;
+    color: #FBA879;
+    margin-left: 8px;
+}
+
+.drawing {
+    border: #FE7C9B solid 5px;
+}
+
+.logoutButton {
+    font-size: 35px;
+    margin: 30px;
+    color: #cf9fca;
+    background-color: #75b6e581;
+    text-decoration: none;
+    padding: 3px 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    margin: 30px;
+    border-radius: 15px;
+    font-size:30px ;
+}
+
+.logoutButton:hover {
+    color: #da7bd2;
+    background-color: #75b6e5b6;
+
 }

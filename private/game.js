@@ -134,6 +134,7 @@ socket.on('show-room-data', (roomData) => {
 
 
 socket.on('next-turn', () => {
+
   drawable = false
   guessedTheWord = false
   setTimeout(() => { socket.emit('fetch-room-data', (socketID)) }, 3000)
@@ -199,9 +200,11 @@ socket.on('score-update', (data) => {
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
-  // let width = 100
   let id = setInterval(frame, 400); // change time here //
   function frame() {
+    socket.on('stop-move', () => {
+      width = 1
+    })
     if (width <= 0) {
       return
     } else {
@@ -210,7 +213,6 @@ function move(width) {
       elem.style.width = width + "%";
     }
   }
-
 }
 
 socket.on('move-bar', (data) => {

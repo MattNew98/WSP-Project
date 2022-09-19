@@ -24,6 +24,19 @@ button {
     margin-top: 20vh;
 }
 
+.left-container {
+    box-shadow: 0 0 0 3px #27287c87;
+    border-radius: 15px;
+    padding: 5px;
+    /* height: 513px;
+    width: 300px; */
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
 
 
 
@@ -121,19 +134,6 @@ button {
     align-items: center;
 }
 
-.left-container {
-    box-shadow: 0 0 0 3px #27287c87;
-    border-radius: 15px;
-    padding: 5px;
-    height: 513px;
-    width: 300px;
-    display: flex;
-    align-content: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px;
-}
 
 .google-button {
     /* background-color: #d0d0e3; */
@@ -176,6 +176,22 @@ button {
     transform: translateY(-5px);
 }
 
+.register-button {
+    background-color: #d0d0e3;
+    border: solid 1px;
+    border-radius: 7px;
+    cursor: pointer;
+    color: #414679;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.register-button:hover {
+    background-color: #6a6cac;
+    box-shadow: 1px 5px 10px #6c6088;
+    color: rgb(110, 47, 47);
+    transform: translateY(-5px);
+}
 
 
 

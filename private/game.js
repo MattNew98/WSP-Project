@@ -1,4 +1,4 @@
-// CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080"
+// CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
 let SERVER_IP = "localhost:8080"
 let selectedColor = '#000000' // default selected color
 let selectedStrokeWeight = 10 //default selected stroke weight
@@ -231,38 +231,40 @@ socket.on('move-bar', (data) => {
 })
 
 socket.on('game-ended', () => {
-  // document.getElementById('drawing-board').innerHTML = `<div id = "snackbar" > Some text some message..</div >`
-  setTimeout(() => {
-    window.alert("End of Game. Redirecting to lobby...")
-    if (SERVER_IP[0] == "l") {
-      window.location.replace(`/lobby.html`);
-      // location.assign(`/ lobby.html`)
-    } else {
-      window.location.replace(`http://${SERVER_IP}/lobby.html`);
-      // location.assign(`http://${SERVER_IP}/lobby.html`)
-    }
-  }, 5000)
+  drawable = false;
+  // setTimeout(() => {
+  //   window.alert("End of Game. Redirecting to lobby...")
+  //   if (SERVER_IP[0] == "l") {
+  //     window.location.replace(`/lobby.html`);
+  //     // location.assign(`/ lobby.html`)
+  //   } else {
+  //     window.location.replace(`http://${SERVER_IP}/lobby.html`);
+  //     // location.assign(`http://${SERVER_IP}/lobby.html`)
+  //   }
+  // }, 5000)
+
+
 
   // popup result 
   function myFunction() {
     let x = document.getElementById("snackbar");
     x.className = "show";
     if (scoreboardInAscendingOrder.length > 2) {
-      x.innerHTML += `<div>Game END ~~ Top players:</div>`
+      x.innerHTML += `<div class="finalScoreBoard">Game END ~~ Top players:</div>`
 
       let counter = 0
       for (let player of scoreboardInAscendingOrder) {
         if (counter == 3) {
           return
         }
-        x.innerHTML += `<div>${player.name}${player.score}</div>`
+        x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
         counter++
       }
 
     } else {
-      x.innerHTML += `<div>Game END ~~ Top player:</div>`
+      x.innerHTML += `<div class="finalScoreBoard">Game END ~~ Top player:</div>`
       for (let player of scoreboardInAscendingOrder) {
-        x.innerHTML += `<div>${player.name}${player.score}</div>`
+        x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
       }
 
 
@@ -272,7 +274,7 @@ socket.on('game-ended', () => {
 
 
     // After 3 seconds, remove the show class from DIV
-    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 1000000);
   }
   myFunction()
 

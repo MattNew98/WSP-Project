@@ -8,13 +8,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
     <script src="https://kit.fontawesome.com/ac1eb794af.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrawSomething</title>
+    <title>TeckyDraw.io</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <link rel="icon" href="./img/dickson.jpeg">
     <link rel="stylesheet" href="./game.css" />
 </head>
+
 
 <body>
     <div class="game-lobby-text">
@@ -23,8 +24,9 @@
             <div class="user-icon"></div>
             <div class="user-name"></div>
         </div>
-        <a href="/user/logout" class="logoutButton" onclick="leaveGame()"><i class="fa-sharp fa-solid fa-right-from-bracket"></i></a>
-        
+        <a href="/user/logout" class="logoutButton" onclick="leaveGame()"><i
+                class="fa-sharp fa-solid fa-right-from-bracket"></i></a>
+
 
     </div>
     <div class="main-container">
@@ -46,25 +48,50 @@
             </div>
 
             <div class="controls-container">
-                <div class="clear-button" onclick="clearBoard()"><img src="./img/trashcan.png" id='trashcan' alt="">
+                <div class="button-container">
+                    <div class="clear-button" onclick="clearBoard()">
+                        <img src="./img/trashcan.png" id='trashcan' alt="">
+                    </div>
                 </div>
                 <div>Color:</div>
-                <div class="black color-button" onclick="changeColor('black')"></div>
-                <div class="red color-button" onclick="changeColor('red')"></div>
-                <div class="orange color-button" onclick="changeColor('orange')"></div>
-                <div class="yellow color-button" onclick="changeColor('yellow')"></div>
-                <div class="green color-button" onclick="changeColor('green')"></div>
-                <div class="blue color-button" onclick="changeColor('blue')"></div>
-                <div class="darkblue color-button" onclick="changeColor('darkblue')"></div>
-                <div class="purple color-button" onclick="changeColor('purple')"></div>
-                <div class="pink color-button" onclick="changeColor('pink')"></div>
-                <div class="eraser color-button" onclick="changeColor('white')"></div>
+                <div class="button-container">
+                    <div class="black color-button" onclick="changeColor('black')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="red color-button" onclick="changeColor('red')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="orange color-button" onclick="changeColor('orange')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="yellow color-button" onclick="changeColor('yellow')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="green color-button" onclick="changeColor('green')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="blue color-button" onclick="changeColor('blue')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="darkblue color-button" onclick="changeColor('darkblue')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="purple color-button" onclick="changeColor('purple')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="pink color-button" onclick="changeColor('pink')"></div>
+                </div>
+                <div class="button-container">
+                    <div class="eraser color-button" onclick="changeColor('white')"></div>
+                </div>
                 <div>Stroke:</div>
                 <div class="small stroke-button" onclick="changeStroke(10)"></div>
                 <div class="medium stroke-button" onclick="changeStroke(15)"></div>
                 <div class="large stroke-button" onclick="changeStroke(20)"></div>
-                <div class="fill-button" onclick="fillBucketOn()"><img src="./img/fill-bucket.png" id='bucket' alt=""></div>
-                <div class="timer"></div>
+                <div class="button-container">
+                    <div class="fill-button" onclick="fillBucketOn()"><img src="./img/fill-bucket.png" id='bucket'
+                            alt=""> </div>
+                </div>
             </div>
 
 

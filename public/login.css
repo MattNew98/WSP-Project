@@ -11,7 +11,7 @@ body {
 .container {
     background-size: cover;
     min-width: 900px;
-    margin-top: 20vh;
+    /* margin-top: 5vh; */
     display: flex;
     flex-wrap: wrap;
     align-content: center;
@@ -19,31 +19,62 @@ body {
     align-items: center;
 }
 
+.account-container {
+    background-color: rgba(255, 255, 255, 0.524);
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    border-radius: 25px;
+}
 
+.left-container {
+    background-image: url(./img/frame.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    height: 500px;
+}
 
+.right-container {
+
+    background-image: url(./img/frame.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    height: 500px;
+}
 
 .game-title {
     display: flex;
     border-radius: 15px;
     justify-content: center;
-    height: 10vh;
-    width: 75vh;
+    height: 300px;
+    width: 100%;
     align-items: center;
+    margin: 10px 0 50px 0;
+}
+
+.title-frame {
+    background-image: url(./img/title-frame.png);
+    background-size: cover;
+    width: 800px;
+    padding: 20px 0 10px 0;
+    display: flex;
+    justify-content: center;
+
 }
 
 .icon {
-    height: 61vh;
-    width: 75vh;
+    width: 600px;
+    margin: 100px;
 }
 
-
-.login-container {
-    background-color: #d0d0e3a1;
-    padding: 10px;
-    border-radius: 25px;
-    display: flex;
-    justify-content: center;
-}
 
 #login-form #login-username,
 #login-form #login-password {
@@ -62,7 +93,7 @@ body {
 }
 
 #login-form {
-    box-shadow: 0 0 0 3px #6a6cac;
+    /* box-shadow: 0 0 0 3px #6a6cac; */
     border-radius: 15px;
     padding: 10px;
     margin: 10px;
@@ -75,12 +106,13 @@ body {
 
 #register-form #register-username,
 #register-form #register-password {
+
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    width: 86%;
+    width: 80%;
     height: 2rem;
     border-radius: 15px;
     font-size: 1rem;
@@ -96,19 +128,19 @@ body {
 
 
 #register-form {
-    box-shadow: 0 0 0 3px #27287c87;
+    /* box-shadow: 0 0 0 3px #27287c87; */
     border-radius: 15px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
+    margin: 20px;
 }
 
 .register-icon img {
     width: 166px;
     height: 147px;
-    box-shadow: 0 0 0 3px #27287c87;
+    /* box-shadow: 0 0 0 3px #27287c87; */
     border-radius: 45%;
     align-items: center;
 }

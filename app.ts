@@ -85,12 +85,16 @@ io.on('connection', function (socket) {
 
     socket.on('remove-room', (username) => {//remove room you created
         let index = 0
+
         for (let room of roomList) {
-            if (room.players[0].name === username) {
-                roomList.splice(index, 1)
-                io.emit('update-room', ({ roomList }))
-            } else { index++ }
+            {
+                if (room.players[0].name === username) {
+                    roomList.splice(index, 1)
+                    io.emit('update-room', ({ roomList }))
+                } else { index++ }
+            }
         }
+
     })
 
     socket.on('join-room', (data) => {//join a room

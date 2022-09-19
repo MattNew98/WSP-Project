@@ -101,12 +101,21 @@ canvas {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.button-container {
+    width: 60px;
+    display: flex;
+    justify-content: center;
+
 }
 
 
 .clear-button {
 
     height: 40px;
+    width: 40px;
     margin: 5px;
     /* border-style: solid;
     border-width: 5px;
@@ -118,17 +127,17 @@ canvas {
 }
 
 #trashcan {
-    height: 50px;
+    height: 40px;
 }
 
 #trashcan:hover {
-    height: 70px;
+    height: 50px;
 }
 
 .color-button {
     margin: 5px;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-style: solid;
     border-width: 5px;
     border-radius: 10%;
@@ -136,8 +145,8 @@ canvas {
 
 .color-button:hover {
     cursor: pointer;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
 }
 
 .small {
@@ -176,11 +185,11 @@ canvas {
 }
 
 #bucket {
-    height: 50px
+    height: 40px
 }
 
 #bucket:hover {
-    height: 70px
+    height: 50px
 }
 
 .user-icon img {
@@ -210,8 +219,9 @@ canvas {
     font-weight: 500;
     margin: 30px;
     border-radius: 15px;
-    font-size:30px ;
+    font-size: 30px;
 }
+
 .buttonsInGame:hover {
     background-color: #75b6e5b6;
 }
@@ -261,11 +271,16 @@ canvas {
     width: auto;
     height: 60px;
     margin: 15px 0;
+    padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     font-size: 18px;
     border-radius: 8px;
+}
+
+#spacing {
+    width: 50px
 }
 
 #scrollScore {
@@ -312,7 +327,7 @@ canvas {
     font-weight: 500;
     margin: 30px;
     border-radius: 15px;
-    font-size:30px ;
+    font-size: 30px;
 }
 
 .logoutButton:hover {
@@ -327,51 +342,82 @@ canvas {
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
-    visibility: hidden; /* Hidden by default. Visible on click */
-    min-width: 250px; /* Set a default minimum width */
-    margin-left: -125px; /* Divide value of min-width by 2 */
-    background-color: rgba(51, 51, 51, 0.611); /* Black background color */
-    color: #fff; /* White text color */
-    text-align: center; /* Centered text */
-    border-radius: 2px; /* Rounded borders */
-    padding: 16px; /* Padding */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
-    top:50%;
+    visibility: hidden;
+    /* Hidden by default. Visible on click */
+    min-width: 250px;
+    /* Set a default minimum width */
+    margin-left: -125px;
+    /* Divide value of min-width by 2 */
+    background-color: rgba(51, 51, 51, 0.611);
+    /* Black background color */
+    color: #fff;
+    /* White text color */
+    text-align: center;
+    /* Centered text */
+    border-radius: 2px;
+    /* Rounded borders */
+    padding: 16px;
+    /* Padding */
+    position: fixed;
+    /* Sit on top of the screen */
+    z-index: 1;
+    /* Add a z-index if needed */
+    left: 50%;
+    /* Center the snackbar */
+    top: 50%;
     border-radius: 15px;
     /* bottom: 30px; 30px from the bottom */
-  }
-  
-  /* Show the snackbar when clicking on a button (class added with JavaScript) */
-  #snackbar.show {
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
     visibility: visible;
     -webkit-animation: fadein 1s, fadeout 0.5s 10000s;
     animation: fadein 1s, fadeout 0.5s 10000s;
-  }
-  
-  /* Animations to fade the snackbar in and out */
-  @-webkit-keyframes fadein {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-  
-  @keyframes fadein {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-  
-  @-webkit-keyframes fadeout {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-  
-  @keyframes fadeout {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
+}
 
-  .red {
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.red {
     background-color: #FE7C9B;
 }
 
@@ -405,4 +451,8 @@ canvas {
 
 .black {
     background-color: black;
+}
+
+#arrow {
+    width: 50px;
 }

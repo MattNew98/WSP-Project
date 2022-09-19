@@ -253,7 +253,7 @@ socket.on('game-ended', () => {
     let x = document.getElementById("snackbar");
     x.className = "show";
     if (scoreboardInAscendingOrder.length > 2) {
-      x.innerHTML += `<div class="finalScoreBoard">Game END ~~ Top players:</div>`
+      x.innerHTML += `<div class="finalScoreBoard">~End Of Game~</div>`
 
       let counter = 0
       for (let player of scoreboardInAscendingOrder) {
@@ -270,7 +270,7 @@ socket.on('game-ended', () => {
       }
       x.innerHTML += `<a href="lobby.html" class="buttonsInGame" onclick="leaveGame()">Back to lobby</a>`
     } else {
-      x.innerHTML += `<div class="finalScoreBoard">Game END ~~ Top player:</div>`
+      x.innerHTML += `<div class="finalScoreBoard">~End Of Game~</div>`
       let counter = 0
       for (let player of scoreboardInAscendingOrder) {
         if (counter == 0) {
@@ -655,9 +655,9 @@ function createScoreboard() {
   html = ''
   for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
     if (scoreboardInAscendingOrder[i].isDrawing == true) {
-      html += `<div class="player-info drawing"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
+      html += `<div class="player-info drawing"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}"><img src="./img/arrow.png" id='arrow' alt="">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
     } else {
-      html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}">${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
+      html += `<div class="player-info"><img class="scoreBoardIcon" src="${scoreboardInAscendingOrder[i].userIcon}"><div id='spacing'></div>${scoreboardInAscendingOrder[i].name}: ${scoreboardInAscendingOrder[i].score}</div>`
     }
 
   }

@@ -134,13 +134,16 @@ button {
     /* height: 200px; */
     margin: 10px;
     padding: 10px;
-    border-radius: 15px;
     font-size: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     text-decoration: none;
+    border: solid black;
+    border-width: 5px 7px 5px 7px;
+    border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+    transform: rotate(2deg);
 }
 
 .roomStyle1 {
@@ -149,13 +152,16 @@ button {
     /* height: 200px; */
     margin: 10px;
     padding: 10px;
-    border-radius: 15px;
     font-size: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     text-decoration: none;
+    border: solid black;
+    border-width: 5px 5px 7px 7px;
+    border-radius: 4% 95% 6% 95%/95% 4% 92% 5%;
+    transform: rotate(-2deg);
 }
 
 .logout-button {
@@ -174,4 +180,18 @@ button {
 .roomIcon {
     width: 100px;
 
+}
+
+.music-button {
+    width: 70px;
+    height: 100px;
+    padding: 10px;
+}
+
+#on {
+    width: 55px;
+}
+
+#off {
+    height: 50px;
 }

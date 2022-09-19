@@ -19,41 +19,42 @@ async function getProfile() {
     result = await res.json()
     userIcon = result.image
     username = result.username
-    socket.emit('room-check', (username))
+
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
 getProfile()
-window.onpopstate = function () {
-    location.reload()
-};
+// window.onpopstate = function () {
+//     location.reload()
+// };
+
 socket.emit('fetch-room')
 
-
+socket.emit('room-check', (username))
 function playMusic() {
     if (playingMusic == false) {
         music.play()
         playingMusic = true
         musicButton.innerHTML = `
-        <i class="fa-solid fa-volume-high"></i>
+        <img  id='on' src="./img/speaker-on.png"></img>
         `
     } else {
         music.pause()
         playingMusic = false
         musicButton.innerHTML = `
-        <i class="fa-solid fa-volume-xmark"></i>
+        <img  id='off' src="./img/speaker-off.png"></img>
         `
     }
 }
 
 
-async function displayRoom(id, roomName, roomIcon, players, start) {
+async function displayRoom(id, roomName, roomIcon, players, start, odd) {
 
     // console.log("AHHA" +players[0].name)
-    let odd
-    if (id % 2 === 0) {
+
+    if (odd == true) {
         odd = 0
     } else {
         odd = 1
@@ -160,7 +161,7 @@ function startGame(id) {
 function createRoom() {
     socket.emit('create-room', ({ username, userIcon }))
     if (playingMusic == false) {
-        playMusic()
+        // playMusic()
     }
 
 }
@@ -191,12 +192,16 @@ socket.on('new-room', (data) => {
 
 socket.on('update-room', ({ roomList }) => {
     // console.log("test" + roomList)
-
+    let counter = 1
     roomContainer.innerHTML = ' '
     for (let room of roomList) {
-        // console.log(room)
-        displayRoom(room.id, room.roomName, room.roomIcon, room.players, room.start)
+        if (counter % 2 == 0) {
+            odd = false
+        } else { odd = true }
+        displayRoom(room.id, room.roomName, room.roomIcon, room.players, room.start, odd)
+        counter++
     }
+
 })
 
 socket.on('room-error', (data) => {

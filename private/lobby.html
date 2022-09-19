@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/ac1eb794af.js" crossorigin="anonymous"></script>
-    <title>Lobby</title>
+    <title>TeckyDraw.io</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
@@ -20,11 +20,13 @@
         <source src="./audio/lobby.mp3" type="audio/mpeg">
     </audio>
     <div class="container">
-        <div class="music-button" onclick="playMusic()"><i class="fa-solid fa-volume-xmark"></i></div>
-        <div class="header-container">
 
+        <div class="header-container">
+            <div class="music-button" onclick="playMusic()"><img id='off' src="./img/speaker-off.png"></img>
+            </div>
             <div class="header-title">
-                <img src="./img/lobbygameicon.png" alt="Game icon" height="150px" />
+                <div class="title-frame"><img src="./img/lobbygameicon.png" alt="Game icon" height="150px" /></div>
+
             </div>
 
             <div class="user-container">

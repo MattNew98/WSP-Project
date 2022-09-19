@@ -276,6 +276,7 @@ io.on('connection', function (socket) {
                 if (room.guessed = room.players.length - 1) {
                     // let player = room.drawingPlayer
                     io.to(`${socketID}`).emit('stop-move')
+                    room.guessed = 0
                 }
             }
         }

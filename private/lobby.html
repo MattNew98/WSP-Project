@@ -19,6 +19,7 @@
     <audio id="lobbyMusic">
         <source src="./audio/lobby.mp3" type="audio/mpeg">
     </audio>
+    <div class="background"></div>
     <div class="container">
 
         <div class="header-container">
@@ -44,7 +45,15 @@
 
             <div class="logout-button">
                 <a href="/user/logout" class="btn btn-error" onclick="removeRoom()">
-                    <i class="fa-sharp fa-solid fa-right-from-bracket"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 128 128" fill="none">
+                        <rect id="doorBackground" width="128" height="128" fill="transparent" />
+                        <path
+                            d="M87.5 18C86.3 16.8 53 18.1667 36 20C36 19.1667 34.8 20.8 34 26C33 32.5 35 83.5 35 86C35 88.5 38.5 106 42 107C45.5 108 89 102.5 89 101C89 99.5 92 69 93 61.5C94 54 89 19.5 87.5 18Z"
+                            stroke="black" stroke-width="5" />
+                        <path d="M34.5 22C49 27.6667 78 39.6 78 42C78 45 81.5 101 79.5 103" stroke="black"
+                            stroke-width="5" />
+                        <circle cx="66.5" cy="74.5" r="3.5" fill="black" />
+                    </svg>
                 </a>
             </div>
         </div>

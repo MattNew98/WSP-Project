@@ -5,6 +5,19 @@ body {
     font-size: 26px;
 }
 
+.background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(./img/background3.jpg);
+    background-size: cover;
+    z-index: -1000;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+}
+
 input {
     font-family: 'Indie Flower', cursive;
     font-size: 20px;
@@ -225,7 +238,9 @@ button {
 }
 
 .logout-button {
-    background-color: #75b6e5;
+    /* background-color: #75b6e5; */
+    width: 100px;
+    height: 100px;
     margin-left: 8px;
     padding: 8px;
     border-radius: 5px;
@@ -233,7 +248,8 @@ button {
 }
 
 .logout-button:hover {
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
+    cursor: pointer;
     text-decoration: none;
 }
 
@@ -246,6 +262,10 @@ button {
     width: 70px;
     height: 100px;
     padding: 10px;
+}
+
+.music-button:hover {
+    cursor: pointer;
 }
 
 #on {

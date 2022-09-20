@@ -8,7 +8,7 @@ import crypto from 'crypto'
 import { formParse } from '../utils/upload'
 
 export const userRoutes = express.Router()
-let loggedInUser: any = []
+export let loggedInUser: any = []
 
 userRoutes.get('/', async (req, res) => {
 	let userResult = await client.query('select * from users')

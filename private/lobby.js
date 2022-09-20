@@ -59,13 +59,20 @@ socket.on('leaderBoard', (leaderBoard) => {
       })
     let boardContent = document.querySelector('.board-content')
     let counter = 1
+    let odd = 1
     boardContent.innerHTML = ``
     for (let player of scoreBoardInAscendingOrder) {
-        boardContent.innerHTML += `<div class="player-content">
+        if(counter % 2 == 0){
+            odd= 2
+        } else{
+            odd = 1
+        }
+        boardContent.innerHTML += `<div class="player-content${odd}">
             <p class="player-score">#${counter}<img class="leaderImage" src="${player.userIcon}" /> ${player.username}</p>
             <p class="player-score scorePosition">Score: ${player.score}</p>
         </div>`
         counter++
+       
     }
 })
 

@@ -14,7 +14,7 @@ let drawable = false
 let topicsArray
 let guessedTheWord = false
 let timer = document.querySelector('.timer')
-let turnCounter
+let turnCounter = 0
 let scoreboardInAscendingOrder
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -199,24 +199,31 @@ socket.on('score-update', (data) => {
 })
 
 //START FIRST COUNT DOWN
+let nextTurn = false
 
+socket.on('stop-bar', (host) => {
+  if (host == username) {
+    nextTurn = true
+  }
 
-
+})
 // progress bar
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
   let id = setInterval(frame, 400); // change time here //
   function frame() {
-    socket.on('stop-move', () => {
-      width = 1
-    })
+
     if (width <= 0) {
       return
     } else {
+      if (nextTurn == true) {
+        width = 1
+      }
       width--;
       socket.emit('bar-moving', ({ width, socketID, emitter }))
       elem.style.width = width + "%";
+      nextTurn = false
     }
   }
 }

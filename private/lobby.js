@@ -22,8 +22,6 @@ async function getProfile() {
     username = result.username
     userID = result.id
     socket.emit('room-check', (username))
-    console.log(userIcon)
-    console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
@@ -60,19 +58,25 @@ function playMusic() {
 
 
 socket.on('leaderBoard', (leaderBoard) => {
-    console.log(leaderBoard)
     let scoreBoardInAscendingOrder = leaderBoard.sort(function (a, b) {
         return parseFloat(b.score) - parseFloat(a.score)
     })
     let boardContent = document.querySelector('.board-content')
     let counter = 1
+    let odd = 1
     boardContent.innerHTML = ``
     for (let player of scoreBoardInAscendingOrder) {
-        boardContent.innerHTML += `<div class="player-content">
+        if(counter % 2 == 0){
+            odd= 2
+        } else{
+            odd = 1
+        }
+        boardContent.innerHTML += `<div class="player-content${odd}">
             <p class="player-score">#${counter}<img class="leaderImage" src="${player.userIcon}" /> ${player.username}</p>
             <p class="player-score scorePosition">Score: ${player.score}</p>
         </div>`
         counter++
+       
     }
 })
 

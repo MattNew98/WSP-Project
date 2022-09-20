@@ -37,6 +37,14 @@ button {
     flex-direction: column;
 }
 
+.content-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
 .header-container {
     background-color: #1e201f00;
     display: flex;

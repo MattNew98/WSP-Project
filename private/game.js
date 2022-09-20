@@ -266,13 +266,13 @@ socket.on('game-ended', () => {
       let counter = 0
       for (let player of scoreboardInAscendingOrder) {
         if (counter == 0) {
-          x.innerHTML += `<div class="finalScoreBoard">1st PLACE-${player.name}:${player.score}</div>`
+          x.innerHTML += `<div class="finalScoreBoard">1st Place-${player.name} Score:${player.score}</div>`
         } else if (counter == 1) {
-          x.innerHTML += `<div class="finalScoreBoard">2nd PLACE-${player.name}:${player.score}</div>`
+          x.innerHTML += `<div class="finalScoreBoard">2nd Place-${player.name} Score:${player.score}</div>`
         } else if (counter == 2) {
-          x.innerHTML += `<div class="finalScoreBoard">3rd PLACE-${player.name}:${player.score}</div>`
+          x.innerHTML += `<div class="finalScoreBoard">3rd Place-${player.name} Score:${player.score}</div>`
         } else {
-          x.innerHTML += `<div class="finalScoreBoard">${player.name}:${player.score}</div>`
+          x.innerHTML += `<div class="finalScoreBoard">${player.name} Score:${player.score}</div>`
         }
         counter++
       }

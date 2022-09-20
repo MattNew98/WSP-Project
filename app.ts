@@ -111,6 +111,8 @@ io.on('connection', function (socket) {
                         io.emit('update-room', ({ roomList }))
                         console.log('Player:' + username + ' has left the game')
                     }
+                } else {
+                    socket.join(`${room.id}`)
                 }
 
                 p++

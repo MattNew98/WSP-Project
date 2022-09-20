@@ -128,12 +128,42 @@ button {
 
 .leader-board {
     background-color: #ffffffad;
-    padding: 40px;
+    padding: 5px;
     height: 100%;
     width: 300px;
     margin: 80px 0;
     border-radius: 15px;
+    border: #2e549b solid 3px;
 }
+
+.board-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 2px;
+    font-size: 40px;
+    border: #2e549b solid 3px;
+}
+
+.board-content {
+    border: #2e549b solid 3px;
+    margin: 2px;
+}
+
+.player-content {
+    padding: 3px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.player-score {
+    margin: 3px;
+}
+
+
 
 
 .big-room-container {
@@ -220,3 +250,4 @@ button {
 #off {
     height: 50px;
 }
+

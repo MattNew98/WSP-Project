@@ -35,8 +35,25 @@ export const io = new SocketIO(server);
 
 io.on('connection', function (socket) {
     //LOBBY SOCKETS
-    socket.on('fetch-room', () => {//update rooms in lobby
+    socket.on('fetch-room', async () => {//update rooms in lobby
         io.emit('update-room', ({ roomList }))
+        let leaderBoard: any = []
+	let getAllUser = await client.query(
+		`SELECT username FROM users;`)
+	for (let user of getAllUser.rows) {
+		leaderBoard.push({ username: user.username, score: 0 })
+	}
+	let getScores = await client.query(
+		`SELECT username,score FROM users JOIN records ON users.id = records.user_id`)
+
+	for (let user of leaderBoard) {
+		for (let score of getScores.rows) {
+			if ( user.username == score.username) {
+				user.score += score.score
+			}
+		}
+	}
+    io.emit('leaderBoard', leaderBoard)
     })
 
     socket.on('room-check', async (username) => {
@@ -58,7 +75,7 @@ io.on('connection', function (socket) {
                         for (let player of room.players) {
                             await client.query(
                                 `insert into records (username, score, created_at) values ($1, $2, current_timestamp)`,
-                                [player.name, player.score, ]
+                                [player.name, player.score ]
                             )
                         }
 
@@ -214,7 +231,7 @@ io.on('connection', function (socket) {
                                 for (let player of room.players) {
                                     await client.query(
                                         `insert into records (username, score, created_at) values ($1, $2, current_timestamp)`,
-                                        [player.name, player.score, ]
+                                        [player.name, player.score ]
                                     )
                                 }
 
@@ -337,7 +354,7 @@ io.on('connection', function (socket) {
                         for (let player of room.players) {
                             await client.query(
                                 `insert into records (username, score, created_at) values ($1, $2, current_timestamp)`,
-                                [player.name, player.score, ]
+                                [player.name, player.score]
                             )
                         }
 

@@ -22,8 +22,6 @@ async function getProfile() {
     username = result.username
     userID = result.id
     socket.emit('room-check', (username))
-    console.log(userIcon)
-    console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}" alt="User Image"/>`
 }
@@ -60,7 +58,6 @@ function playMusic() {
 
 
 socket.on('leaderBoard', (leaderBoard) => {
-    console.log(leaderBoard)
     let scoreBoardInAscendingOrder = leaderBoard.sort(function (a, b) {
         return parseFloat(b.score) - parseFloat(a.score)
     })

@@ -66,6 +66,7 @@ socket.on('leaderBoard', (leaderBoard) => {
     })
     let boardContent = document.querySelector('.board-content')
     let counter = 1
+    boardContent.innerHTML = ``
     for (let player of scoreBoardInAscendingOrder) {
         boardContent.innerHTML += `<div class="player-content">
             <p class="player-score">#${counter}<img class="leaderImage" src="${player.userIcon}" /> ${player.username}</p>

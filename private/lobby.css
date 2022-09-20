@@ -2,9 +2,6 @@ body {
     font-family: 'Indie Flower', cursive;
     background-image: url(./img/background3.jpg);
     background-size: cover;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
     font-size: 26px;
 }
 
@@ -22,18 +19,21 @@ button {
 
 }
 
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
 
 .room-container {
     /* background-color: #35C6CA; */
-    /* width: 165px;
-    height: 60px; */
     padding: 10px;
     border-radius: 15px;
     text-decoration: none;
     /* border: solid 3px #27287c87; */
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     flex-direction: column;
 }
 
@@ -43,8 +43,11 @@ button {
     flex-wrap: wrap;
     align-content: space-around;
     justify-content: space-around;
-    width: 110vh;
-    height: 18vh;
+    align-items: center;
+    /* position: relative; */
+    width: 900px;
+
+    height: 300px;
 
 }
 
@@ -52,16 +55,35 @@ button {
 .big-room-container {
     background-color: #9ca1c4b4;
     height: 100%;
+    width: 60%;
     padding: 40px;
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     border-radius: 25px;
+    align-items: center;
+    ;
 }
 
 .user-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    transform: rotate(-7deg);
+    position: absolute;
+    right: 30%;
+    top: 25%;
+}
 
+.memo-container {
+    margin-top: 100px;
+    transform: rotate(13deg);
+    position: relative;
+}
+
+#memo {
+    width: 500px;
+    /* transform: rotate(13deg); */
 }
 
 .icon {
@@ -78,7 +100,7 @@ button {
 .user-icon img {
     /* width: 80px; */
     height: 100px;
-    border-radius: 25%;
+    /* border-radius: 25%; */
     align-items: center;
     font-weight: bold;
 }
@@ -104,12 +126,9 @@ button {
 
 
 .room-background {
-    /* background-color: #436985; */
-    height: 100%;
-    padding: 3px;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    border-radius: 15px;
+    ;
 }
 
 

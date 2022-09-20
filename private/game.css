@@ -321,7 +321,6 @@ canvas {
     font-size: 35px;
     margin: 30px;
     color: #cf9fca;
-    background-color: #75b6e581;
     text-decoration: none;
     padding: 3px 10px;
     display: flex;
@@ -330,11 +329,13 @@ canvas {
     margin: 30px;
     border-radius: 15px;
     font-size: 30px;
+    width: 100px;
+    height: 100px;
 }
 
 .logoutButton:hover {
     color: #da7bd2;
-    background-color: #75b6e5b6;
+
 
 }
 
@@ -457,4 +458,13 @@ canvas {
 
 #arrow {
     width: 50px;
+}
+
+#door:hover {
+    width: 100px;
+    height: 100px;
+}
+#nothing {
+    width: 195px;
+    height: 100px;
 }

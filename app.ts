@@ -9,6 +9,7 @@ import { lobbyRoutes } from './routes/lobbyRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
 import { isloggedin } from './guard'
+// import { loggedInUser } from './routes/userRoute'
 // import cors from 'cors'
 let roomList: any = []
 let id = 0
@@ -41,7 +42,7 @@ io.on('connection', function (socket) {
         let getAllUser = await client.query(
             `SELECT username,image FROM users;`)
         for (let user of getAllUser.rows) {
-            leaderBoard.push({ username: user.username, score: 0 , userIcon: user.image})
+            leaderBoard.push({ username: user.username, score: 0, userIcon: user.image })
         }
         let getScores = await client.query(
             `SELECT username,score FROM users JOIN records ON users.id = records.user_id`)
@@ -57,10 +58,12 @@ io.on('connection', function (socket) {
     })
 
     socket.on('room-check', async (username) => {
+        console.log('room-check', username)
         let index = 0
         for (let room of roomList) {
             for (let player of room.players) {
                 if (player.name === username) {
+                    console.log('here')
                     let socketID = room.id
                     let host = room.players[0].name
                     room.players.splice(index, 1)

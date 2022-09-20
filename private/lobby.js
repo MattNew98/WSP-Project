@@ -21,7 +21,7 @@ async function getProfile() {
     userIcon = result.image
     username = result.username
     userID = result.id
-
+    socket.emit('room-check', (username))
     console.log(userIcon)
     console.log(username)
     document.querySelector('.user-name').innerHTML = `Welcome ${username} !!!`
@@ -32,9 +32,16 @@ getProfile()
 //     location.reload()
 // };
 
+window.onpageshow = function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+};
+
+
 socket.emit('fetch-room')
 
-socket.emit('room-check', (username))
+
 function playMusic() {
     if (playingMusic == false) {
         music.play()
@@ -56,7 +63,7 @@ socket.on('leaderBoard', (leaderBoard) => {
     console.log(leaderBoard)
     let scoreBoardInAscendingOrder = leaderBoard.sort(function (a, b) {
         return parseFloat(b.score) - parseFloat(a.score)
-      })
+    })
     let boardContent = document.querySelector('.board-content')
     let counter = 1
     boardContent.innerHTML = ``

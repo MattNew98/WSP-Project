@@ -45,7 +45,6 @@ if (SERVER_IP[0] == "l") {
 socket.emit('fetch-room-data', (socketID))
 
 
-
 ////// get user data
 async function getProfile() {
   const res = await fetch('/user/me')
@@ -61,6 +60,7 @@ async function getProfile() {
   }
 }
 getProfile()
+
 
 // setup canvas
 function setup() {

@@ -141,7 +141,8 @@ button {
     background-color: #ffffffad;
     padding: 5px;
     height: 100%;
-    width: 300px;
+    width: 40vh;
+
     margin: 80px 0;
     border: #2e549b solid 3px;
     border-width: 3px 3px 5px 5px;
@@ -161,13 +162,7 @@ button {
 
 }
 
-.board-content {
-    margin: 16px;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    height: 450px;
-    /* border: #2e549b solid 3px; */
-}
+
 
 .player-content1 {
     padding: 3px;
@@ -298,4 +293,50 @@ button {
 }
 .scorePosition {
     padding-top: 20px;
+}
+
+
+.board-content {
+    margin: 16px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 450px;
+    /* border: #2e549b solid 3px; */
+}
+
+.force-overflow {
+    min-height: 350px;
+}
+
+.board-content::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+
+.board-content::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+}
+  
+  .board-content::-webkit-scrollbar-thumb {
+	background-color: #000000;
+	border: 2px solid #555555;
+  }
+
+
+
+  .logoutButton {
+    font-size: 35px;
+    color: #cf9fca;
+    text-decoration: none;
+    padding: 3px 10px;
+    font-weight: 500;
+
+}
+
+.logoutButton:hover {
+    color: #da7bd2;
+
+
 }

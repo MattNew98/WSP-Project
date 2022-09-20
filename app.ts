@@ -38,22 +38,22 @@ io.on('connection', function (socket) {
     socket.on('fetch-room', async () => {//update rooms in lobby
         io.emit('update-room', ({ roomList }))
         let leaderBoard: any = []
-	let getAllUser = await client.query(
-		`SELECT username FROM users;`)
-	for (let user of getAllUser.rows) {
-		leaderBoard.push({ username: user.username, score: 0 })
-	}
-	let getScores = await client.query(
-		`SELECT username,score FROM users JOIN records ON users.id = records.user_id`)
+        let getAllUser = await client.query(
+            `SELECT username,image FROM users;`)
+        for (let user of getAllUser.rows) {
+            leaderBoard.push({ username: user.username, score: 0 , userIcon: user.image})
+        }
+        let getScores = await client.query(
+            `SELECT username,score FROM users JOIN records ON users.id = records.user_id`)
 
-	for (let user of leaderBoard) {
-		for (let score of getScores.rows) {
-			if ( user.username == score.username) {
-				user.score += score.score
-			}
-		}
-	}
-    io.emit('leaderBoard', leaderBoard)
+        for (let user of leaderBoard) {
+            for (let score of getScores.rows) {
+                if (user.username == score.username) {
+                    user.score += score.score
+                }
+            }
+        }
+        io.emit('leaderBoard', leaderBoard)
     })
 
     socket.on('room-check', async (username) => {
@@ -74,8 +74,8 @@ io.on('connection', function (socket) {
                         io.to(`${socketID}`).emit("game-ended")
                         for (let player of room.players) {
                             await client.query(
-                                `insert into records (username, score, created_at) values ($1, $2, current_timestamp)`,
-                                [player.name, player.score ]
+                                `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                                [player.userID, player.score]
                             )
                         }
 
@@ -88,7 +88,7 @@ io.on('connection', function (socket) {
             }
         }
     })
-    socket.on('create-room', ({ username, userIcon }) => {//create a new room
+    socket.on('create-room', ({ username, userIcon, userID }) => {//create a new room
         let inRoom = false
         for (let room of roomList) {
             for (let player of room.players) {
@@ -99,7 +99,7 @@ io.on('connection', function (socket) {
             }
         }
         if (inRoom == false) {
-            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, roomIcon: userIcon, players: [{ name: username, score: 0, userIcon: userIcon }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 1, guessed: 0 })
+            roomList.push({ id: `${id}`, roomName: `${username}'s Room`, roomIcon: userIcon, players: [{ name: username, score: 0, userIcon: userIcon, userID: userID }], drawBoardArray: [], start: false, drawingPlayer: username, topics: [], barWidth: 100, turn: 0, round: 1, guessed: 0 })
             io.emit('new-room', { id });
             socket.emit('room-created')
             socket.join(`${id}`)
@@ -125,6 +125,7 @@ io.on('connection', function (socket) {
         let inRoom = false
         let username = data.username
         let userIcon = data.userIcon
+        let userID = data.userID
         let id = data.id
         for (let room of roomList) { //check if user is already a host
             // console.log(room)
@@ -139,7 +140,7 @@ io.on('connection', function (socket) {
             for (let room of roomList) {
                 if (room.id == id) {
                     socket.join(`${id}`)
-                    room.players.push({ name: username, score: 0, userIcon })
+                    room.players.push({ name: username, score: 0, userIcon, userID: userID })
                     io.emit('update-room', ({ roomList }));
 
                 }
@@ -230,8 +231,8 @@ io.on('connection', function (socket) {
                                 io.to(`${socketID}`).emit("game-ended")
                                 for (let player of room.players) {
                                     await client.query(
-                                        `insert into records (username, score, created_at) values ($1, $2, current_timestamp)`,
-                                        [player.name, player.score ]
+                                        `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                                        [player.userID, player.score]
                                     )
                                 }
 
@@ -353,8 +354,8 @@ io.on('connection', function (socket) {
                         io.to(`${id}`).emit("game-ended")
                         for (let player of room.players) {
                             await client.query(
-                                `insert into records (username, score, created_at) values ($1, $2, current_timestamp)`,
-                                [player.name, player.score]
+                                `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                                [player.userID, player.score]
                             )
                         }
 

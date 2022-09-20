@@ -52,6 +52,7 @@ async function getProfile() {
   const result = await res.json()
   username = result.username
   userIcon = result.image
+  userID = result.id
   if (username) {
     document.querySelector('.user-name').innerHTML = `${username}`
     document.querySelector('.user-icon').innerHTML = `<img src="${userIcon}">`

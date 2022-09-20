@@ -149,13 +149,18 @@ button {
 .board-content {
     border: #2e549b solid 3px;
     margin: 2px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 90%;
+    height: 450px;
 }
 
 .player-content {
     padding: 3px;
     font-size: 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 8px;
 }
 
 
@@ -251,3 +256,12 @@ button {
     height: 50px;
 }
 
+.leaderImage {
+    width: 40px;
+    height: 40px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+.scorePosition {
+    padding-top: 20px;
+}

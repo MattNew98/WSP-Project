@@ -8,6 +8,7 @@ const musicButton = document.querySelector('.music-button')
 let music = document.getElementById('lobbyMusic')
 let result
 let username
+let userID
 let socketID
 let playerList = []
 let userIcon
@@ -19,6 +20,7 @@ async function getProfile() {
     result = await res.json()
     userIcon = result.image
     username = result.username
+    userID = result.id
 
     console.log(userIcon)
     console.log(username)
@@ -50,13 +52,24 @@ function playMusic() {
 }
 
 
-socket.on('leaderBoard',(leaderBoard) => {
+socket.on('leaderBoard', (leaderBoard) => {
     console.log(leaderBoard)
+    let scoreBoardInAscendingOrder = leaderBoard.sort(function (a, b) {
+        return parseFloat(b.score) - parseFloat(a.score)
+      })
+    let boardContent = document.querySelector('.board-content')
+    let counter = 1
+    for (let player of scoreBoardInAscendingOrder) {
+        boardContent.innerHTML += `<div class="player-content">
+            <p class="player-score">#${counter}<img class="leaderImage" src="${player.userIcon}" /> ${player.username}</p>
+            <p class="player-score scorePosition">Score: ${player.score}</p>
+        </div>`
+        counter++
+    }
 })
 
 async function displayRoom(id, roomName, roomIcon, players, start, odd) {
 
-    // console.log("AHHA" +players[0].name)
 
     if (odd == true) {
         odd = 0
@@ -148,7 +161,7 @@ function isParticipant(name, players) {
 
 function joinGame(id) {
     // console.log(username)
-    socket.emit('join-room', ({ id, username, userIcon }))
+    socket.emit('join-room', ({ id, username, userIcon, userID }))
     socketID = id
 }
 
@@ -163,7 +176,7 @@ function startGame(id) {
 
 
 function createRoom() {
-    socket.emit('create-room', ({ username, userIcon }))
+    socket.emit('create-room', ({ username, userIcon, userID }))
     if (playingMusic == false) {
         // playMusic()
     }

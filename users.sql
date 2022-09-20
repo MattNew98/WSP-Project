@@ -1,7 +1,7 @@
 CREATE DATABASE draw;
 CREATE TABLE users (
     id SERIAL primary key,
-    username VARCHAR(255) not null,
+    username VARCHAR(255) unique not null,
     password VARCHAR(255) not null
 );
 CREATE TABLE topics (
@@ -11,10 +11,20 @@ CREATE TABLE topics (
 );
 CREATE TABLE records (
     id SERIAL primary key,
-    username VARCHAR(255) not null,
+    user_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users(id),
     score INTEGER not null,
     created_at TIMESTAMP with time zone
 );
+
+INSERT INTO records (user_id, score)
+VALUES (
+        145,
+        10
+    );
+
+
+SELECT users.username,score FROM users left JOIN records ON users.id = records.user_id;
 
 DROP table topics;
 

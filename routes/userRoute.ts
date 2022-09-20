@@ -28,8 +28,6 @@ userRoutes.post('/register', async (req, res) => {
 			newImage = data.filename
 		}
 
-		console.log(newUsername, newPassword, newImage)
-
 
 		if (!newUsername || !newPassword) {
 			res.status(400).json({
@@ -56,7 +54,7 @@ userRoutes.post('/register', async (req, res) => {
 			[newUsername, hashedPassword, newImage]
 		)
 		dbUser = insertResult.rows[0]
-		console.log(newUsername + ' is registered')
+		console.log(newUsername + ' is registered and logged in')
 		loggedInUser.push(newUsername)
 		req.session['user'] = dbUser
 		res.status(200).json({

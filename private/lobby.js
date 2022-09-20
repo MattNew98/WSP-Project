@@ -50,6 +50,10 @@ function playMusic() {
 }
 
 
+socket.on('leaderBoard',(leaderBoard) => {
+    console.log(leaderBoard)
+})
+
 async function displayRoom(id, roomName, roomIcon, players, start, odd) {
 
     // console.log("AHHA" +players[0].name)
@@ -214,3 +218,6 @@ socket.on('room-created', () => {
     <input class="remove-room-btn" type="button" value="Remove Room" onclick="removeRoom('${username}')"/>
     `
 })
+
+
+

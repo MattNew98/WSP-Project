@@ -45,7 +45,6 @@ if (SERVER_IP[0] == "l") {
 socket.emit('fetch-room-data', (socketID))
 
 
-
 ////// get user data
 async function getProfile() {
   const res = await fetch('/user/me')
@@ -61,6 +60,7 @@ async function getProfile() {
   }
 }
 getProfile()
+
 
 // setup canvas
 function setup() {
@@ -653,7 +653,6 @@ function createScoreboard() {
   scoreboardInAscendingOrder = playerScore.sort(function (a, b) {
     return parseFloat(b.score) - parseFloat(a.score)
   })
-  console.log(scoreboardInAscendingOrder)
   html = ''
   for (let i = 0; i < scoreboardInAscendingOrder.length; i++) {
     if (scoreboardInAscendingOrder[i].isDrawing == true) {

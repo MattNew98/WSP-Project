@@ -4,7 +4,6 @@ login()
 async function login() {
 
     const loginForm = document.querySelector('#login-form')
-    console.log(loginForm)
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault()
@@ -40,7 +39,6 @@ register()
 async function register() {
 
     const registerForm = document.querySelector('#register-form')
-    console.log(registerForm)
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault()
@@ -89,6 +87,3 @@ while (ranNums.length < topicAmount) {
         ranNums.push(j);
     }
 }
-
-
-console.log(ranNums)

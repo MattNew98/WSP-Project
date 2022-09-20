@@ -206,7 +206,7 @@ socket.on('score-update', (data) => {
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
-  let id = setInterval(frame, 400); // change time here //
+  let id = setInterval(frame, 4000); // change time here //
   function frame() {
     socket.on('stop-move', () => {
       width = 1

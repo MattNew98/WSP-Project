@@ -9,6 +9,7 @@ import { lobbyRoutes } from './routes/lobbyRoute'
 import grant from 'grant'
 import dotenv from 'dotenv'
 import { isloggedin } from './guard'
+
 // import { loggedInUser } from './routes/userRoute'
 // import cors from 'cors'
 let roomList: any = []
@@ -186,6 +187,7 @@ io.on('connection', function (socket) {
                 io.to(`${id}`).emit('launch-game', (id))
                 room.start = true
                 io.emit('update-room', ({ roomList }));
+                console.log(room)
             }
         }
     })
@@ -329,9 +331,10 @@ io.on('connection', function (socket) {
                 room.guessed++
                 // console.log(room.players.length, room.guessed)
                 if (room.guessed == room.players.length - 1) {
-                    // console.log('ding')
-                    io.to(`${socketID}`).emit('stop-move')
+                    console.log('ding')
                     room.guessed = 0
+                    let host = room.drawingPlayer
+                    io.to(`${socketID}`).emit("stop-bar", host)
                 }
             }
         }
@@ -344,33 +347,13 @@ io.on('connection', function (socket) {
             if (room.id == id) {
 
                 room.barWidth = width
-                if (room.barWidth == 0) {
+                if (width == 0) {
                     room.turn++
                     let turn = room.turn
-                    if (turn >= room.players.length) {
-                        turn = turn % room.players.length
+                    if (room.turn == room.players.length) {
+                        turn = room.turn % room.players.length
                     }
-                    if (room.turn / room.round == room.players.length) {
-                        room.drawBoardArray = []
-                        io.to(`${id}`).emit("clear") // ask sockets to clear the board
-                        io.to(`${id}`).emit("show-topic")
-                        io.to(`${id}`).emit("game-ended")
-                        for (let player of room.players) {
-                            await client.query(
-                                `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
-                                [player.userID, player.score]
-                            )
-                        }
 
-                        let index = 0
-                        for (let room of roomList) {
-                            if (room.id === id) {
-                                roomList.splice(index, 1)
-                                io.emit('update-room', ({ roomList }))
-                            } else { index++ }
-                        }
-                        return
-                    }
 
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
@@ -380,6 +363,7 @@ io.on('connection', function (socket) {
                     // setTimeout(() => {},3000)
 
                     io.to(`${id}`).emit("next-turn")
+                    console.log(room.turn)
                     io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("show-topic")
                 } else if (room.barWidth == 100) {
@@ -388,6 +372,27 @@ io.on('connection', function (socket) {
                     let width = room.barWidth
                     let emitter = room.drawingPlayer
                     io.to(`${id}`).emit("move-bar", ({ width, emitter }))
+                }
+                if (room.turn / room.round == room.players.length) {
+                    room.drawBoardArray = []
+                    io.to(`${id}`).emit("clear") // ask sockets to clear the board
+                    io.to(`${id}`).emit("show-topic")
+                    io.to(`${id}`).emit("game-ended")
+                    for (let player of room.players) {
+                        await client.query(
+                            `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                            [player.userID, player.score]
+                        )
+                    }
+
+                    let index = 0
+                    for (let room of roomList) {
+                        if (room.id === id) {
+                            roomList.splice(index, 1)
+                            io.emit('update-room', ({ roomList }))
+                        } else { index++ }
+                    }
+                    return
                 }
             }
 

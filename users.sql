@@ -9,6 +9,12 @@ CREATE TABLE topics (
     topic VARCHAR(255) not null,
     difficulty VARCHAR(255) not null
 );
+CREATE TABLE records (
+    id SERIAL primary key,
+    username VARCHAR(255) not null,
+    score INTEGER not null,
+    created_at TIMESTAMP with time zone
+);
 
 DROP table topics;
 

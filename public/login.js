@@ -25,8 +25,11 @@ async function login() {
         if (res.ok) {
             window.location = `/lobby.html`
         }
-        if (res.status == 400) {
+        if (res.status == 401) {
             alert("Invalid username or password! Please try again.")
+        }
+        if (res.status == 400) {
+            alert("You have been logged in, please check other browser!")
         }
 
     })

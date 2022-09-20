@@ -8,6 +8,7 @@ import crypto from 'crypto'
 import { formParse } from '../utils/upload'
 
 export const userRoutes = express.Router()
+let loggedInUser: any = []
 
 userRoutes.get('/', async (req, res) => {
 	let userResult = await client.query('select * from users')
@@ -49,13 +50,14 @@ userRoutes.post('/register', async (req, res) => {
 		}
 
 		let hashedPassword = await hashPassword(newPassword)
-		
-		let insertResult =  await client.query(
+
+		let insertResult = await client.query(
 			`insert into users (username, password, image) values ($1, $2, $3) returning *`,
 			[newUsername, hashedPassword, newImage]
 		)
 		dbUser = insertResult.rows[0]
 		console.log(newUsername + ' is registered')
+		loggedInUser.push(newUsername)
 		req.session['user'] = dbUser
 		res.status(200).json({
 			message: 'registered successfully'
@@ -69,10 +71,9 @@ userRoutes.post('/register', async (req, res) => {
 userRoutes.post('/login', async (req, res) => {
 	const username = req.body.username
 	const password = req.body.password
-	// console.log(req.body)
 
 	if (!username || !password) {
-		res.status(400).json({
+		res.status(401).json({
 			message: 'Invalid username or password (no text typed)'
 		})
 		return
@@ -85,12 +86,20 @@ userRoutes.post('/login', async (req, res) => {
 	let dbUser = userResult.rows[0]
 
 	if (!dbUser) {
-		res.status(400).json({
+		res.status(401).json({
 			message: 'Invalid username or password (no such user)'
 		})
 		return
 	}
 
+	let isLoggedIn = loggedInUser.includes(username)
+	if (isLoggedIn) {
+		console.log(`${username} try to login twice!!`)
+		res.status(400).json({
+			message: 'You have been logged in, please check other browser!'
+		})
+		return
+	}
 	// compare password
 
 
@@ -98,7 +107,7 @@ userRoutes.post('/login', async (req, res) => {
 	let isMatched = await checkPassword(password, dbUser.password)
 
 	if (!isMatched) {
-		res.status(400).json({
+		res.status(401).json({
 			message: 'Invalid username or password (wrong pw)'
 		})
 		return
@@ -111,6 +120,7 @@ userRoutes.post('/login', async (req, res) => {
 		...sessionUser
 	} = dbUser
 	console.log(username + ' is logged in')
+	loggedInUser.push(username)
 	req.session['user'] = sessionUser
 	req.session.username = username
 	res.json({ "success": true })
@@ -119,6 +129,10 @@ userRoutes.post('/login', async (req, res) => {
 
 userRoutes.get('/logout', (req, res) => {
 	console.log(req.session.user.username + ' is logged out')
+	let index = loggedInUser.indexOf(req.session.user.username);
+	if (index > -1) { // only splice array when item is found
+		loggedInUser.splice(index, 1); // 2nd parameter means remove one item only
+	}
 	req.session.destroy(() => { })
 
 	if (SERVER_IP[0] == "l") {

@@ -90,14 +90,14 @@ userRoutes.post('/login', async (req, res) => {
 		return
 	}
 
-	let isLoggedIn = loggedInUser.includes(username)
-	if (isLoggedIn) {
-		console.log(`${username} try to login twice!!`)
-		res.status(400).json({
-			message: 'You have been logged in, please check other browser!'
-		})
-		return
-	}
+	// let isLoggedIn = loggedInUser.includes(username)
+	// if (isLoggedIn) {
+	// 	console.log(`${username} try to login twice!!`)
+	// 	res.status(400).json({
+	// 		message: 'You have been logged in, please check other browser!'
+	// 	})
+	// 	return
+	// }
 	// compare password
 
 

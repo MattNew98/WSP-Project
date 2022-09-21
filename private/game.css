@@ -247,23 +247,27 @@ canvas {
     width: 100%;
     height: 90%;
     margin-top: 5px;
+    border-radius: 10px;
 }
 
 .input-container {
-    background-color: #ffffff;
+    background-color: rgb(192, 181, 210);
     width: 100%;
     height: 7%;
+    border-radius: 25%;
 }
 
 .form-control {
     width: 97%;
     height: 56px;
+    border-radius: 16px;
 }
 
 #scroll {
     overflow-y: scroll;
     scroll-behavior: smooth;
     height: 90%;
+    border-radius: 20px;
 }
 
 #myProgress {
@@ -377,7 +381,7 @@ canvas {
     /* Add a z-index if needed */
     left: 50%;
     /* Center the snackbar */
-    top: 50%;
+    top: 30%;
     border-radius: 15px;
     /* bottom: 30px; 30px from the bottom */
 }

@@ -76,8 +76,30 @@ io.on('connection', function (socket) {
                         console.log(room)
                         room.turn++
                         let turn = room.turn
-                        if (room.turn = room.players.length) {
-                            turn = room.turn % room.players.length
+                        if (room.turn == room.players.length) {
+                            turn = room.turn % room.players.length + 1
+                        }
+                        if (room.turn / room.round == room.totalPlayers) {
+                            console.log('Im here')
+                            room.drawBoardArray = []
+                            io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+                            io.to(`${socketID}`).emit("show-topic")
+                            io.to(`${socketID}`).emit("game-ended")
+                            for (let player of room.players) {
+                                await client.query(
+                                    `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                                    [player.userID, player.score]
+                                )
+                            }
+
+                            let index = 0
+                            for (let room of roomList) {
+                                if (room.id === id) {
+                                    roomList.splice(index, 1)
+                                    io.emit('update-room', ({ roomList }))
+                                } else { index++ }
+                            }
+                            return
                         }
                         room.drawingPlayer = room.players[turn].name
 
@@ -87,9 +109,9 @@ io.on('connection', function (socket) {
                         // setTimeout(() => {},3000)
                         io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                         io.to(`${socketID}`).emit("show-topic")
-                        io.to(`${socketID}`).emit("next-turn")
+                        let host = room.players[0].name
+                        io.to(`${socketID}`).emit("next-turn", (host))
                         // console.log(room.turn)
-
                     }
                     console.log('here')
                     io.emit('update-room', ({ roomList }))
@@ -192,7 +214,7 @@ io.on('connection', function (socket) {
                 let topicAmount = room.players.length * room.round
                 let ranNums: any = []
                 while (ranNums.length < topicAmount) {
-                    let j = Math.floor(Math.random() * (100) + 1); //change total number of topics
+                    let j = Math.floor(Math.random() * (145) + 1); //change total number of topics
                     if (!ranNums.includes(j)) {
                         ranNums.push(j);
                     }
@@ -242,9 +264,30 @@ io.on('connection', function (socket) {
                                 room.turn++
                                 let turn = room.turn
                                 if (room.turn == room.players.length) {
-                                    turn = room.turn % room.players.length
+                                    turn = room.turn % room.totalPlayers
                                 }
-
+                                if (room.turn / room.round == room.totalPlayers) {
+                                    console.log('Im here')
+                                    room.drawBoardArray = []
+                                    io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+                                    io.to(`${socketID}`).emit("show-topic")
+                                    io.to(`${socketID}`).emit("game-ended")
+                                    for (let player of room.players) {
+                                        await client.query(
+                                            `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                                            [player.userID, player.score]
+                                        )
+                                    }
+        
+                                    let index = 0
+                                    for (let room of roomList) {
+                                        if (room.id === id) {
+                                            roomList.splice(index, 1)
+                                            io.emit('update-room', ({ roomList }))
+                                        } else { index++ }
+                                    }
+                                    return
+                                }
 
                                 room.drawingPlayer = room.players[turn].name
                                 room.barWidth = 100
@@ -252,8 +295,8 @@ io.on('connection', function (socket) {
 
                                 // set interval
                                 // setTimeout(() => {},3000)
-
-                                io.to(`${socketID}`).emit("next-turn")
+                                let host = room.players[0].name
+                                io.to(`${socketID}`).emit("next-turn", (host))
                                 console.log(room.turn)
                                 io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                                 io.to(`${socketID}`).emit("show-topic")
@@ -384,24 +427,25 @@ io.on('connection', function (socket) {
                 room.barWidth = width
                 if (width == 0) {
                     room.turn++
-                    if (room.turn / room.round == room.totalPlayers) {
+                    console.log('next' + room.turn)
+                    if (room.turn / room.round > room.totalPlayers) {
                         return
                     }
 
                     let turn = room.turn
-                    if (room.turn == room.players.length) {
+                    if (room.turn >= room.players.length) {
                         turn = room.turn % room.players.length
                     }
 
-                    console.log('next' + turn)
+
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
                     room.guessed = 0
 
                     // set interval
                     // setTimeout(() => {},3000)
-
-                    io.to(`${id}`).emit("next-turn")
+                    let host = room.players[0].name
+                    io.to(`${id}`).emit("next-turn", (host))
                     console.log(room.turn)
                     io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("show-topic")

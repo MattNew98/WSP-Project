@@ -214,7 +214,7 @@ io.on('connection', function (socket) {
                 let topicAmount = room.players.length * room.round
                 let ranNums: any = []
                 while (ranNums.length < topicAmount) {
-                    let j = Math.floor(Math.random() * (100) + 1); //change total number of topics
+                    let j = Math.floor(Math.random() * (145) + 1); //change total number of topics
                     if (!ranNums.includes(j)) {
                         ranNums.push(j);
                     }

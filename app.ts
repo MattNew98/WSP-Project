@@ -278,7 +278,7 @@ io.on('connection', function (socket) {
                                             [player.userID, player.score]
                                         )
                                     }
-        
+
                                     let index = 0
                                     for (let room of roomList) {
                                         if (room.id === id) {
@@ -398,10 +398,10 @@ io.on('connection', function (socket) {
             if (room.id == socketID) {
                 for (let player of room.players) {
                     if (player.name == username) {
-                        player.score = player.score + score
+                        player.score = player.score + score * 20
                     }
                     if (player.name === room.drawingPlayer) {
-                        player.score = player.score + score
+                        player.score = player.score + score * room.barWidth
                     }
                 }
                 let players = room.players

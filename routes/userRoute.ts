@@ -28,6 +28,17 @@ userRoutes.post('/register', async (req, res) => {
 			newImage = data.filename
 		}
 
+		// cannot put <> in username
+
+		let badUsername = newUsername.includes("<")
+
+		if (badUsername) {
+			res.status(400).json({
+				message: 'I know what you are doing..'
+			})
+			return
+		}
+
 
 		if (!newUsername || !newPassword) {
 			res.status(400).json({

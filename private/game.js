@@ -17,6 +17,7 @@ let guessedTheWord = false
 let timer = document.querySelector('.timer')
 let turnCounter = 0
 let scoreboardInAscendingOrder
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
@@ -65,6 +66,7 @@ getProfile()
 
 // setup canvas
 function setup() {
+  isReload = true
   const myCanvas = createCanvas(1000, 700); // 遊戲版 Width x Height
   myCanvas.parent(document.querySelector("#drawing-board"))
   strokeWeight(3) // 線條粗幼度

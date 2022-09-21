@@ -102,7 +102,7 @@ io.on('connection', function (socket) {
                             return
                         }
                         room.drawingPlayer = room.players[turn].name
-
+                        room.drawBoardArray = []
                         room.barWidth = 100
                         room.guessed = 0
                         // set interval
@@ -292,7 +292,7 @@ io.on('connection', function (socket) {
                                 room.drawingPlayer = room.players[turn].name
                                 room.barWidth = 100
                                 room.guessed = 0
-
+                                room.drawBoardArray = []
                                 // set interval
                                 // setTimeout(() => {},3000)
                                 let host = room.players[0].name
@@ -441,7 +441,7 @@ io.on('connection', function (socket) {
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
                     room.guessed = 0
-
+                    room.drawBoardArray = []
                     // set interval
                     // setTimeout(() => {},3000)
                     let host = room.players[0].name

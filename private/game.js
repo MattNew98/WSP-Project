@@ -11,6 +11,7 @@ let socketID
 let userIcon
 let playerScore = []
 let drawable = false
+let canType = true
 let topicsArray
 let guessedTheWord = false
 let timer = document.querySelector('.timer')
@@ -147,8 +148,8 @@ socket.on('next-turn', (host) => {
   }
   drawable = false
   guessedTheWord = false
-
-  setTimeout(() => { socket.emit('fetch-room-data', (socketID)) }, 3000)
+  canType = false
+  setTimeout(() => { socket.emit('fetch-room-data', (socketID)); canType = true }, 3000)
 
 
 })
@@ -167,6 +168,9 @@ async function createChats() {
     const content = form.chat.value
     if (drawable == false) {
       if (guessedTheWord && content == topicsArray[turnCounter]) {
+        return
+      }
+      if (canType == false) {
         return
       }
       socket.emit('chat', ({ content, username, socketID }))

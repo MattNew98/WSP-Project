@@ -133,8 +133,10 @@ io.on('connection', function (socket) {
                         io.emit('update-room', ({ roomList }))
                         console.log('Player:' + username + ' has left the game')
                     }
-                } else {
+                } else if (player.name == username) {
                     socket.join(`${room.id}`)
+                } else {
+                    return
                 }
 
                 p++
@@ -398,10 +400,10 @@ io.on('connection', function (socket) {
             if (room.id == socketID) {
                 for (let player of room.players) {
                     if (player.name == username) {
-                        player.score = player.score + score * 20
+                        player.score = player.score + score * room.barWidth
                     }
                     if (player.name === room.drawingPlayer) {
-                        player.score = player.score + score * room.barWidth
+                        player.score = player.score + score * 20
                     }
                 }
                 let players = room.players

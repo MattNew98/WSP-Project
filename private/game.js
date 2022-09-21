@@ -175,7 +175,7 @@ async function createChats() {
       }
       socket.emit('chat', ({ content, username, socketID }))
       if (content == topicsArray[turnCounter]) {
-        let score = 10
+        let score = 1
         guessedTheWord = true
         socket.emit('user-scored', ({ username, score, socketID }))
       }

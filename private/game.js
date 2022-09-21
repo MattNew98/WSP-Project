@@ -139,10 +139,15 @@ socket.on('show-room-data', (roomData) => {
 
 
 
-socket.on('next-turn', () => {
-
+socket.on('next-turn', (host) => {
+  if (host == username) {
+    console.log('hi')
+    let content = '---TURN END---'
+    socket.emit('chat', ({ content, username, socketID }))
+  }
   drawable = false
   guessedTheWord = false
+
   setTimeout(() => { socket.emit('fetch-room-data', (socketID)) }, 3000)
 
 
@@ -181,9 +186,11 @@ socket.on('chat', ({ content, username }) => {
 
   if (content == topicsArray[turnCounter]) {
     html.innerHTML += `<div style="color: lightgreen;">${username} guessed the word</div>`
-    html.innerHTML += `<img src="/img/sticker.png" width="100px" height="100px"></img>`
+    html.innerHTML += `<img src="/img/sticker.png" width="60px" height="60px"></img>`
   } else if (content == "has left the game.") {
-    html.innerHTML += `<div style="color: red;">${username} ${content}</div>`
+    html.innerHTML += `<div style="color: red;">${username}${content}</div>`
+  } else if (content == '---TURN END---') {
+    html.innerHTML += `<div style="color: red;">${content}</div>`
   } else {
     html.innerHTML += `<div> ${username}: ${content}</div>`
   }

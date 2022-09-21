@@ -87,9 +87,9 @@ io.on('connection', function (socket) {
                         // setTimeout(() => {},3000)
                         io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                         io.to(`${socketID}`).emit("show-topic")
-                        io.to(`${socketID}`).emit("next-turn")
+                        let host = room.players[0].name
+                        io.to(`${socketID}`).emit("next-turn", (host))
                         // console.log(room.turn)
-
                     }
                     console.log('here')
                     io.emit('update-room', ({ roomList }))
@@ -252,8 +252,8 @@ io.on('connection', function (socket) {
 
                                 // set interval
                                 // setTimeout(() => {},3000)
-
-                                io.to(`${socketID}`).emit("next-turn")
+                                let host = room.players[0].name
+                                io.to(`${socketID}`).emit("next-turn", (host))
                                 console.log(room.turn)
                                 io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                                 io.to(`${socketID}`).emit("show-topic")
@@ -401,8 +401,8 @@ io.on('connection', function (socket) {
 
                     // set interval
                     // setTimeout(() => {},3000)
-
-                    io.to(`${id}`).emit("next-turn")
+                    let host = room.players[0].name
+                    io.to(`${id}`).emit("next-turn", (host))
                     console.log(room.turn)
                     io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("show-topic")

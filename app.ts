@@ -384,7 +384,7 @@ io.on('connection', function (socket) {
                 room.barWidth = width
                 if (width == 0) {
                     room.turn++
-                    if (room.turn / room.round > room.totalPlayers) {
+                    if (room.turn / room.round == room.totalPlayers) {
                         return
                     }
 
@@ -393,7 +393,7 @@ io.on('connection', function (socket) {
                         turn = room.turn % room.players.length
                     }
 
-                    console.log(turn)
+                    console.log('next' + turn)
                     room.drawingPlayer = room.players[turn].name
                     room.barWidth = 100
                     room.guessed = 0

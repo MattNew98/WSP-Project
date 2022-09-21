@@ -266,7 +266,28 @@ io.on('connection', function (socket) {
                                 if (room.turn == room.players.length) {
                                     turn = room.turn % room.totalPlayers
                                 }
-
+                                if (room.turn / room.round == room.totalPlayers) {
+                                    console.log('Im here')
+                                    room.drawBoardArray = []
+                                    io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
+                                    io.to(`${socketID}`).emit("show-topic")
+                                    io.to(`${socketID}`).emit("game-ended")
+                                    for (let player of room.players) {
+                                        await client.query(
+                                            `insert into records (user_id, score, created_at) values ($1, $2, current_timestamp)`,
+                                            [player.userID, player.score]
+                                        )
+                                    }
+        
+                                    let index = 0
+                                    for (let room of roomList) {
+                                        if (room.id === id) {
+                                            roomList.splice(index, 1)
+                                            io.emit('update-room', ({ roomList }))
+                                        } else { index++ }
+                                    }
+                                    return
+                                }
 
                                 room.drawingPlayer = room.players[turn].name
                                 room.barWidth = 100

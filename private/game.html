@@ -31,8 +31,7 @@
                 <path
                     d="M87.5 18C86.3 16.8 53 18.1667 36 20C36 19.1667 34.8 20.8 34 26C33 32.5 35 83.5 35 86C35 88.5 38.5 106 42 107C45.5 108 89 102.5 89 101C89 99.5 92 69 93 61.5C94 54 89 19.5 87.5 18Z"
                     stroke="black" stroke-width="5" />
-                <path d="M34.5 22C49 27.6667 78 39.6 78 42C78 45 81.5 101 79.5 103" stroke="black"
-                    stroke-width="5" />
+                <path d="M34.5 22C49 27.6667 78 39.6 78 42C78 45 81.5 101 79.5 103" stroke="black" stroke-width="5" />
                 <circle cx="66.5" cy="74.5" r="3.5" fill="black" />
             </svg>
         </a>
@@ -40,8 +39,10 @@
 
     </div>
     <div class="main-container">
-        <div class="left-and-right-container">
-            Leader Board
+        <div class="left-container">
+            <div class="title">
+                Leader Board
+            </div>
             <div id="scrollScore">
 
             </div>
@@ -96,10 +97,10 @@
                 </div>
                 <div>Stroke:</div>
                 <div class="small stroke-button" onclick="changeStroke(10)">
-                    
+
                 </div>
                 <div class="medium stroke-button" onclick="changeStroke(15)">
-                    
+
                 </div>
                 <div class="large stroke-button" onclick="changeStroke(20)">
 
@@ -117,8 +118,8 @@
 
 
         </div>
-        <div class="left-and-right-container">
-            <div>Chatroom</div>
+        <div class="right-container">
+            <div class="title">Chatroom</div>
             <div class="chatroom-container" id="scroll"></div>
             <div class="input-container">
                 <form id="message-form">

@@ -76,8 +76,8 @@ io.on('connection', function (socket) {
                         console.log(room)
                         room.turn++
                         let turn = room.turn
-                        if (room.turn = room.players.length) {
-                            turn = room.turn % room.players.length
+                        if (room.turn == room.players.length) {
+                            turn = room.turn % room.players.length + 1
                         }
                         room.drawingPlayer = room.players[turn].name
 
@@ -242,7 +242,7 @@ io.on('connection', function (socket) {
                                 room.turn++
                                 let turn = room.turn
                                 if (room.turn == room.players.length) {
-                                    turn = room.turn % room.players.length
+                                    turn = room.turn % room.totalPlayers
                                 }
 
 

@@ -66,9 +66,9 @@ socket.on('leaderBoard', (leaderBoard) => {
     let odd = 1
     boardContent.innerHTML = ``
     for (let player of scoreBoardInAscendingOrder) {
-        if(counter % 2 == 0){
-            odd= 2
-        } else{
+        if (counter % 2 == 0) {
+            odd = 2
+        } else {
             odd = 1
         }
         boardContent.innerHTML += `<div class="player-content${odd}">
@@ -76,7 +76,7 @@ socket.on('leaderBoard', (leaderBoard) => {
             <p class="player-score scorePosition">Score: ${player.score}</p>
         </div>`
         counter++
-       
+
     }
 })
 

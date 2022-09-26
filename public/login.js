@@ -10,7 +10,7 @@ async function login() {
         const form = e.target
         const username = form.username.value
         const password = form.password.value
-        console.log(username, password)
+        // console.log(username, password)
         const res = await fetch('/user/login', {
             method: "POST",
             body: JSON.stringify({

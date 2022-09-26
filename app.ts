@@ -59,7 +59,7 @@ io.on('connection', function (socket) {
     })
 
     socket.on('room-check', async (username) => {
-        console.log('room-check', username)
+        // console.log('room-check', username)
         let index = 0
 
         for (let room of roomList) {
@@ -72,15 +72,15 @@ io.on('connection', function (socket) {
                     let host = room.players[0].name
                     if (username === room.drawingPlayer) {
 
-                        console.log('is drawing player')
-                        console.log(room)
+                        // console.log('is drawing player')
+                        // console.log(room)
                         room.turn++
                         let turn = room.turn
                         if (room.turn == room.players.length) {
                             turn = room.turn % room.players.length + 1
                         }
                         if (room.turn / room.round == room.totalPlayers) {
-                            console.log('Im here')
+                            // console.log('Im here')
                             room.drawBoardArray = []
                             io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                             io.to(`${socketID}`).emit("show-topic")
@@ -113,7 +113,7 @@ io.on('connection', function (socket) {
                         io.to(`${socketID}`).emit("next-turn", (host))
                         // console.log(room.turn)
                     }
-                    console.log('here')
+                    // console.log('here')
                     io.emit('update-room', ({ roomList }))
                     let name = username
                     io.to(`${socketID}`).emit('player-left', ({ name, host }))
@@ -240,7 +240,7 @@ io.on('connection', function (socket) {
                 io.to(`${id}`).emit('launch-game', (id))
                 room.start = true
                 io.emit('update-room', ({ roomList }));
-                console.log(room)
+                // console.log(room)
             }
         }
     })
@@ -269,7 +269,7 @@ io.on('connection', function (socket) {
                                     turn = room.turn % room.totalPlayers
                                 }
                                 if (room.turn / room.round == room.totalPlayers) {
-                                    console.log('Im here')
+                                    // console.log('Im here')
                                     room.drawBoardArray = []
                                     io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                                     io.to(`${socketID}`).emit("show-topic")
@@ -299,7 +299,7 @@ io.on('connection', function (socket) {
                                 // setTimeout(() => {},3000)
                                 let host = room.players[0].name
                                 io.to(`${socketID}`).emit("next-turn", (host))
-                                console.log(room.turn)
+                                // console.log(room.turn)
                                 io.to(`${socketID}`).emit("clear") // ask sockets to clear the board
                                 io.to(`${socketID}`).emit("show-topic")
                             }
@@ -429,7 +429,7 @@ io.on('connection', function (socket) {
                 room.barWidth = width
                 if (width == 0) {
                     room.turn++
-                    console.log('next' + room.turn)
+                    // console.log('next' + room.turn)
                     if (room.turn / room.round > room.totalPlayers) {
                         return
                     }
@@ -448,7 +448,7 @@ io.on('connection', function (socket) {
                     // setTimeout(() => {},3000)
                     let host = room.players[0].name
                     io.to(`${id}`).emit("next-turn", (host))
-                    console.log(room.turn)
+                    // console.log(room.turn)
                     io.to(`${id}`).emit("clear") // ask sockets to clear the board
                     io.to(`${id}`).emit("show-topic")
                 } else if (room.barWidth == 100) {

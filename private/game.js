@@ -17,7 +17,6 @@ let guessedTheWord = false
 let timer = document.querySelector('.timer')
 let turnCounter = 0
 let scoreboardInAscendingOrder
-
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
@@ -144,7 +143,7 @@ socket.on('show-room-data', (roomData) => {
 
 socket.on('next-turn', (host) => {
   if (host == username) {
-    console.log('hi')
+    // console.log('hi')
     let content = '---TURN END---'
     socket.emit('chat', ({ content, username, socketID }))
   }

@@ -223,7 +223,7 @@ socket.on('stop-bar', (host) => {
 function move(width) {
   let emitter = username
   let elem = document.getElementById("myBar");
-  let id = setInterval(frame, 400); // change time here //
+  let id = setInterval(frame, 1000); // change time here //
   function frame() {
 
     if (width <= 0) {

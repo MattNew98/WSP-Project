@@ -1,5 +1,5 @@
 // CHANGE IP BEFORE OPEN SERVER!!!!! // "192.168.59.61:8080" "localhost:8080"
-let SERVER_IP = "localhost:8081"
+let SERVER_IP = "localhost:8090"
 import express from 'express'
 import { client } from '../app'
 import { checkPassword, hashPassword } from '../hash'
